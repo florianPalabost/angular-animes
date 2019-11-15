@@ -1,26 +1,29 @@
 const db = require('../../db');
 
-module.exports = {
-  async retrieveAnimes (req, res) {         
-    return await db.getAllAnimes();  
-  },
-  
-  async retrieveAnimeByTitle (req, res) {         
-    return await db.getByTitle(req);  
-  },
-
-  async addAnime (req, res) {                
-    return await db.createAnime(req);
-    },
+const retrieveAnimes = async (req, res) => {         
+  return await db.getAllAnimes();  
 };
 
-// module.exports = {
-//   create(req, res) {
-//     return Todo
-//       .create({
-//         title: req.body.title,
-//       })
-//       .then(todo => res.status(201).send(todo))
-//       .catch(error => res.status(400).send(error));
-//   },
-// };
+const retrieveAnimeByTitle = async (req, res) => {         
+  return await db.getByTitle(req);  
+};
+
+const addAnime = async (req, res) => {                
+  return await db.createAnime(req);
+};
+
+const updateAnime = async (req, res) => {                
+  return await db.updateAnime(req);
+};
+
+const deleteAnime = async (req, res) => {                
+  return await db.deleteAnime(req);
+};
+
+module.exports = {
+  retrieveAnimes,
+  retrieveAnimeByTitle,
+  addAnime,
+  updateAnime,
+  deleteAnime
+};

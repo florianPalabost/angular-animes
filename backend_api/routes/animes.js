@@ -8,6 +8,8 @@ var AnimesController = require('../src/controllers/animesController');
 /* GET animes listing. */
 router.get('/', AnimesController.findAllAnimes);
 router.get('/:title', AnimesController.findAnimeByTitle);
+router.put('/:title', AnimesController.updateAnime);
+router.delete('/:id', AnimesController.deleteAnime);
 router.post('/', (req, res) => {AnimesController.addAnime(req, res)});
 /* adds a new customer to the list */
 // router.post('/', async (req, res, next) =>
