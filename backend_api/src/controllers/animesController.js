@@ -1,25 +1,26 @@
-// const Contact = mongoose.model('Contact', ContactSchema);
 const AnimeService = require('../services/animesServices');
 
 module.exports = {
-
   async findAllAnimes (req, res) {         
-    console.log('called getAllAnimes() in controller');
-    let animes = await AnimeService.retrieveAnimes(); 
-    console.log('end call animes Controller get Animes');
-    res.json(animes);
-    // Contact.find({}, (err, contact) => {
-    //     if(err){
-    //         res.send(err);
-    //     }
-    //     res.json(contact);
-    // });
+    try {
+      let animes = await AnimeService.retrieveAnimes(); 
+      // console.log('JSON get Animes:::::', JSON.stringify(animes));
+      res.status(200).json(animes);
+    } catch (error) {
+      console.log(error);
+      res.status(400).send(error);
+    }
   },
 
   async addAnime (req, res) {            
-    console.log('anime want to create: ', req.body);    
-    console.log('call addAnime() in controller');    
-    await AnimeService.addAnime(req.body);
+    // console.log('anime want to create: ', req.body);    
+    try {
+      let anime = await AnimeService.addAnime(req.body);
+      res.status(201).json(anime);
+    } catch (err) {
+      console.log(err);
+      res.status(400).send(error);
+    }
     
 //     if(err){
 //         res.send(err);
