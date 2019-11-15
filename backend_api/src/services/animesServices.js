@@ -4,6 +4,10 @@ module.exports = {
   async retrieveAnimes (req, res) {         
     return await db.getAllAnimes();  
   },
+  
+  async retrieveAnimeByTitle (req, res) {         
+    return await db.getByTitle(req);  
+  },
 
   async addAnime (req, res) {                
     return await db.createAnime(req);

@@ -15,6 +15,19 @@ module.exports = {
     }
   },
 
+  async getByTitle (title) {
+    try {
+      return await models.anime.findOne({
+        where: {
+          title: title
+        }
+      });
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  }, 
+
   async createAnime (req, res) {
     console.log('access dao : create new anime');
     try {

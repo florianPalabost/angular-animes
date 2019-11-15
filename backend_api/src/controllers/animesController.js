@@ -12,6 +12,16 @@ module.exports = {
     }
   },
 
+  async findAnimeByTitle (req, res) {         
+    try {
+      let anime = await AnimeService.retrieveAnimeByTitle(req.params.title); 
+      res.status(200).json(anime);
+    } catch (error) {
+      console.log(error);
+      res.status(400).send(error);
+    }
+  },
+
   async addAnime (req, res) {            
     // console.log('anime want to create: ', req.body);    
     try {

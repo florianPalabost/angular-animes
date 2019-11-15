@@ -7,8 +7,8 @@ var AnimesController = require('../src/controllers/animesController');
 
 /* GET animes listing. */
 router.get('/', AnimesController.findAllAnimes);
+router.get('/:title', AnimesController.findAnimeByTitle);
 router.post('/', (req, res) => {AnimesController.addAnime(req, res)});
-
 /* adds a new customer to the list */
 // router.post('/', async (req, res, next) =>
 // {
@@ -40,52 +40,52 @@ router.post('/', (req, res) => {AnimesController.addAnime(req, res)});
 // 	}
 // });
 
-/* retrieves a customer by uid */
-router.get('/:id', async (req, res, next) =>
-{
-	try
-	{
-		const customer = await CustomerService.retrieve(req.params.id);
+// /* retrieves a customer by uid */
+// router.get('/:id', async (req, res, next) =>
+// {
+// 	try
+// 	{
+// 		const customer = await CustomerService.retrieve(req.params.id);
 
-		return res.json({ customer: customer });
-	}
-	catch(err)
-	{
-		// unexpected error
-		return next(err);
-	}
-});
+// 		return res.json({ customer: customer });
+// 	}
+// 	catch(err)
+// 	{
+// 		// unexpected error
+// 		return next(err);
+// 	}
+// });
 
-/* updates the customer by uid */
-router.put('/:id', async (req, res, next) =>
-{
-	try
-	{
-		const customer = await CustomerService.update(req.params.id, req.body);
+// /* updates the customer by uid */
+// router.put('/:id', async (req, res, next) =>
+// {
+// 	try
+// 	{
+// 		const customer = await CustomerService.update(req.params.id, req.body);
 
-		return res.json({ customer: customer });
-	}
-	catch(err)
-	{
-		// unexpected error
-		return next(err);
-	}
-});
+// 		return res.json({ customer: customer });
+// 	}
+// 	catch(err)
+// 	{
+// 		// unexpected error
+// 		return next(err);
+// 	}
+// });
 
-/* removes the customer from the customer list by uid */
-router.delete('/:id', async (req, res, next) =>
-{
-	try
-	{
-		const customer = await CustomerService.delete(req.params.id);
+// /* removes the customer from the customer list by uid */
+// router.delete('/:id', async (req, res, next) =>
+// {
+// 	try
+// 	{
+// 		const customer = await CustomerService.delete(req.params.id);
 
-		return res.json({success: true});
-	}
-	catch(err)
-	{
-		// unexpected error
-		return next(err);
-	}
-});
+// 		return res.json({success: true});
+// 	}
+// 	catch(err)
+// 	{
+// 		// unexpected error
+// 		return next(err);
+// 	}
+// });
 
 module.exports = router;
