@@ -24,7 +24,7 @@
 ### With ORM Sequelize
 -
   ````bash
-  export DATABASE_URL=postgres://ostgres:admin@localhost:5432/animes_api
+  export DATABASE_URL=postgres://postgres:admin@localhost:5432/animes_api
   ````
 - lancer migration database ```` db:migrate ````
 

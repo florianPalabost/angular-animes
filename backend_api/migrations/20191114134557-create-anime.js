@@ -12,6 +12,12 @@ module.exports = {
         type: Sequelize.STRING,
         unique: true,
       },
+      idApi: {
+        type: Sequelize.STRING,
+      },
+      linkApi: {
+        type: Sequelize.STRING,
+      },
       synopsis: {
         type: Sequelize.TEXT,
       },

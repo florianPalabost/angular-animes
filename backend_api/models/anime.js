@@ -7,10 +7,16 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    title: {
+      title: {
       type: DataTypes.STRING,
       unique: true,
-		},
+      },
+      idApi: {
+         type: DataTypes.STRING,
+      },
+      linkApi: {
+         type: DataTypes.STRING,
+      },
 		synopsis: {
       type: DataTypes.TEXT,
 		},
