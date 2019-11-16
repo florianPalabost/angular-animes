@@ -1,5 +1,7 @@
 export class Anime {
   id: number;
+  idApi: string;
+  linkApi: string;
   title: string;
   synopsis: string;
   rating: number;
@@ -13,4 +15,5 @@ export class Anime {
   ytVideoID: string;
   // genres: ;
   // categories: ;
+  // characters : ;
 }
