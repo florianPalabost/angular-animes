@@ -19,7 +19,7 @@ export class AnimesListComponent implements OnInit {
 
   findAllAnimes = (): void  => {
     this.animesService.retrieveAllAnimes().subscribe(data => {
-      console.log('animes:::', data);
+      // console.log('animes:::', data);
       this.animes = data;
     });
   }
