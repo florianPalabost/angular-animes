@@ -1,12 +1,12 @@
 <div class="container">
     <h1>Tous les animes</h1>
-    <div class="card-group">
-        <cdk-virtual-scroll-viewport [itemSize]="20" style="height: 1000px;width: 100em;" class="mx-auto">
-                <div class="col-md-4" *cdkVirtualFor="let anime of animes" style="max-width: 25%;display: inline-grid;">
+    <div #scrollingBlock class="card-group">
+        <virtual-scroller #scroll [items]="animes" [parentScroll]="scroll.window" [ssrChildWidth]="138" [ssrChildHeight]="175" [ssrViewportWidth]="1500" [ssrViewportHeight]="800">
+                <div class="col-md-4" *ngFor="let anime of scroll.viewPortItems" style="max-width: 25%;display: inline-grid;" >
                     <div class="animated">
                         <div class="card text-white box cardi">
                             <div class="flow">
-                                <a href="#linktodo">
+                                <a [routerLink]="['/animes/', anime.title]">
                                     <img style="max-width: 100%" class="card-img-top card-img-top-a " src="{{ anime.posterImage }}" alt="poster_{{ anime.title }}">
                                 </a>
                             </div>
@@ -15,13 +15,13 @@
                                 <div class="text">
                                     <h5 class="card-title mt-auto">{{ anime.title }}</h5>
                                             <!-- <p class="card-text">Some example text.</p> -->
-                                    <a href="#" class="btn btn-primary mt-auto">More</a>
+                                    <a [routerLink]="['/animes/', anime.title]" class="btn btn-primary mt-auto">More</a>
                                 </div>
                     
                             </div>
                         </div>
                     </div>
                 </div>
-        </cdk-virtual-scroll-viewport>
+        </virtual-scroller>
     </div>
 </div>

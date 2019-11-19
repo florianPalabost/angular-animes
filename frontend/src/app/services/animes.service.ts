@@ -16,6 +16,7 @@ const optionRequete = {
 })
 
 export class AnimesService {
+
   BASE_URL = 'http://localhost:3001/api/v1/';
 
   constructor(private http: HttpClient) { }
@@ -24,4 +25,10 @@ export class AnimesService {
   retrieveAllAnimes = (): Observable<any> => {
     return this.http.get<Anime[]>(this.BASE_URL + 'animes');
   }
+
+  findAnimeByName = (name: string): Observable<any> => {
+    // throw new Error('Method not implemented.');
+    return this.http.get<Anime>(this.BASE_URL + 'animes/' + name);
+  }
+
 }

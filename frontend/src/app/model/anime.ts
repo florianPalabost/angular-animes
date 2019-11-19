@@ -16,4 +16,5 @@ export class Anime {
   // genres: ;
   // categories: ;
   // characters : ;
+  // recommendations ??
 }
