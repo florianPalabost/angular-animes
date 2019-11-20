@@ -16,6 +16,7 @@ import {AnimesListComponent} from './animes/animes-list/animes-list.component';
 import { AnimesDetailComponent } from './animes/animes-detail/animes-detail.component';
 import { HomeComponent } from './home/home.component';
 import { RouterModule } from '@angular/router';
+import { AnimesSearchComponent } from './animes/animes-search/animes-search.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { RouterModule } from '@angular/router';
     FooterComponent,
     AnimesListComponent,
     AnimesDetailComponent,
+    AnimesSearchComponent,
     HomeComponent
   ],
   imports: [

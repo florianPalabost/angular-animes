@@ -16,7 +16,6 @@ const optionRequete = {
 })
 
 export class AnimesService {
-
   BASE_URL = 'http://localhost:3001/api/v1/';
 
   constructor(private http: HttpClient) { }
@@ -31,4 +30,8 @@ export class AnimesService {
     return this.http.get<Anime>(this.BASE_URL + 'animes/' + name);
   }
 
+  findAnimesLike = (name: string): Observable<any> => {
+    console.log('call findANimeLike :  ' + name);
+    return this.http.get<Anime[]>(this.BASE_URL + 'animes/like/' + name);
+  }
 }
