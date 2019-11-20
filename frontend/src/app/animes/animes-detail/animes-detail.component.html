@@ -2,8 +2,8 @@
   <nav>
       <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
           <a class="nav-item nav-link active" id="infos-tab" data-toggle="tab" href="#infos" role="tab" aria-controls="infos" aria-selected="true">Infos</a>
-          <a class="nav-item nav-link" id="persos-tab" data-toggle="tab" href="#persos" role="tab" aria-controls="persos" aria-selected="false">Personnages</a>
-          <a class="nav-item nav-link" id="recommend-tab" data-toggle="tab" href="#recommend" role="tab" aria-controls="recommend" aria-selected="false">Recommendations</a>
+          <a *ngIf="anime.characters" class="nav-item nav-link" id="persos-tab" data-toggle="tab" href="#persos" role="tab" aria-controls="persos" aria-selected="false">Personnages</a>
+          <a *ngIf="anime.recommandations" class="nav-item nav-link" id="recommend-tab" data-toggle="tab" href="#recommend" role="tab" aria-controls="recommend" aria-selected="false">Recommendations</a>
       </div>
   </nav>
   <div class="tab-content" id="nav-tabContent">
@@ -55,9 +55,9 @@
                   <!-- <p style="display: inline;">Genres : {{ anime.field_animes_genres }}</p> -->
                   <!-- <p style="display: inline;">Catégories : {{ content.field_animes_categories }}</p> -->
                   <p>Auteur : </p>
-                  <p style="display: inline;">Nb d'épisodes : {{ anime.nbEpisode }}</p>
-                  <p style="display: inline;">Durée : {{ anime.episodeLength }} min</p>
-                  <p style="display: inline;">Statut : {{ anime.status }}</p>
+                  <p>Nb d'épisodes : {{ anime.nbEpisode }}</p>
+                  <p>Durée : {{ anime.episodeLength }} min</p>
+                  <p>Statut : {{ anime.status }}</p>
 
               </div>
           </div>
@@ -67,10 +67,10 @@
                   <p>{{ anime.synopsis }}</p>
               </div>
       
-              <div *ngIf="anime.ytVideoID" class="row">
+              <div *ngIf="anime.ytVideoID && videoYT" class="row">
                   <div class="vid-container">
                       <div class="vid-dummy"></div>
-                      <iframe type="text/html" class="yt_video vid-element" src="#" frameborder="0" allowfullscreen></iframe>
+                      <iframe type="text/html" class="yt_video vid-element" [src]="videoYT" frameborder="0" allowfullscreen></iframe>
                   </div>
               </div>
           

@@ -4,9 +4,11 @@ import { AnimesListComponent } from './animes-list/animes-list.component';
 import { AnimesDetailComponent } from './animes-detail/animes-detail.component';
 import { RouterModule } from '@angular/router';
 import { ANIMES_ROUTES } from './animes.routes';
+import { AnimesSearchComponent } from './animes-search/animes-search.component';
+
 
 @NgModule({
-  declarations: [AnimesListComponent],
+  declarations: [AnimesListComponent, AnimesSearchComponent],
   imports: [
     CommonModule,
     AnimesDetailComponent,
