@@ -5,6 +5,7 @@ import { AnimesDetailComponent } from './animes-detail/animes-detail.component';
 import { RouterModule } from '@angular/router';
 import { ANIMES_ROUTES } from './animes.routes';
 import { AnimesSearchComponent } from './animes-search/animes-search.component';
+import {TranslateModule} from '@ngx-translate/core';
 
 
 @NgModule({
@@ -12,7 +13,8 @@ import { AnimesSearchComponent } from './animes-search/animes-search.component';
   imports: [
     CommonModule,
     AnimesDetailComponent,
-    RouterModule.forChild(ANIMES_ROUTES)
+    RouterModule.forChild(ANIMES_ROUTES),
+    TranslateModule.forRoot()
   ]
 })
 export class AnimesModule { }

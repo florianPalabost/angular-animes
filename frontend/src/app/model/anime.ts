@@ -13,6 +13,7 @@ export class Anime {
   nbEpisode: number;
   episodeLength: number;
   ytVideoID: string;
+  subtype: string;
   // genres: ;
   // categories: ;
   // characters : ;

@@ -1,8 +1,8 @@
 <div class="container">
     <h1>Tous les animes</h1>
-    <div #scrollingBlock class="card-group">
-        <virtual-scroller #scroll [items]="animes" [parentScroll]="scroll.window" [ssrChildWidth]="138" [ssrChildHeight]="175" [ssrViewportWidth]="1500" [ssrViewportHeight]="800">
-                <div class="col-md-4" *ngFor="let anime of scroll.viewPortItems" style="max-width: 25%;display: inline-grid;" >
+    <div #scrollingBlock class="card-group" *ngIf="animes.length > 0">
+        <virtual-scroller #scroll [class]="selfScroll" [items]="animes" [parentScroll]="scroll.window">
+                <div class="my-child-item" *ngFor="let anime of scroll.viewPortItems" style="max-width: 25%;display: inline-grid;" >
                     <div class="animated">
                         <div class="card text-white box cardi">
                             <div class="flow">

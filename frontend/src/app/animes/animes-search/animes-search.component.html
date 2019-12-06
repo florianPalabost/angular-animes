@@ -1,6 +1,6 @@
 <div class="form-inline mr-auto">
   <input type="text" (input)="retrieveAnimesLike($event.target.value)"  
-  class="form-control rounded-0 bg-light ser-input" id="ser-input" style="border: none" placeholder="Search anime..." novalidate>
+  class="form-control rounded-0 bg-light ser-input" id="ser-input" style="border: none" placeholder="Type to search anime..." novalidate>
   <fa-icon [icon]="faSearch" class="text ml-3" aria-hidden="true"></fa-icon>
 </div>
 
@@ -15,11 +15,17 @@
                   <img *ngIf="anime.posterImage" src="{{anime.posterImage}}" alt="poster_{{anime.title}}" width="50" height="50">
                   <img *ngIf="!anime.posterImage && anime.coverImage" src="{{anime.coverImage}}" alt="poster_{{anime.title}}" width="50" height="50">
               </div>
-              <div class="col-8">
+              <div class="col-2">
+                <span *ngIf="anime.subtype">[{{anime.subtype}}]</span>
+              </div>
+              <div class="col-6">
                   <p class="anime-title-search">{{anime.title}}</p>
               </div>
             </div>
           </a>
+        </li>
+        <li class="list-group-item filter-select-item">
+          <a *ngIf="valueSearch" [routerLink]="['/animes/search', valueSearch]">See all results</a>
         </li>
       </ul>
 </div>

@@ -15,6 +15,7 @@ export class AnimesDetailComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   videoYT;
   tmpURL;
+  urlImg;
 
   constructor(private route: ActivatedRoute, private animesService: AnimesService, private sanitize: DomSanitizer) { }
 
@@ -33,6 +34,11 @@ export class AnimesDetailComponent implements OnInit, OnDestroy {
       // To avoid XSS need tot use sanitize to create a "trust" ressource url !
       this.tmpURL = 'http://www.youtube.com/embed/' + this.anime.ytVideoID;
       this.videoYT = this.sanitize.bypassSecurityTrustResourceUrl( this.tmpURL);
+      if (this.anime.coverImage !== null) {
+        this.urlImg =  this.sanitize.bypassSecurityTrustStyle( `url(${this.anime.coverImage})`);
+      } else if (this.anime.posterImage !== null) {
+        this.urlImg =  this.sanitize.bypassSecurityTrustStyle( `url(${this.anime.posterImage})`);
+      }
     });
 
   }

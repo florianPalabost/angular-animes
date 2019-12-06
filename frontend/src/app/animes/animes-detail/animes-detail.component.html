@@ -1,114 +1,148 @@
 <div class="col-md-12">
-  <nav>
-      <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-          <a class="nav-item nav-link active" id="infos-tab" data-toggle="tab" href="#infos" role="tab" aria-controls="infos" aria-selected="true">Infos</a>
-          <a *ngIf="anime.characters" class="nav-item nav-link" id="persos-tab" data-toggle="tab" href="#persos" role="tab" aria-controls="persos" aria-selected="false">Personnages</a>
-          <a *ngIf="anime.recommandations" class="nav-item nav-link" id="recommend-tab" data-toggle="tab" href="#recommend" role="tab" aria-controls="recommend" aria-selected="false">Recommendations</a>
-      </div>
-  </nav>
-  <div class="tab-content" id="nav-tabContent">
-      <div class="tab-pane fade show active" id="infos" role="tabpanel" aria-labelledby="infos-tab">
-          <h3>Infos</h3>
 
-          <div class="row">
-              <div class="col-6">
-                      <img *ngIf="anime.coverImage" style="max-width: 100%" class="img img-responsive" src="{{ anime.coverImage }}" alt="poster_{{ anime.title }}">
-                      <img *ngIf="!anime.coverImage" style="max-width: 100%" class="img img-responsive" src="{{ anime.posterImage }}" alt="poster_{{ anime.title }}">
-                  
-                  <!-- {% if animes_watched %}
-                      <button value="watched" id="btn-watched" class="btn btn-success btn-watched" disabled>
-                          <i class="fas fa-check"></i> Watched
-                      </button>
-                      <button value="watching" id="btn-watching" class="btn btn-info btn-watched" disabled>Watching</button>
-                      <button value="want-to-watch" id="btn-want-to-watch" class="btn btn-primary btn-watched" disabled>Want to watch</button>
-                      <button value="dont-want-to-watch" id="btn-dont-watch" class="btn btn-danger btn-watched" disabled>Don't want to watch</button>
-                  {% elseif animes_watching %}
-                      <button value="watched" id="btn-watched" class="btn btn-success btn-watched">Watched</button>
-                      <button value="watching" id="btn-watching" class="btn btn-info btn-watched" disabled><i class="fas fa-check"></i> Watching</button>
-                      <button value="want-to-watch" id="btn-want-to-watch" class="btn btn-primary btn-watched" disabled>Want to watch</button>
-                      <button value="dont-want-to-watch" id="btn-dont-watch" class="btn btn-danger btn-watched" disabled>Don't want to watch</button>
-                  {% elseif want_to_watch %}
-                      <button value="watched" id="btn-watched" class="btn btn-success btn-watched">Watched</button>
-                      <button value="watching" id="btn-watching" class="btn btn-info btn-watched">Watching</button>
-                      <button value="want-to-watch" id="btn-want-to-watch" class="btn btn-primary btn-watched" disabled> <i class="fas fa-check"></i> Want to watch</button>
-                      <button value="dont-want-to-watch" id="btn-dont-watch" class="btn btn-danger btn-watched" disabled>Don't want to watch</button>
-                  {% elseif dont_want_to_watch %}
-                      <button value="watched" id="btn-watched" class="btn btn-success btn-watched" disabled>Watched</button>
-                      <button value="watching" id="btn-watching" class="btn btn-info btn-watched" disabled>Watching</button>
-                      <button value="want-to-watch" id="btn-want-to-watch" class="btn btn-primary btn-watched" disabled>Want to watch</button>
-                      <button value="dont-want-to-watch" id="btn-dont-watch" class="btn btn-danger btn-watched" disabled><i class="fas fa-check"></i> Don't want to watch</button>
-                  {% else %}
-                      <button value="watched" id="btn-watched" class="btn btn-success btn-watched">Watched</button>
-                      <button value="watching" id="btn-watching" class="btn btn-info btn-watched">Watching</button>
-                      <button value="want-to-watch" id="btn-want-to-watch" class="btn btn-primary btn-watched">Want to watch</button>
-                      <button value="dont-want-to-watch" id="btn-dont-watch" class="btn btn-danger btn-watched">Don't want to watch</button>
-                  {% endif %} -->
+    <div class="row">
+        <div class="col-12" [style.background-image]="urlImg" style="background-size: cover;height: 30em;padding:0">
+        </div>
+    </div>
+    <!-- {% if animes_watched %}
+        <button value="watched" id="btn-watched" class="btn btn-success btn-watched" disabled>
+            <i class="fas fa-check"></i> Watched
+        </button>
+        <button value="watching" id="btn-watching" class="btn btn-info btn-watched" disabled>Watching</button>
+        <button value="want-to-watch" id="btn-want-to-watch" class="btn btn-primary btn-watched" disabled>Want to watch</button>
+        <button value="dont-want-to-watch" id="btn-dont-watch" class="btn btn-danger btn-watched" disabled>Don't want to watch</button>
+    {% elseif animes_watching %}
+        <button value="watched" id="btn-watched" class="btn btn-success btn-watched">Watched</button>
+        <button value="watching" id="btn-watching" class="btn btn-info btn-watched" disabled><i class="fas fa-check"></i> Watching</button>
+        <button value="want-to-watch" id="btn-want-to-watch" class="btn btn-primary btn-watched" disabled>Want to watch</button>
+        <button value="dont-want-to-watch" id="btn-dont-watch" class="btn btn-danger btn-watched" disabled>Don't want to watch</button>
+    {% elseif want_to_watch %}
+        <button value="watched" id="btn-watched" class="btn btn-success btn-watched">Watched</button>
+        <button value="watching" id="btn-watching" class="btn btn-info btn-watched">Watching</button>
+        <button value="want-to-watch" id="btn-want-to-watch" class="btn btn-primary btn-watched" disabled> <i class="fas fa-check"></i> Want to watch</button>
+        <button value="dont-want-to-watch" id="btn-dont-watch" class="btn btn-danger btn-watched" disabled>Don't want to watch</button>
+    {% elseif dont_want_to_watch %}
+        <button value="watched" id="btn-watched" class="btn btn-success btn-watched" disabled>Watched</button>
+        <button value="watching" id="btn-watching" class="btn btn-info btn-watched" disabled>Watching</button>
+        <button value="want-to-watch" id="btn-want-to-watch" class="btn btn-primary btn-watched" disabled>Want to watch</button>
+        <button value="dont-want-to-watch" id="btn-dont-watch" class="btn btn-danger btn-watched" disabled><i class="fas fa-check"></i> Don't want to watch</button>
+    {% else %}
+        <button value="watched" id="btn-watched" class="btn btn-success btn-watched">Watched</button>
+        <button value="watching" id="btn-watching" class="btn btn-info btn-watched">Watching</button>
+        <button value="want-to-watch" id="btn-want-to-watch" class="btn btn-primary btn-watched">Want to watch</button>
+        <button value="dont-want-to-watch" id="btn-dont-watch" class="btn btn-danger btn-watched">Don't want to watch</button>
+    {% endif %} -->
 
-                  <div hidden id="spinner"></div>
+    <!-- <div hidden id="spinner"></div> -->
 
+    <nav>
+        <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link active" id="infos-tab" data-toggle="tab" href="#infos" role="tab" aria-controls="infos" aria-selected="true">Infos</a>
+            <a *ngIf="anime.characters" class="nav-item nav-link" id="persos-tab" data-toggle="tab" href="#persos" role="tab" aria-controls="persos" aria-selected="false">Personnages</a>
+            <a *ngIf="anime.recommandations" class="nav-item nav-link" id="recommend-tab" data-toggle="tab" href="#recommend" role="tab" aria-controls="recommend" aria-selected="false">Recommendations</a>
+        </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+        <!-- tab infos about anime -->
+        <div class="tab-pane fade show active" id="infos" role="tabpanel" aria-labelledby="infos-tab">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Informations</h3>
+                    <h1>{{anime.title}}</h1>
+                    <p *ngIf="anime.genres" >Genres :
+                        <span *ngFor="let genre of anime.genres" class="badge btn-info" style="margin-left: 0.5em;">{{genre.name}}</span>
+                    </p>
+                    <p *ngIf="anime.categories">Catégories :
+                        <span *ngFor="let category of anime.categories" class="badge btn-info" style="margin-left: 0.5em;">{{category.name}}</span>
+                    </p>
+                    <p>Auteur : TODO </p>
+                    <p *ngIf="anime.nbEpisode">Nb d'épisodes : {{ anime.nbEpisode }}</p>
+                    <p *ngIf="anime.episodeLength">Durée : {{ anime.episodeLength }} min</p>
+                    <p *ngIf="anime.status">Statut : {{ anime.status }}</p>
+                    <p *ngIf="anime.subtype">Type : {{ anime.subtype }}</p>
 
-              </div>
+                </div>
+            </div>
 
-              <div class="col-6">
-                  <h3>Informations</h3>
+            <div *ngIf="anime.synopsis" class="row">
+                <h3>Synopsis</h3>
+                <p>{{ anime.synopsis}}</p>
+            </div>
 
-                  <!-- <p style="display: inline;">Genres : {{ anime.field_animes_genres }}</p> -->
-                  <!-- <p style="display: inline;">Catégories : {{ content.field_animes_categories }}</p> -->
-                  <p>Auteur : </p>
-                  <p>Nb d'épisodes : {{ anime.nbEpisode }}</p>
-                  <p>Durée : {{ anime.episodeLength }} min</p>
-                  <p>Statut : {{ anime.status }}</p>
+            <div *ngIf="anime.ytVideoID && videoYT" class="row">
+                <div class="vid-container">
+                    <div class="vid-dummy"></div>
+                    <iframe type="text/html" class="yt_video vid-element" [src]="videoYT" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
 
-              </div>
-          </div>
+        </div>
+        <!-- tab list characters main & support  -->
+        <div *ngIf="anime.characters" class="tab-pane fade" id="persos" role="tabpanel" aria-labelledby="persos-tab">
+            <h3>Personnages</h3>
+            <div class="row">
+                <h3>Personnages principaux</h3>
+            </div>
+            <!-- <div class="container"> -->
+                <div class="row justify-content-center" >
+                    <!-- {{  content.field_animes_main_characs }} -->
+                    <div style="display: flex;overflow-x: scroll;overflow-y: scroll;width: 60em;" >
+                        <div class="card text-white box cardi" *ngFor="let perso of anime.characters">
+                            <ng-container *ngIf="perso.role === 'main'">
+                                <div class="flow" >
+                                    <a href="#">
+                                        <img style="width: 100%;" class="card-img-top-a"
+                                        src="{{perso.img}}" alt="poster_{{ perso.name }}">
+                                    </a>
+                                </div>
 
-              <div *ngIf="anime.synopsis" class="row">
-                  <h3>Synopsis</h3>
-                  <p>{{ anime.synopsis }}</p>
-              </div>
-      
-              <div *ngIf="anime.ytVideoID && videoYT" class="row">
-                  <div class="vid-container">
-                      <div class="vid-dummy"></div>
-                      <iframe type="text/html" class="yt_video vid-element" [src]="videoYT" frameborder="0" allowfullscreen></iframe>
-                  </div>
-              </div>
-          
-      </div>
+                                <div class="card-img-overlay overlay">
+                                    <div class="text">
+                                        <h5 class="card-title mt-auto">{{  perso.name }}</h5>
+                                        <!-- {#        <p class="card-text">Some example text.</p>#} -->
+                                        <a href="#" class="btn btn-primary mt-auto">More</a>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+            <!-- </div> -->
 
-      <div *ngIf="anime.characters" class="tab-pane fade" id="persos" role="tabpanel" aria-labelledby="persos-tab">
-          <h3>Personnages</h3>
+            <div class="row" *ngIf="anime.characters.length > 0">
+                <h3>Personnages secondaires</h3>
+            </div>
 
-              <div class="row">
-                  <h3>Personnages principaux</h3>
-              </div>
+            <!-- <div class="container"> -->
+                <div style="display: flex;overflow-x: scroll;overflow-y: scroll;width: 60em;" >
+                    <div class="card text-white box cardi" *ngFor="let perso of anime.characters">
+                        <ng-container *ngIf="perso.role === 'supporting'">
+                            <div class="flow" >
+                                <a href="#">
+                                    <img class="card-img-top-a " src="{{perso.img}}" alt="poster_{{ perso.name }}">
+                                </a>
+                            </div>
 
-              <div class="container">
-                  <div class="row justify-content-center">
-                      <!-- {{  content.field_animes_main_characs }} -->
-                  </div>
-              </div>
-         
+                            <div class="card-img-top card-img-top-a">
+                                <div class="text">
+                                    <h5 class="card-title mt-auto">{{  perso.name }}</h5>
+                                    <!-- {#        <p class="card-text">Some example text.</p>#} -->
+                                    <a href="#" class="btn btn-primary mt-auto">More</a>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            <!-- </div> -->
 
-      
-              <div class="row">
-                  <h3>Personnages secondaires</h3>
-              </div>
-
-              <div class="container">
-                  <div class="row justify-content-center">
-                   
-                  </div>
-              </div>
-    
-      </div>
-
+        </div>
+        <!-- animes recommendations tab -->
       <div *ngIf="anime.recommandations" class="tab-pane fade" id="recommend" role="tabpanel" aria-labelledby="recommend-tab">
           <h3>Recommendations</h3>
           <div class="card-deck">
               <!-- {{ content.field_animes_sibling | render}} -->
           </div>
       </div>
+    </div>
 
-  </div>
 </div>

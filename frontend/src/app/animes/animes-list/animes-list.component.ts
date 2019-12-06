@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AnimesService } from 'src/app/services/animes.service';
 import { Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -13,10 +14,18 @@ export class AnimesListComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   animes: any = [];
 
-  constructor(private animesService: AnimesService) { }
+  constructor(private route: ActivatedRoute, private animesService: AnimesService) { }
 
   ngOnInit() {
-    this.findAllAnimes();
+    if (this.route.snapshot.params['q']) {
+      this.animesService.findAnimesLikeAll(this.route.snapshot.params['q']).subscribe(data => {
+        console.log('data get from search : ', data);
+        this.animes = data;
+      });
+      console.log('hoka');
+    } else {
+      this.findAllAnimes();
+    }
   }
 
   findAllAnimes = (): void  => {

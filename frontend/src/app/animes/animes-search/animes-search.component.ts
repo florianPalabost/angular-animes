@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { AnimesService } from 'src/app/services/animes.service';
 import { $ } from 'protractor';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-animes-search',
@@ -13,10 +14,11 @@ export class AnimesSearchComponent implements OnInit {
   faSearch = faSearch;
   animes: any = [];
   showDropDown = false;
-
+  valueSearch;
   constructor(private animesService: AnimesService) { }
 
   ngOnInit() {
+
   }
 
   retrieveAnimesLike = (q: string) => {
@@ -25,8 +27,8 @@ export class AnimesSearchComponent implements OnInit {
       this.animesService.findAnimesLike(q).subscribe(data => {
         console.log('data get from search : ', data);
         this.animes = data;
+        this.valueSearch = q;
         this.showDropDown = !this.showDropDown;
-        console.log('sjow', this.showDropDown);
       });
     }
   }
