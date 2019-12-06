@@ -1,3 +1,27 @@
-<p>
-  animes-list works!
-</p>
+<div class="container">
+    <h1>Tous les animes</h1>
+    <div #scrollingBlock class="card-group" *ngIf="animes.length > 0">
+        <virtual-scroller #scroll [class]="selfScroll" [items]="animes" [parentScroll]="scroll.window">
+                <div class="my-child-item" *ngFor="let anime of scroll.viewPortItems" style="max-width: 25%;display: inline-grid;" >
+                    <div class="animated">
+                        <div class="card text-white box cardi">
+                            <div class="flow">
+                                <a [routerLink]="['/animes/', anime.title]">
+                                    <img style="max-width: 100%" class="card-img-top card-img-top-a " src="{{ anime.posterImage }}" alt="poster_{{ anime.title }}">
+                                </a>
+                            </div>
+                    
+                            <div class="card-img-overlay overlay">
+                                <div class="text">
+                                    <h5 class="card-title mt-auto">{{ anime.title }}</h5>
+                                            <!-- <p class="card-text">Some example text.</p> -->
+                                    <a [routerLink]="['/animes/', anime.title]" class="btn btn-primary mt-auto">More</a>
+                                </div>
+                    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </virtual-scroller>
+    </div>
+</div>

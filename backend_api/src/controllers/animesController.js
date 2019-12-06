@@ -21,6 +21,27 @@ const findAnimeByTitle = async (req, res) => {
   }
 };
 
+const findAnimesLike = async (req, res) => {         
+  try {
+    let animes = await AnimeService.retrieveAnimesLike(req.params.name); 
+    res.status(200).json(animes);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+};
+
+const findAnimesLikeAll = async (req, res) => {         
+  try {
+    let animes = await AnimeService.retrieveAnimesLikeAll(req.params.name); 
+    res.status(200).json(animes);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+};
+
+
 const addAnime = async (req, res) => {            
   try {
     let anime = await AnimeService.addAnime(req.body);
@@ -57,6 +78,8 @@ const deleteAnime = async (req, res) => {
 module.exports = {
   findAllAnimes,
   findAnimeByTitle,
+  findAnimesLike,
+  findAnimesLikeAll,
   addAnime,
   updateAnime,
   deleteAnime

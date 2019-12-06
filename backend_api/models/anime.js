@@ -7,16 +7,16 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-      title: {
+    title: {
       type: DataTypes.STRING,
       unique: true,
-      },
-      idApi: {
-         type: DataTypes.STRING,
-      },
-      linkApi: {
-         type: DataTypes.STRING,
-      },
+    },
+    idApi: {
+      type: DataTypes.STRING,
+    },
+    linkApi: {
+      type: DataTypes.STRING,
+    },
 		synopsis: {
       type: DataTypes.TEXT,
 		},
@@ -46,7 +46,10 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		ytVideoID: {
       type: DataTypes.STRING,
-		},
+    },
+    subtype: {
+      type: DataTypes.STRING,
+    },
   },
   
    {
@@ -54,6 +57,13 @@ module.exports = (sequelize, DataTypes) => {
    });
   Anime.associate = (models) => {
     // associations can be defined here
+    Anime.belongsToMany(models.genre, { through: 'animes_genres'});
+    Anime.belongsToMany(models.category, { through: 'animes_categories'});
+
+    Anime.hasMany(models.character, {foreignKey: 'animeId', targetKey: 'id'});
+
+
+
   };
   return Anime;
 };
