@@ -1,5 +1,6 @@
 const dotenv = require('dotenv');
 const models = require('./models');
+const Sequelize = require('sequelize');
 
 dotenv.config();
 
@@ -7,7 +8,11 @@ const getAllAnimes = async (req, res) => {
   console.log('access dao : retrieve all animes');
   // async/await with try/catch
   try {
-    return await models.anime.findAll(); 
+    return await models.anime.findAll({
+      attributes: ['id', 'title', 'status', 'posterImage', 'coverImage', 'subtype'],
+      limit: 100
+    },
+    ); 
   } catch (err) {
     console.log('error in db for getAllAnimes() ::::', err.stack);
     return err; 
@@ -19,7 +24,54 @@ const getByTitle = async (title) => {
     return await models.anime.findOne({
       where: {
         title: title
+      },
+      include: [ {
+        model: models.genre,
+        through: { attributes: [] } // to avoid to take the attributes of animes_genres table
+      }, {
+        model: models.category,
+        through: { attributes: [] }
+      }, {
+        model: models.character,
+        attributes: ['name','role','description', 'img', 'other_name']
       }
+    ]
+    });
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
+const getLikeByTitle = async (title) => {
+  try {
+    console.log('db title : ', title);
+    return await models.anime.findAll({
+      where: {
+        title: {
+          [Sequelize.Op.iLike]: '%' + title + '%'
+        }
+      },
+      attributes: ['id', 'title', 'status', 'posterImage', 'coverImage', 'subtype'],
+      limit: 10
+    });
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
+const getLikeByTitleAll = async (title) => {
+  try {
+    console.log('db title : ', title);
+    return await models.anime.findAll({
+      where: {
+        title: {
+          [Sequelize.Op.iLike]: '%' + title + '%'
+        }
+      },
+      attributes: ['id', 'title', 'status', 'posterImage', 'coverImage', 'subtype'],
+      // limit: 10
     });
   } catch (error) {
     console.log(error);
@@ -30,6 +82,11 @@ const getByTitle = async (title) => {
 const getByID = async (id) => {
   try {
     return await models.anime.findOne({
+      include: [
+        {
+          model: models.animes_genre, as: 'genre'
+        }
+      ],
       where: {
         id: id
       }
@@ -109,6 +166,8 @@ const deleteAnime = async (idAnime) => {
 module.exports = {
   getAllAnimes,
   getByTitle,
+  getLikeByTitle,
+  getLikeByTitleAll,
   getByID,
   createAnime,
   updateAnime,
