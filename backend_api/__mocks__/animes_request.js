@@ -1,0 +1,5 @@
+const animes = {
+
+};
+
+export default
