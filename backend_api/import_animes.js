@@ -51,17 +51,36 @@ console.log('port : ', process.env.POSTGRES_PORT);
           }
         });
 
-        if (typeof anime === 'object') {
+        if (typeof anime !== null) {
           // anime already exist
           console.log('anime already exist');
-          
+          // console.log('ANIME:::::', anime);
+             
+          // Update the anime subtype : TV, ova, film, ...
+          if (body.data[i].attributes.subtype !== null && body.data[i].attributes.subtype !== "") {
+            console.log('update subtype ', body.data[i].attributes.subtype);
+            await models.anime.update( 
+              {
+                subtype: body.data[i].attributes.subtype
+              },
+              {
+                where: {
+                  title: body.data[i].attributes.canonicalTitle
+                }
+              }
+            );
+            
+          }
+          else {
+            console.log('pas de subtype');
+          }
         }
         else {
           console.log(':::::Create one anime::::::');
 
           let newAnime = {
             title: body.data[i].attributes.canonicalTitle,
-          }; 
+          };
           // check and set attributes to object 
           if(!checkIfEmpty(body.data[i].id)) {
             newAnime.idApi = body.data[i].id;
@@ -71,6 +90,9 @@ console.log('port : ', process.env.POSTGRES_PORT);
           }
           if(!checkIfEmpty(body.data[i].attributes.synopsis)) {
             newAnime.synopsis = body.data[i].attributes.synopsis;
+          }
+          if(!checkIfEmpty(body.data[i].attributes.subtype)) {
+            newAnime.subtype = body.data[i].attributes.subtype;
           }
           if(!checkIfEmpty(body.data[i].attributes.averageRating)) {
             newAnime.averageRating = body.data[i].attributes.averageRating;
@@ -118,4 +140,4 @@ const checkIfEmpty = (field) => {
   else if(field === null)
     return true;
   return false;
-}; 
+};
