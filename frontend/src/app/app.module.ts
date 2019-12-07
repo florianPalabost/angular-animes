@@ -17,6 +17,8 @@ import { AnimesDetailComponent } from './animes/animes-detail/animes-detail.comp
 import { HomeComponent } from './home/home.component';
 import { RouterModule } from '@angular/router';
 import { AnimesSearchComponent } from './animes/animes-search/animes-search.component';
+import {InfiniteScrollModule} from "ngx-infinite-scroll";
+import {NgxSpinnerModule} from "ngx-spinner";
 
 @NgModule({
   declarations: [
@@ -37,6 +39,8 @@ import { AnimesSearchComponent } from './animes/animes-search/animes-search.comp
     ScrollingModule,
     VirtualScrollerModule,
     RouterModule.forRoot(APP_ROUTES),
+    InfiniteScrollModule,
+    NgxSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

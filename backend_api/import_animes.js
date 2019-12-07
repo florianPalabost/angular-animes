@@ -23,9 +23,9 @@ console.log('port : ', process.env.POSTGRES_PORT);
   // const client = await pool.connect();
   // console.log('connected to the db for creating database !');
 
-  // let nbLignes = 1;
+  let nbLignes = 1;
   // data.meta.count -> contient le nb total d'animes to proceed
-  let nbLignes = 14733;
+  // let nbLignes = 14733;
 
   let start = 0;
   let length = 20;
@@ -81,46 +81,67 @@ console.log('port : ', process.env.POSTGRES_PORT);
           let newAnime = {
             title: body.data[i].attributes.canonicalTitle,
           };
-          // check and set attributes to object 
-          if(!checkIfEmpty(body.data[i].id)) {
-            newAnime.idApi = body.data[i].id;
+
+          let fields = {
+              idApi: body.data[i].id ,
+              linkApi: body.data[i].links.self !== 'undefined' ? body.data[i].links.self : null,
+              synopsis: body.data[i].attributes.synopsis !== 'undefined' ? body.data[i].attributes.synopsis : null,
+              subtype: body.data[i].attributes.subtype !== 'undefined' ? body.data[i].attributes.subtype : null,
+              averageRating: body.data[i].attributes.averageRating !== 'undefined' ? body.data[i].attributes.averageRating : null,
+              startDate: body.data[i].attributes.startDate !== 'undefined' ? body.data[i].attributes.startDate : null,
+              endDate: body.data[i].attributes.endDate !== 'undefined' ? body.data[i].attributes.endDate : null,
+              status: body.data[i].attributes.status !== 'undefined' ? body.data[i].attributes.status : null,
+              nbEpisode: body.data[i].attributes.averageRating !== 'undefined' ? body.data[i].attributes.averageRating : null,
+              episodeCount: body.data[i].attributes.episodeCount !== 'undefined' ? body.data[i].attributes.episodeCount : null,
+              episodeLength: body.data[i].attributes.episodeLength !== 'undefined' ? body.data[i].attributes.episodeLength : null,
+              ytVideoID: body.data[i].attributes.youtubeVideoId !== 'undefined' ? body.data[i].attributes.youtubeVideoId : null
+          };
+
+          for (let key in fields) {
+            if(!checkIfEmpty(fields[key])) {
+              newAnime.key = fields[key];
+            }
           }
-          if(!checkIfEmpty(body.data[i].links.self)) {
-            newAnime.linkApi = body.data[i].links.self;
-          }
-          if(!checkIfEmpty(body.data[i].attributes.synopsis)) {
-            newAnime.synopsis = body.data[i].attributes.synopsis;
-          }
-          if(!checkIfEmpty(body.data[i].attributes.subtype)) {
-            newAnime.subtype = body.data[i].attributes.subtype;
-          }
-          if(!checkIfEmpty(body.data[i].attributes.averageRating)) {
-            newAnime.averageRating = body.data[i].attributes.averageRating;
-          }
-          if(!checkIfEmpty(body.data[i].attributes.startDate)) {
-            newAnime.startDate = body.data[i].attributes.startDate;
-          }
-          if(!checkIfEmpty(body.data[i].attributes.endDate)) {
-            newAnime.endDate = body.data[i].attributes.endDate;
-          }
-          if(!checkIfEmpty(body.data[i].attributes.status)) {
-            newAnime.status = body.data[i].attributes.status;
-          }
+          // // check and set attributes to object
+          // if(!checkIfEmpty(body.data[i].id)) {
+          //   newAnime.idApi = body.data[i].id;
+          // }
+          // if(!checkIfEmpty(body.data[i].links.self)) {
+          //   newAnime.linkApi = body.data[i].links.self;
+          // }
+          // if(!checkIfEmpty(body.data[i].attributes.synopsis)) {
+          //   newAnime.synopsis = body.data[i].attributes.synopsis;
+          // }
+          // if(!checkIfEmpty(body.data[i].attributes.subtype)) {
+          //   newAnime.subtype = body.data[i].attributes.subtype;
+          // }
+          // if(!checkIfEmpty(body.data[i].attributes.averageRating)) {
+          //   newAnime.averageRating = body.data[i].attributes.averageRating;
+          // }
+          // if(!checkIfEmpty(body.data[i].attributes.startDate)) {
+          //   newAnime.startDate = body.data[i].attributes.startDate;
+          // }
+          // if(!checkIfEmpty(body.data[i].attributes.endDate)) {
+          //   newAnime.endDate = body.data[i].attributes.endDate;
+          // }
+          // if(!checkIfEmpty(body.data[i].attributes.status)) {
+          //   newAnime.status = body.data[i].attributes.status;
+          // }
           if(!checkIfEmpty(body.data[i].attributes.posterImage)) {
             newAnime.posterImage = body.data[i].attributes.posterImage.original;
           }
           if(!checkIfEmpty(body.data[i].attributes.coverImage)) {
             newAnime.coverImage = body.data[i].attributes.coverImage.original;
           }
-          if(!checkIfEmpty(body.data[i].attributes.episodeCount)) {
-            newAnime.nbEpisode = body.data[i].attributes.episodeCount;
-          }
-          if(!checkIfEmpty(body.data[i].attributes.episodeLength)) {
-            newAnime.episodeLength = body.data[i].attributes.episodeLength;
-          }
-          if(!checkIfEmpty(body.data[i].attributes.youtubeVideoId)) {
-            newAnime.ytVideoID = body.data[i].attributes.youtubeVideoId;
-          }
+          // if(!checkIfEmpty(body.data[i].attributes.episodeCount)) {
+          //   newAnime.nbEpisode = body.data[i].attributes.episodeCount;
+          // }
+          // if(!checkIfEmpty(body.data[i].attributes.episodeLength)) {
+          //   newAnime.episodeLength = body.data[i].attributes.episodeLength;
+          // }
+          // if(!checkIfEmpty(body.data[i].attributes.youtubeVideoId)) {
+          //   newAnime.ytVideoID = body.data[i].attributes.youtubeVideoId;
+          // }
       
           await models.anime.create(newAnime);
         }

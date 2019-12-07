@@ -6,6 +6,8 @@ import { RouterModule } from '@angular/router';
 import { ANIMES_ROUTES } from './animes.routes';
 import { AnimesSearchComponent } from './animes-search/animes-search.component';
 import {TranslateModule} from '@ngx-translate/core';
+import {InfiniteScrollModule} from "ngx-infinite-scroll";
+import {NgxSpinnerModule} from "ngx-spinner";
 
 
 @NgModule({
@@ -14,7 +16,9 @@ import {TranslateModule} from '@ngx-translate/core';
     CommonModule,
     AnimesDetailComponent,
     RouterModule.forChild(ANIMES_ROUTES),
-    TranslateModule.forRoot()
+    TranslateModule.forRoot(),
+    InfiniteScrollModule,
+    NgxSpinnerModule
   ]
 })
 export class AnimesModule { }

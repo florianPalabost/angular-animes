@@ -1,8 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AnimesService } from 'src/app/services/animes.service';
-import { Subscription } from 'rxjs';
+import {BehaviorSubject, Subscription} from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-
+import {NgxSpinnerService} from 'ngx-spinner';
+import {last, tap} from 'rxjs/operators';
+import * as _ from 'underscore';
 
 @Component({
   selector: 'app-animes-list',
@@ -13,8 +15,13 @@ export class AnimesListComponent implements OnInit, OnDestroy {
   // tslint:disable-next-line:no-trailing-whitespace
   private subscription: Subscription;
   animes: any = [];
+  // animes = new BehaviorSubject([]);
+  finished = false;
+  batch = 0;
+  lastKey = '';
 
-  constructor(private route: ActivatedRoute, private animesService: AnimesService) { }
+
+  constructor(private route: ActivatedRoute, private animesService: AnimesService, private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
     if (this.route.snapshot.params['q']) {
@@ -24,20 +31,30 @@ export class AnimesListComponent implements OnInit, OnDestroy {
       });
       console.log('hoka');
     } else {
+      this.spinner.show();
       this.findAllAnimes();
     }
   }
 
   findAllAnimes = (): void  => {
-    this.subscription = this.animesService.retrieveAllAnimes().subscribe(data => {
-      // console.log('animes:::', data);
-      this.animes = data;
+    this.subscription = this.animesService.retrieveAnimes(this.batch, this.lastKey).subscribe(data => {
+      this.animes = [...this.animes, ...data];
+
+      console.log(this.animes);
+      this.spinner.hide();
+      this.batch += 10;
     });
   }
 
   ngOnDestroy(): void {
     console.log('unsubscribe');
     this.subscription.unsubscribe();
+  }
+
+  onScroll = () => {
+    console.log('scrolled');
+    this.spinner.show();
+    this.findAllAnimes();
   }
 
 }

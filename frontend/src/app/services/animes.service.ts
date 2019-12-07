@@ -20,7 +20,7 @@ export class AnimesService {
 
   constructor(private http: HttpClient) { }
   // tslint:disable-next-line:no-trailing-whitespace
-  
+
   retrieveAllAnimes = (): Observable<any> => {
     return this.http.get<Anime[]>(this.BASE_URL + 'animes');
   }
@@ -38,5 +38,9 @@ export class AnimesService {
   findAnimesLikeAll = (name: string): Observable<any> => {
     console.log('call findANimeLikeAll :  ' + name);
     return this.http.get<Anime[]>(this.BASE_URL + 'animes/likeall/' + name);
+  }
+
+  retrieveAnimes = (batch: number, lastKey: string): Observable<any>  => {
+    return this.http.get<Anime[]>(this.BASE_URL + 'animes/pages/' + batch);
   }
 }
