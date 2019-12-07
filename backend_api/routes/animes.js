@@ -6,8 +6,9 @@ var router = express.Router();
 var AnimesController = require('../src/controllers/animesController');
 
 /* GET animes listing. */
-router.get('/', AnimesController.findAllAnimes);
+router.get('/', AnimesController.findAnimes);
 router.get('/:title', AnimesController.findAnimeByTitle);
+router.get('/pages/:batch', AnimesController.findAnimes);
 router.get('/like/:name', AnimesController.findAnimesLike);
 router.get('/likeall/:name', AnimesController.findAnimesLikeAll);
 
