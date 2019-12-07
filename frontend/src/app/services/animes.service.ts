@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import { Anime } from '../model/anime';
-import { Observable } from 'rxjs';
+import {Observable, of, throwError} from 'rxjs';
+import {catchError, tap} from 'rxjs/operators';
 
 const optionRequete = {
   headers: new HttpHeaders({
@@ -42,5 +43,22 @@ export class AnimesService {
 
   retrieveAnimes = (batch: number, lastKey: string): Observable<any>  => {
     return this.http.get<Anime[]>(this.BASE_URL + 'animes/pages/' + batch);
+  }
+
+  updateAnime = (id, anime): Observable<any> => {
+    return this.http.put(this.BASE_URL, anime).pipe(
+      tap(_ => console.log(`updated anime id=${id}`)),
+      catchError(this.handleError<any>('updateAnime'))
+    );
+  }
+
+  private handleError<T> (operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+
+      // TODO: send the error to remote logging infrastructure
+      console.error(error); // log to console instead
+      // Let the app keep running by returning an empty result.
+      return of(result as T);
+    };
   }
 }
