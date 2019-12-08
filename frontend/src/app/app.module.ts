@@ -21,6 +21,7 @@ import {InfiniteScrollModule} from 'ngx-infinite-scroll';
 import {NgxSpinnerModule} from 'ngx-spinner';
 import {AnimesEditComponent} from './animes/animes-edit/animes-edit.component';
 import {ReactiveFormsModule} from "@angular/forms";
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import {ReactiveFormsModule} from "@angular/forms";
     AnimesDetailComponent,
     AnimesEditComponent,
     AnimesSearchComponent,
-    HomeComponent
+    HomeComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,

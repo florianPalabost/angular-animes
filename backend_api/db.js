@@ -9,8 +9,16 @@ const getAllAnimes = async (req, res) => {
   // async/await with try/catch
   try {
     return await models.anime.findAll({
-      attributes: ['id', 'title', 'status', 'posterImage', 'coverImage', 'subtype'],
-      limit: 100
+      attributes: ['id', 'status' ],
+      include: [ {
+        model: models.genre,
+        through: { attributes: [] } // to avoid to take the attributes of animes_genres table
+      }, {
+        model: models.category,
+        through: { attributes: [] }
+      }
+      ]
+
     },
     ); 
   } catch (err) {

@@ -47,7 +47,7 @@
         <div class="tab-pane fade show active" id="infos" role="tabpanel" aria-labelledby="infos-tab">
             <div class="row mt-5">
               <div class="col-lg-3 col-md-6 col-12">
-                <img class="h-30 mx-auto card-img-top card-img-top-a " src="{{ anime.posterImage }}" alt="poster_{{ anime.title }}">
+                <img class="h-30 mx-auto card-img-top card-img-top-a " src="{{ anime.posterImage || 'https://media.kitsu.io/anime/poster_images/10007/original.jpg?1460247262' }}" alt="poster_{{ anime.title }}">
                 <a class="btn btn-warning" routerLink="edit">Edit</a>
                 <a class="btn btn-danger m-2" routerLink="">Delete</a>
               </div>

@@ -38,16 +38,15 @@ export class AnimesListComponent implements OnInit, OnDestroy {
 
   findAllAnimes = (): void  => {
     this.subscription = this.animesService.retrieveAnimes(this.batch, this.lastKey).subscribe(data => {
+      // concat to animes the data loaded
       this.animes = [...this.animes, ...data];
-
-      console.log(this.animes);
       this.spinner.hide();
       this.batch += 10;
     });
   }
 
   ngOnDestroy(): void {
-    console.log('unsubscribe');
+    console.log('unsubscribe list animes');
     this.subscription.unsubscribe();
   }
 
