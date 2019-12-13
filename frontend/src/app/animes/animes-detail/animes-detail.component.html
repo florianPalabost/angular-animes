@@ -45,29 +45,42 @@
     <div class="tab-content" id="nav-tabContent">
         <!-- tab infos about anime -->
         <div class="tab-pane fade show active" id="infos" role="tabpanel" aria-labelledby="infos-tab">
-            <div class="row">
-                <div class="col-12">
-                    <h3>Informations</h3>
-                    <h1>{{anime.title}}</h1>
-                    <p *ngIf="anime.genres" >Genres :
-                        <span *ngFor="let genre of anime.genres" class="badge btn-info" style="margin-left: 0.5em;">{{genre.name}}</span>
-                    </p>
-                    <p *ngIf="anime.categories">Catégories :
-                        <span *ngFor="let category of anime.categories" class="badge btn-info" style="margin-left: 0.5em;">{{category.name}}</span>
-                    </p>
-                    <p>Auteur : TODO </p>
-                    <p *ngIf="anime.nbEpisode">Nb d'épisodes : {{ anime.nbEpisode }}</p>
-                    <p *ngIf="anime.episodeLength">Durée : {{ anime.episodeLength }} min</p>
-                    <p *ngIf="anime.status">Statut : {{ anime.status }}</p>
-                    <p *ngIf="anime.subtype">Type : {{ anime.subtype }}</p>
+            <div class="row mt-5">
+              <div class="col-lg-3 col-md-6 col-12">
+                <img class="h-30 mx-auto card-img-top card-img-top-a " src="{{ anime.posterImage || 'https://media.kitsu.io/anime/poster_images/10007/original.jpg?1460247262' }}" alt="poster_{{ anime.title }}">
+                <a class="btn btn-warning" routerLink="edit">Edit</a>
+                <a class="btn btn-danger m-2" routerLink="">Delete</a>
+              </div>
+                <div class="col-lg-9 col-md-6 col-12">
+                  <div class="row">
+                    <div class="col-5">
+                      <h1>{{anime.title}}</h1>
+                      <h3>Informations</h3>
+
+                      <p *ngIf="anime.genres" >Genres :
+                        <span *ngFor="let genre of anime.genres" class="badge btn-info p-2 mt-2" style="margin-left: 0.5em;">{{genre.name}}</span>
+                      </p>
+                      <p *ngIf="anime.categories">Catégories :
+                        <span *ngFor="let category of anime.categories" class="badge btn-info p-2 mt-2" style="margin-left: 0.5em;">{{category.name}}</span>
+                      </p>
+                      <p>Auteur : TODO </p>
+                      <p *ngIf="anime.nbEpisode">Nb d'épisodes : {{ anime.nbEpisode }}</p>
+                      <p *ngIf="anime.episodeLength">Durée : {{ anime.episodeLength }} min</p>
+                      <p *ngIf="anime.status">Statut : {{ anime.status }}</p>
+                      <p *ngIf="anime.subtype">Type : {{ anime.subtype }}</p>
+
+                    </div>
+                    <div class="col-lg-7 col-md-12 col-12" *ngIf="anime.synopsis" >
+                      <h3>Synopsis</h3>
+                      <p class="text-justify">{{ anime.synopsis}}</p>
+                    </div>
+                  </div>
+
 
                 </div>
             </div>
 
-            <div *ngIf="anime.synopsis" class="row">
-                <h3>Synopsis</h3>
-                <p>{{ anime.synopsis}}</p>
-            </div>
+
 
             <div *ngIf="anime.ytVideoID && videoYT" class="row">
                 <div class="vid-container">

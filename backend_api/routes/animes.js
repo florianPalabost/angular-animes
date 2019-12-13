@@ -6,13 +6,13 @@ var router = express.Router();
 var AnimesController = require('../src/controllers/animesController');
 
 /* GET animes listing. */
-router.get('/', AnimesController.findAnimes);
+router.get('/', AnimesController.findAllAnimes);
 router.get('/:title', AnimesController.findAnimeByTitle);
 router.get('/pages/:batch', AnimesController.findAnimes);
 router.get('/like/:name', AnimesController.findAnimesLike);
 router.get('/likeall/:name', AnimesController.findAnimesLikeAll);
 
-router.put('/:title', AnimesController.updateAnime);
+router.put('/:id', (req, res) => {AnimesController.updateAnime(req, res)});
 router.delete('/:id', AnimesController.deleteAnime);
 router.post('/', (req, res) => {AnimesController.addAnime(req, res)});
 /* adds a new customer to the list */

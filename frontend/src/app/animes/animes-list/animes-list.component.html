@@ -6,7 +6,7 @@
                   <div class="card text-white box cardi">
                       <div class="flow">
                           <a [routerLink]="['/animes/', anime.title]">
-                              <img style="max-width: 100%" class="card-img-top card-img-top-a " src="{{ anime.posterImage }}" alt="poster_{{ anime.title }}">
+                              <img style="max-width: 100%" class="card-img-top card-img-top-a " src="{{ anime.posterImage || 'https://media.kitsu.io/anime/poster_images/10007/original.jpg?1460247262' }}" alt="poster_{{ anime.title }}">
                           </a>
                       </div>
 

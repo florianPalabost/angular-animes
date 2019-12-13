@@ -38,6 +38,9 @@ export class AnimesDetailComponent implements OnInit, OnDestroy {
         this.urlImg =  this.sanitize.bypassSecurityTrustStyle( `url(${this.anime.coverImage})`);
       } else if (this.anime.posterImage !== null) {
         this.urlImg =  this.sanitize.bypassSecurityTrustStyle( `url(${this.anime.posterImage})`);
+      } else {
+        this.urlImg =
+          this.sanitize.bypassSecurityTrustStyle('url(\'https://media.kitsu.io/anime/poster_images/10007/original.jpg?1460247262\')');
       }
     });
 

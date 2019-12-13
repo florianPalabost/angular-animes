@@ -21,7 +21,10 @@ export class AnimesListComponent implements OnInit, OnDestroy {
   lastKey = '';
 
 
-  constructor(private route: ActivatedRoute, private animesService: AnimesService, private spinner: NgxSpinnerService) { }
+  constructor(private route: ActivatedRoute,
+              private animesService: AnimesService,
+              private spinner: NgxSpinnerService
+  ) { }
 
   ngOnInit() {
     if (this.route.snapshot.params['q']) {
@@ -38,16 +41,15 @@ export class AnimesListComponent implements OnInit, OnDestroy {
 
   findAllAnimes = (): void  => {
     this.subscription = this.animesService.retrieveAnimes(this.batch, this.lastKey).subscribe(data => {
+      // concat to animes the data loaded
       this.animes = [...this.animes, ...data];
-
-      console.log(this.animes);
       this.spinner.hide();
       this.batch += 10;
     });
   }
 
   ngOnDestroy(): void {
-    console.log('unsubscribe');
+    console.log('unsubscribe list animes');
     this.subscription.unsubscribe();
   }
 
