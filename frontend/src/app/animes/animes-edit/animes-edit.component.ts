@@ -19,14 +19,26 @@ export class AnimesEditComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               private animesService: AnimesService,
               private sanitize: DomSanitizer,
-              private formBuilder: FormBuilder) { this.createForm();}
+              private formBuilder: FormBuilder) { }
 
   ngOnInit() {
     this.retriveAnimeByName(this.route.snapshot.params['name']);
+    this.createForm();
   }
 
   createForm = () => {
     this.animeForm = this.formBuilder.group({
+      id: '',
+      idApi: '',
+      linkApi: '',
+      posterImage: '',
+      coverImage: '',
+      createdAt: '',
+      updatedAt: '',
+      genres: '',
+      categories: '',
+      subtype: '',
+      characters: '',
       title: ['', Validators.required ],
       synopsis: '',
       rating: '',
@@ -36,18 +48,21 @@ export class AnimesEditComponent implements OnInit {
       nbEpisode: '',
       episodeLength: '',
       ytVideoID: '',
-      subtype: '',
     });
   }
 
   retriveAnimeByName = (name) => {
     this.subscription = this.animesService.findAnimeByName(name).subscribe(data => {
       this.anime = data;
+      this.animeForm.setValue(data);
     });
 
   }
 
-  updateAnime = (anime) => {
+  updateAnime = async (anime) => {
     console.log('call update anime with : ', anime);
+
+    // todo call this.animesService to call backend endpoint
+    await this.animesService.updateAnime(anime);
   }
 }

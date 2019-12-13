@@ -4,6 +4,7 @@ import {AnimesService} from '../services/animes.service';
 import {Subscription} from 'rxjs';
 import {NgxSpinnerService} from 'ngx-spinner';
 import * as _ from 'underscore';
+import {DashboardService} from '../services/dashboard.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,13 +22,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
   chart_cat = [];
   genreData = [];
   catData = [];
+  finalTopGenres = [];
   private subscription: Subscription;
   private nbGenres: number;
   private nbCats: number;
   // todo nbPerso back & front
   private nbPersos: number;
 
-  constructor(private animeService: AnimesService, private spinner: NgxSpinnerService) { }
+  constructor(private animeService: AnimesService,
+              private spinner: NgxSpinnerService,
+              private dashService: DashboardService
+  ) { }
 
   ngOnInit() {
     this.spinner.show();
@@ -58,19 +63,35 @@ export class DashboardComponent implements OnInit, OnDestroy {
          }
        });
      });
+     console.log('this', this.genresValue);
     this.genresLabel = this.genresLabel.sort();
-    this.genresValue = this.genresValue.sort();
+    // nom des genres classé top
+    let toto = this.genresValue;
+    toto = Object.keys(toto).sort(function(a, b) {return toto[b] - toto[a]; });
+    console.log(toto);
+
     this.categoriesLabel = this.categoriesLabel.sort();
-    this.nbGenres = Object.keys(this.genresValue).length
-    this.nbCats = Object.keys(this.categoriesValues).length
+    this.nbGenres = Object.keys(this.genresValue).length;
+    this.nbCats = Object.keys(this.categoriesValues).length;
       const colors = [];
       // tslint:disable-next-line:forin
       for (const genre in this.genresValue) {
-        // console.log('val', this.genresValue[genre]);
+        // console.log('val', this.genressValue[genre]);
         this.genreData.push(this.genresValue[genre]);
         // generate color random find in the web
         colors.push('#' + Math.random().toString(16).substr(2, 6));
       }
+      const tata = this.genreData.sort((a, b) => b - a );
+
+      _.each(toto, (g, i) => {
+        const genr = {
+          name: g,
+          value: tata[i]
+        };
+        this.finalTopGenres.push(genr);
+        // console.log( g, ' : ', tata[i] );
+      });
+      console.log(this.finalTopGenres);
       const colorsCat = [];
       // tslint:disable-next-line:forin
       for (const cat in this.categoriesValues) {
@@ -79,27 +100,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
         colorsCat.push('#' + Math.random().toString(16).substr(2, 6));
       }
 
+      const labels = this.finalTopGenres.map(x => x.name);
 
       this.chart = new Chart('canvas', {
-        type: 'doughnut',
-        data: {
-          labels: this.genresLabel,
-          datasets: [
-            {
-              data: this.genreData,
-              borderColor: 'white',
-              backgroundColor: colors,
-              fill: true
-            }
-          ]
-        },
+        type: 'pie',
         options: {
           title: {
             display: true,
             text: 'Animes genres'
           },
           legend: {
-            display: true
+            display: false
           },
           scales: {
             xAxes: [{
@@ -109,10 +120,25 @@ export class DashboardComponent implements OnInit, OnDestroy {
               display: false
             }],
           }
-        }
+        },
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              data: this.genreData,
+              borderColor: 'white',
+              backgroundColor: colors,
+              fill: true
+            }
+          ]
+        },
+
       });
+
+      console.log(this.categoriesLabel);
+      console.log(this.catData);
       this.chart_cat = new Chart('canvas_cat', {
-        type: 'doughnut',
+        type: 'pie',
         data: {
           labels: this.categoriesLabel,
           datasets: [
@@ -130,7 +156,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             text: 'Animes catégories'
           },
           legend: {
-            display: true
+            display: false
           },
           scales: {
             xAxes: [{

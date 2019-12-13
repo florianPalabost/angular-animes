@@ -36,7 +36,7 @@
     </div>
   </div>
 
-  <div class="col-xl-3 col-lg-6">
+ <div class="col-xl-3 col-lg-6">
     <div class="card card-stats mb-4 mb-xl-0">
       <div class="card-body">
         <div class="row">
@@ -74,12 +74,49 @@
 </div>
 
 <div class="row">
-  <div class="col-12">
-    <canvas id="canvas">{{ chart }}</canvas>
+  <div class="col-6" style="max-height: 20em; overflow-y: scroll ">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Position</th>
+        <th>Genres</th>
+        <th>Nombre d'animes</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let genre of finalTopGenres; let index = index">
+        <td>{{index+1}}</td>
+        <td>{{genre.name}}</td>
+        <td>{{genre.value}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col-6" style="max-height: 20em; overflow-y: scroll ">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Position</th>
+        <th>Catégories</th>
+        <th>Nombre d'animes</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let genre of finalTopGenres; let index = index">
+        <td>{{index+1}}</td>
+        <td>{{genre.name}}</td>
+        <td>{{genre.value}}</td>
+      </tr>
+      </tbody>
+    </table>
   </div>
 </div>
 <div class="row">
-  <div class="col-12">
+  <div class="col-6">
+    <canvas id="canvas">{{ chart }}</canvas>
+  </div>
+  <div class="col-6">
     <canvas id="canvas_cat">{{ chart_cat }}</canvas>
   </div>
 </div>

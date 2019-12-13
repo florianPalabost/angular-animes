@@ -21,7 +21,10 @@ export class AnimesListComponent implements OnInit, OnDestroy {
   lastKey = '';
 
 
-  constructor(private route: ActivatedRoute, private animesService: AnimesService, private spinner: NgxSpinnerService) { }
+  constructor(private route: ActivatedRoute,
+              private animesService: AnimesService,
+              private spinner: NgxSpinnerService
+  ) { }
 
   ngOnInit() {
     if (this.route.snapshot.params['q']) {

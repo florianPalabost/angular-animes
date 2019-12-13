@@ -45,11 +45,16 @@ export class AnimesService {
     return this.http.get<Anime[]>(this.BASE_URL + 'animes/pages/' + batch);
   }
 
-  updateAnime = (id, anime): Observable<any> => {
-    return this.http.put(this.BASE_URL, anime).pipe(
-      tap(_ => console.log(`updated anime id=${id}`)),
+  updateAnime = (anime): Observable<any> => {
+    return this.http.put<Anime>(this.BASE_URL + 'animes/' + anime.id, anime).pipe(
+      tap(_ => console.log(`updated anime id=${anime.id}`)),
       catchError(this.handleError<any>('updateAnime'))
     );
+  }
+
+  removeAnime = (id): Observable<any> => {
+    // todo test this method
+    return this.http.delete(this.BASE_URL, id);
   }
 
   private handleError<T> (operation = 'operation', result?: T) {
