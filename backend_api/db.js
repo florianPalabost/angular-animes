@@ -9,8 +9,16 @@ const getAllAnimes = async (req, res) => {
   // async/await with try/catch
   try {
     return await models.anime.findAll({
-      attributes: ['id', 'title', 'status', 'posterImage', 'coverImage', 'subtype'],
-      limit: 100
+      attributes: ['id', 'status' ],
+      include: [ {
+        model: models.genre,
+        through: { attributes: [] } // to avoid to take the attributes of animes_genres table
+      }, {
+        model: models.category,
+        through: { attributes: [] }
+      }
+      ]
+
     },
     ); 
   } catch (err) {
@@ -18,6 +26,24 @@ const getAllAnimes = async (req, res) => {
     return err; 
   }
 };
+
+const getAnimesWith = async (batch) => {
+  // console.log('access dao : retrieve animes with batch:'+batch + ' & lastKey: '+lastKey);
+  // async/await with try/catch
+  try {
+    console.log('batch : ' + batch);
+    return await models.anime.findAll({
+          attributes: ['id', 'title', 'status', 'posterImage', 'coverImage', 'subtype'],
+          limit: 10,
+          offset: batch
+        },
+    );
+  } catch (err) {
+    console.log('error in db for getAllAnimes() ::::', err.stack);
+    return err;
+  }
+};
+
 
 const getByTitle = async (title) => {
   try {
@@ -165,6 +191,7 @@ const deleteAnime = async (idAnime) => {
 
 module.exports = {
   getAllAnimes,
+  getAnimesWith,
   getByTitle,
   getLikeByTitle,
   getLikeByTitleAll,

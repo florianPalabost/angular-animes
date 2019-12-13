@@ -4,6 +4,10 @@ const retrieveAnimes = async (req, res) => {
   return await db.getAllAnimes();  
 };
 
+const retrieveAnimesWith = async (batch) => {
+  return await db.getAnimesWith(batch);
+};
+
 const retrieveAnimeByTitle = async (req, res) => {         
   return await db.getByTitle(req);  
 };
@@ -31,6 +35,7 @@ const deleteAnime = async (req, res) => {
 
 module.exports = {
   retrieveAnimes,
+  retrieveAnimesWith,
   retrieveAnimeByTitle,
   retrieveAnimesLike,
   retrieveAnimesLikeAll,

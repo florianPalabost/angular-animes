@@ -17,6 +17,11 @@ import { AnimesDetailComponent } from './animes/animes-detail/animes-detail.comp
 import { HomeComponent } from './home/home.component';
 import { RouterModule } from '@angular/router';
 import { AnimesSearchComponent } from './animes/animes-search/animes-search.component';
+import {InfiniteScrollModule} from 'ngx-infinite-scroll';
+import {NgxSpinnerModule} from 'ngx-spinner';
+import {AnimesEditComponent} from './animes/animes-edit/animes-edit.component';
+import {ReactiveFormsModule} from "@angular/forms";
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -26,8 +31,10 @@ import { AnimesSearchComponent } from './animes/animes-search/animes-search.comp
     FooterComponent,
     AnimesListComponent,
     AnimesDetailComponent,
+    AnimesEditComponent,
     AnimesSearchComponent,
-    HomeComponent
+    HomeComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -37,6 +44,9 @@ import { AnimesSearchComponent } from './animes/animes-search/animes-search.comp
     ScrollingModule,
     VirtualScrollerModule,
     RouterModule.forRoot(APP_ROUTES),
+    InfiniteScrollModule,
+    NgxSpinnerModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
