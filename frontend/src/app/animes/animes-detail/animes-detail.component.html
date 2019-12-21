@@ -33,8 +33,6 @@
         <button value="dont-want-to-watch" id="btn-dont-watch" class="btn btn-danger btn-watched">Don't want to watch</button>
     {% endif %} -->
 
-    <!-- <div hidden id="spinner"></div> -->
-
     <nav>
         <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
             <a class="nav-item nav-link active" id="infos-tab" data-toggle="tab" href="#infos" role="tab" aria-controls="infos" aria-selected="true">Infos</a>
@@ -47,7 +45,13 @@
         <div class="tab-pane fade show active" id="infos" role="tabpanel" aria-labelledby="infos-tab">
             <div class="row mt-5">
               <div class="col-lg-3 col-md-6 col-12">
-                <img class="h-30 mx-auto card-img-top card-img-top-a " src="{{ anime.posterImage || 'https://media.kitsu.io/anime/poster_images/10007/original.jpg?1460247262' }}" alt="poster_{{ anime.title }}">
+                <a [href]="'https://www.youtube.com/embed/' + this.anime.ytVideoID" class="magnific-youtube">
+                  <img class="h-30 mx-auto card-img-top card-img-top-a " src="{{ anime.posterImage || 'https://media.kitsu.io/anime/poster_images/10007/original.jpg?1460247262' }}" alt="poster_{{ anime.title }}">
+                </a>
+<!--                <a href="https://www.youtube.com/watch?v=pzot1TWuutY" class="magnific-youtube">-->
+<!--                  <img src="http://www.oxygenna.com/wp-content/uploads/2014/11/blog-2.jpg" width="300" height="200" />-->
+<!--                </a>-->
+                <img *ngIf="!anime.ytVideoID && videoYT" class="h-30 mx-auto card-img-top card-img-top-a " src="{{ anime.posterImage || 'https://media.kitsu.io/anime/poster_images/10007/original.jpg?1460247262' }}" alt="poster_{{ anime.title }}">
                 <a class="btn btn-warning" routerLink="edit">Edit</a>
                 <a class="btn btn-danger m-2" routerLink="">Delete</a>
               </div>
@@ -100,8 +104,8 @@
                 <div class="row justify-content-center" >
                     <!-- {{  content.field_animes_main_characs }} -->
                     <div style="display: flex;overflow-x: scroll;overflow-y: scroll;width: 60em;" >
-                        <div class="card text-white box cardi" *ngFor="let perso of anime.characters">
-                            <ng-container *ngIf="perso.role === 'main'">
+                            <ng-container *ngFor="let perso of anime.characters" >
+                        <div class="card text-white box cardi" *ngIf="perso.role === 'main'">
                                 <div class="flow" >
                                     <a href="#">
                                         <img style="width: 100%;" class="card-img-top-a"
@@ -116,8 +120,8 @@
                                         <a href="#" class="btn btn-primary mt-auto">More</a>
                                     </div>
                                 </div>
-                            </ng-container>
                         </div>
+                            </ng-container>
                     </div>
                 </div>
             <!-- </div> -->

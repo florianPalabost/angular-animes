@@ -3,11 +3,11 @@
   "compilerOptions": {
     "outDir": "../out-tsc/app",
     "types": [
-      "underscore"
+      "underscore",
+      "jquery"
     ]
   },
   "exclude": [
-    "test.ts",
     "**/*.spec.ts"
   ]
 }

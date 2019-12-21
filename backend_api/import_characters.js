@@ -26,7 +26,14 @@ const pool = new Pool({
 
   // first get all the animes to update all the characters
   let animes = await models.anime.findAll();
-  // console.log('animes length : ', animes.length);
+  // let anime= await models.anime.findOne({
+  //   where: {
+  //     title: 'Brave Beats'
+  //   }
+  // });
+  // let animes = [];
+  // animes.push(anime);
+  console.log('animes length : ', animes);
 
   // list of all animes
   for(let i=0; i < animes.length; i++) {
@@ -66,13 +73,36 @@ const pool = new Pool({
                     // else
                     //   console.log('animes_characters not updated');
                     console.log('perso already exist');
+
+                    // TODO just add character to animes
+                    let persoOtherAnime = {
+                      character_id: perso.character_id,
+                      name: perso.name,
+                      description: perso.description,
+                      role: perso.role,
+                      img: perso.img,
+                      other_name: perso.other_name
+                    };
+
+                    if(animes[i].id) {
+                      persoOtherAnime.animeId = animes[i].id;
+                      console.log(`anime id : ${animes[i].id}`);
+                      console.log('perso : ', persoOtherAnime.animeId);
+                      await models.character.create(persoOtherAnime);
+                      console.log('perso added to another anime');
+                    }
+                    else {
+                      throw new Error(`no anime id with perso ${persoOtherAnime.name}`);
+                    }
+
+
                   }
                   else {
                     // perso dont exist -> create
                     let newPerso = {
                       name: persoInfos.data.attributes.canonicalName,
                       animeId: animes[i].id
-                    }
+                    };
                     if(!checkIfEmpty(persoInfos.data.attributes.description)) {
                       newPerso.description = persoInfos.data.attributes.description;
                     }

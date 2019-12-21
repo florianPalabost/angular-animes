@@ -6,7 +6,9 @@
                   <div class="card text-white box cardi">
                       <div class="flow">
                           <a [routerLink]="['/animes/', anime.title]">
-                              <img style="max-width: 100%" class="card-img-top card-img-top-a " src="{{ anime.posterImage || 'https://media.kitsu.io/anime/poster_images/10007/original.jpg?1460247262' }}" alt="poster_{{ anime.title }}">
+                              <img style="max-width: 100%" class="card-img-top card-img-top-a "
+                                   src="{{ anime.posterImage || 'https://media.kitsu.io/anime/poster_images/10007/original.jpg?1460247262' }}"
+                                   alt="poster_{{ anime.title }}">
                           </a>
                       </div>
 
@@ -22,7 +24,7 @@
               </div>
           </div>
         <div infiniteScroll [infiniteScrollDistance]="10" [infiniteScrollThrottle]="1000" (scrolled)="onScroll()"></div>
-        <ngx-spinner bdOpacity=0.9 bdColor="#333" size="medium" color="#000000" type="ball-atom" [fullScreen] = "false">
+        <ngx-spinner bdColor="#333" size="medium" color="#000000" type="ball-atom">
           <p style="color: white" > Loading... </p>
         </ngx-spinner>
         <div class="alert alert-info" *ngIf="finished">End database</div>

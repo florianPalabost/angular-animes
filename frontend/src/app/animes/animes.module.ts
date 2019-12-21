@@ -9,7 +9,7 @@ import { AnimesSearchComponent } from './animes-search/animes-search.component';
 import {TranslateModule} from '@ngx-translate/core';
 import {InfiniteScrollModule} from 'ngx-infinite-scroll';
 import {NgxSpinnerModule} from 'ngx-spinner';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -20,7 +20,8 @@ import {FormsModule} from '@angular/forms';
     TranslateModule.forRoot(),
     InfiniteScrollModule,
     NgxSpinnerModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
 })
 export class AnimesModule { }

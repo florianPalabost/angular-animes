@@ -23,9 +23,9 @@ console.log('port : ', process.env.POSTGRES_PORT);
   // const client = await pool.connect();
   // console.log('connected to the db for creating database !');
 
-  let nbLignes = 1;
+  // let nbLignes = 1;
   // data.meta.count -> contient le nb total d'animes to proceed
-  // let nbLignes = 14733;
+  let nbLignes = 14901;
 
   let start = 0;
   let length = 20;
@@ -40,6 +40,11 @@ console.log('port : ', process.env.POSTGRES_PORT);
     request(link, async (err, resp, body) => {
       // on recup un string donc il faut le parse en json pour mieux l'utiliser 
       body = JSON.parse(body);
+
+      if (body.meta.count !== "" && nbLignes < body.meta.count) {
+        nbLignes = body.meta.count;
+      }
+      console.log('nbLIGNE:::::::::::::', nbLignes);
       // console.log('body:::',typeof body);
       for(var i = 0; i< Object.keys(body.data).length; i++) {
         console.log('---------Process::', body.data[i].attributes.canonicalTitle);
@@ -51,7 +56,7 @@ console.log('port : ', process.env.POSTGRES_PORT);
           }
         });
 
-        if (typeof anime !== null) {
+        if (typeof anime != null) {
           // anime already exist
           console.log('anime already exist');
           // console.log('ANIME:::::', anime);
