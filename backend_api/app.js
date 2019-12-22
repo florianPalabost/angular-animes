@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 var db = require('./db');
 
 var animes = require('./routes/animes');
+var characters = require('./routes/characters');
 
 let reporter = function (type, ...rest)
 {
@@ -45,5 +46,6 @@ app.use(function(req, res, next) {
 
 // Set the routes here 
 app.use('/api/v1/animes', animes);
+app.use('/api/v1/characters', characters);
 
 module.exports = app;

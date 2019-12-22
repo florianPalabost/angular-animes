@@ -24,6 +24,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   catData = [];
   finalTopGenres = [];
   private subscription: Subscription;
+  private subscriptionC: Subscription;
   private nbGenres: number;
   private nbCats: number;
   // todo nbPerso back & front
@@ -36,6 +37,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.spinner.show();
+    this.retrieveNbCharacters();
     this.findAllAnimes();
   }
 
@@ -175,5 +177,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     console.log('unsubscribe dashboard');
     this.subscription.unsubscribe();
+  }
+
+  retrieveNbCharacters() {
+    this.subscriptionC = this.animeService.retrieveNbCharacs().subscribe(nb => {
+      this.nbPersos = nb;
+    });
   }
 }

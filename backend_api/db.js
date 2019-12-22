@@ -189,6 +189,15 @@ const deleteAnime = async (idAnime) => {
   }
 };
 
+const getNbCharacters = async (id) => {
+  try {
+    return await models.character.count({distinct:true, col: 'character_id'});
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
 module.exports = {
   getAllAnimes,
   getAnimesWith,
@@ -198,5 +207,6 @@ module.exports = {
   getByID,
   createAnime,
   updateAnime,
-  deleteAnime
+  deleteAnime,
+  getNbCharacters
 };

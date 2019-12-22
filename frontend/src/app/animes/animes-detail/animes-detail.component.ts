@@ -60,6 +60,13 @@ export class AnimesDetailComponent implements OnInit, OnDestroy, AfterViewInit  
   retriveAnimeByName = async (name) => {
     this.subscription = await this.animesService.findAnimeByName(name).subscribe(data => {
       this.anime = data;
+      if (this.anime.startDate) {
+        this.anime.startDate = this.anime.startDate.split('-')[1] + '/' + this.anime.startDate.split('-')[0];
+      }
+      if (this.anime.endDate) {
+        this.anime.endDate = this.anime.endDate.split('-')[1] + '/' + this.anime.endDate.split('-')[0];
+      }
+
       // To avoid XSS need tot use sanitize to create a "trust" ressource url !
       this.tmpURL = 'https://www.youtube.com/embed/' + this.anime.ytVideoID;
       this.videoYT = this.sanitize.bypassSecurityTrustResourceUrl(this.tmpURL);

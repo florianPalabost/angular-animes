@@ -66,4 +66,8 @@ export class AnimesService {
       return of(result as T);
     };
   }
+
+  retrieveNbCharacs(): Observable<any> {
+    return this.http.get(this.BASE_URL + 'characters/nbcharacters');
+  }
 }
