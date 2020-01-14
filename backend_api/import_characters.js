@@ -40,7 +40,7 @@ const pool = new Pool({
     console.log(':::::::::ANIME '+i+' / '+animes.length + ' ::::::::::::::::::');
   // for(let i=0; i < 2; i++) {
     if (animes[i].linkApi !== "" && animes[i].linkApi !== null && animes[i].linkApi !== undefined) {
-      // console.log(animes[i].linkApi + '/characters');
+    
       await sleep(500);
       request(animes[i].linkApi + '/characters', async (err, resp, body) => {
         if(err) 
@@ -48,7 +48,6 @@ const pool = new Pool({
         if(body !== undefined) {
           body = JSON.parse(body);
           if(Object.keys(body.data).length > 0) {
-            // console.log('kengti > 0');
             // list of all the characters 
             for(let j=0; j < Object.keys(body.data).length; j++) {
               // request  for info about the character

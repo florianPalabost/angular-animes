@@ -17,7 +17,7 @@ const pool = new Pool({
 ;(async () => {
   // let nbLignes = 1;
   // data.meta.count -> contient le nb total d'animes to proceed faire un if dans le while pour le maj
-  let nbLignes = 14748;
+  let nbLignes = 14901;
 
   let start = 0;
   let length = 20;
@@ -33,9 +33,11 @@ const pool = new Pool({
       // on recup un string donc il faut le parse en json pour mieux l'utiliser 
       body = JSON.parse(body);
       // console.log('body:::',typeof body);
-      for(var i = 0; i< Object.keys(body.data).length; i++) {
+      if (body.meta.count !== "" && nbLignes < body.meta.count) {
+        nbLignes = body.meta.count;
+      }
+      for(let i = 0; i< Object.keys(body.data).length; i++) {
         console.log('---------Process::', body.data[i].attributes.canonicalTitle);
-        // todo check if anime exist with anime title -> later
         
         let anime = await models.anime.findOne({
           where: {
@@ -43,12 +45,13 @@ const pool = new Pool({
           }
         });
 
-        if (typeof anime !== null) {
+        if (anime != null) {
           // anime already exist
           console.log('anime already exist');
         
           //   update genres             
-          if (body.data[i].relationships.genres !== null && body.data[i].relationships.genres !== "") {
+          if (body.data[i].relationships.genres !== null && body.data[i].relationships.genres !== "" &&
+              body.data[i].relationships.genres.links.related !== null) {
             
             // do new request to the genres of the animes
             request(body.data[i].relationships.genres.links.related, async (error, response, infos) => {
@@ -61,7 +64,7 @@ const pool = new Pool({
                     }
                   });
                   console.log('genre already exist ? ');
-                  if (genre !== null) {
+                  if (genre != null) {
                     console.log('genre not null --> yes');
                     // genre already exist just update anime to put the id
                     let isUpdated = await models.animes_genre.upsert( 
@@ -249,4 +252,4 @@ const checkIfEmpty = (field) => {
   else if(field === null)
     return true;
   return false;
-}; 
+};

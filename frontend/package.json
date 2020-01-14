@@ -36,6 +36,7 @@
     "core-js": "^2.6.11",
     "jquery": "^3.4.1",
     "magnific-popup": "^1.1.0",
+    "ng-multiselect-dropdown": "^0.2.10",
     "ngx-infinite-scroll": "^7.2.0",
     "ngx-spinner": "^7.2.0",
     "ngx-virtual-scroller": "^3.0.3",

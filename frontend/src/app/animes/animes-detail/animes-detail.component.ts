@@ -20,7 +20,7 @@ import 'magnific-popup';
   templateUrl: './animes-detail.component.html',
   styleUrls: ['./animes-detail.component.scss']
 })
-export class AnimesDetailComponent implements OnInit, OnDestroy, AfterViewInit  {
+export class AnimesDetailComponent implements OnInit, OnDestroy  {
   public anime: Anime = new Anime;
   private subscription: Subscription;
   public videoYT;
@@ -31,8 +31,8 @@ export class AnimesDetailComponent implements OnInit, OnDestroy, AfterViewInit  
 
   constructor(private route: ActivatedRoute, private animesService: AnimesService, private sanitize: DomSanitizer) { }
 
-  async ngOnInit() {
-     await this.retriveAnimeByName(this.route.snapshot.params['name']);
+  ngOnInit() {
+     this.retriveAnimeByName(this.route.snapshot.params['name']);
       console.log('init');
   }
 
@@ -41,20 +41,20 @@ export class AnimesDetailComponent implements OnInit, OnDestroy, AfterViewInit  
     this.subscription.unsubscribe();
   }
 
-  ngAfterViewInit (): void {
-    (<any>$('.magnific-youtube')).magnificPopup({
-      items: {
-        src: 'https://www.youtube.com/embed/' + this.anime.ytVideoID,
-        type: 'iframe'
-      },
-      disableOn: 700,
-      type: 'iframe',
-      mainClass: 'mfp-fade',
-      removalDelay: 300,
-      preloader: false,
-      fixedContentPos: false
-    });
-  }
+  // ngAfterViewInit (): void {
+  //   (<any>$('.magnific-youtube')).magnificPopup({
+  //     items: {
+  //       src: 'https://www.youtube.com/emfbed/' + this.anime.ytVideoID,
+  //       type: 'iframe'
+  //     },
+  //     disableOn: 700,
+  //     type: 'iframe',
+  //     mainClass: 'mfp-fade',
+  //     removalDelay: 300,
+  //     preloader: false,
+  //     fixedContentPos: false
+  //   });
+  // }
 
 
   retriveAnimeByName = async (name) => {

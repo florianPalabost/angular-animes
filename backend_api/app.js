@@ -7,11 +7,15 @@ var db = require('./db');
 
 var animes = require('./routes/animes');
 var characters = require('./routes/characters');
+var genres = require('./routes/genres');
+var categories = require('./routes/categories');
 
 let reporter = function (type, ...rest)
 {
 	// remote reporter logic goes here
 };
+
+const API_VERSION = 'v1';
 
 /* handle an uncaught exception & exit the process */
 process.on('uncaughtException', function (err)
@@ -38,6 +42,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser())
 
+// cors
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -45,7 +50,9 @@ app.use(function(req, res, next) {
 });
 
 // Set the routes here 
-app.use('/api/v1/animes', animes);
-app.use('/api/v1/characters', characters);
+app.use('/api/' + API_VERSION + '/animes', animes);
+app.use('/api/'+ API_VERSION +'/characters', characters);
+app.use('/api/'+ API_VERSION +'/genres', genres);
+app.use('/api/'+ API_VERSION +'/categories', categories);
 
 module.exports = app;
