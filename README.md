@@ -3,22 +3,18 @@ In progress ....
 
 ## Tech Stack TODO
 
-* [Docker][docker], [Node.js][node], [Yarn][yarn], [JavaScript][js], [Babel][babel], [Flow][flow], [Prettier][prettier] — core platform and dev tools
-* [Express][express], [Passport.js][passport], [session][session], [flash][flash], [cors][cors] etc. — common HTTP-server features
-* [GraphQL.js][gqljs], [GraphQL.js Relay][gqlrelay], [DataLoader][loader], [validator][validator] — [GraphQL][gql] schema and API endpoint
-* [PostgreSQL][pg], [Redis][redis], [Knex][knex], [pg][nodepg] — SQL, document, key/value data store; data access and migrations
-* [Nodemailer][mailer], [Handlebars][hbs], [Juice][juice] — transactional email and email templates /w layout support
-* [I18next][i18next], [I18next Middleware][i18nextmid], [I18next Backend][i18nextback] — localization and translations
+* [Docker compose], [Node.js], [Angular] [JavaScript][js], [Babel][babel] — core platform and dev tools
+* [Express][express], [cors][cors] etc. — common HTTP-server features
+* [PostgreSQL][pg], [Redis][redis] — SQL, document, key/value data store; data access and migrations
 * [Jest][jest] - unit and snapshot testing
 
 
 ## Directory Layout TODO
 
 ```bash
-├── /build/                     # The compiled output (via Babel)
-├── /locales/                   # Localization resources (i18n)
-├── /migrations/                # Database schema migrations
-├── /seeds/                     # Scripts with reference/sample data
+├── /backend_api/                     # The compiled output (via Babel)
+├── /frontend/                   # Localization resources (i18n)
+├── /jikan/                # Database schema migrations
 ├── /src/                       # Node.js application source files
 │   ├── /emails/                # Handlebar templates for sending transactional email
 │   ├── /routes/                # Express routes, e.g. /login/facebook
