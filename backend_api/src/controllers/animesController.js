@@ -95,8 +95,7 @@ const updateAnime = async (req, res) => {
   try {
     // req.body --> anime to update
     console.log('update controller : ', req.body);
-
- //   let isUpdated = await AnimeService.updateAnime(req.body);
+   let isUpdated = await AnimeService.updateAnime(req.body);
     res.status(200).json(isUpdated);
   } catch (error) {
     console.log(error);

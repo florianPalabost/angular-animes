@@ -76,7 +76,7 @@ console.log('port : ', process.env.POSTGRES_PORT);
             
           }
           else {
-            console.log('pas de subtype');
+            console.log('no subtype');
           }
         }
         else {
@@ -112,8 +112,7 @@ console.log('port : ', process.env.POSTGRES_PORT);
           if(!checkIfEmpty(body.data[i].attributes.coverImage)) {
             newAnime.coverImage = body.data[i].attributes.coverImage.original;
           }
-        
-      
+
           await models.anime.create(newAnime);
         }
         

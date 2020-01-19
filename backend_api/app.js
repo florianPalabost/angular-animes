@@ -1,14 +1,12 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-// var cors = require('cors');
-var db = require('./db');
-
-var animes = require('./routes/animes');
-var characters = require('./routes/characters');
-var genres = require('./routes/genres');
-var categories = require('./routes/categories');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+let bodyParser = require('body-parser');
+// const cors = require('cors');
+const animes = require('./routes/animes');
+const characters = require('./routes/characters');
+const genres = require('./routes/genres');
+const categories = require('./routes/categories');
 
 let reporter = function (type, ...rest)
 {
@@ -36,11 +34,11 @@ process.on('unhandledRejection', function (reason, promise)
 	reporter("uncaughtException", (new Date).toUTCString(), reason.message || reason);
 })
 
-var app = express();
+const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser())
+app.use(cookieParser());
 
 // cors
 app.use(function(req, res, next) {
