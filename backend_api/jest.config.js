@@ -4,7 +4,7 @@
 
 module.exports = {
   // All imported modules in your tests should be mocked automatically
-  // automock: false,
+  automock: true,
 
   // Stop running tests after `n` failures
   // bail: 0,
@@ -133,7 +133,7 @@ module.exports = {
   // snapshotSerializers: [],
 
   // The test environment that will be used for testing
-  // testEnvironment: "jest-environment-jsdom",
+  testEnvironment: "jsdom",
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},
@@ -177,7 +177,7 @@ module.exports = {
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
   // unmockedModulePathPatterns: undefined,
-
+  unmockedModulePathPatterns: [],
   // Indicates whether each individual test should be reported during the run
   // verbose: null,
 
@@ -186,4 +186,17 @@ module.exports = {
 
   // Whether to use watchman for file crawling
   // watchman: true,
+  moduleFileExtensions: ['js', 'json', 'jsx'],
+  coveragePathIgnorePatterns: [
+    '<rootDir>/dist/',
+    '<rootDir>/node_modules/',
+    '<rootDir>/docs/',
+    '<rootDir>/build/'
+  ],
+  testPathIgnorePatterns: [
+    '<rootDir>/dist/',
+    '<rootDir>/node_modules/',
+    '<rootDir>/docs/',
+    '<rootDir>/build/'
+  ]
 };

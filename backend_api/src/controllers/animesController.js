@@ -25,7 +25,7 @@ const findAnimes = async (req, res) => {
 
 const findAnimeByTitle = async (req, res) => {         
   try {
-    let anime = await AnimeService.retrieveAnimeByTitle(req.params.title); 
+    let anime = await AnimeService.retrieveAnimeByTitle(req.params.title);
     res.status(200).json(anime);
   } catch (error) {
     console.log(error);
