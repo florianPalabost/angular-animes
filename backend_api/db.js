@@ -1,9 +1,12 @@
 const dotenv = require('dotenv');
 const models = require('./models');
 const Sequelize = require('sequelize');
-
+// require to call the different operators
+// however since v5 it's integrated by default and acces with $, for ex $in, $neq
+const Op = Sequelize.Op;
 dotenv.config();
 
+// TODO separate functions in differents files : DBanimes, DBgenres, ...
 const getAllAnimes = async (req, res) => {
   console.log('access dao : retrieve all animes');
   // async/await with try/catch
@@ -16,7 +19,7 @@ const getAllAnimes = async (req, res) => {
       }, {
         model: models.category,
         through: { attributes: [] }
-      }
+        }
       ]
 
     },
@@ -28,12 +31,20 @@ const getAllAnimes = async (req, res) => {
 };
 
 const getAnimesWith = async (batch) => {
-  // console.log('access dao : retrieve animes with batch:'+batch + ' & lastKey: '+lastKey);
-  // async/await with try/catch
   try {
     console.log('batch : ' + batch);
     return await models.anime.findAll({
           attributes: ['id', 'title', 'status', 'posterImage', 'coverImage', 'subtype'],
+          include: [ {
+            model: models.genre,
+            attributes: ['genre_id','name'],
+            through: { attributes: [] } // to avoid to take the attributes of animes_genres table
+          }, {
+            model: models.category,
+            attributes: ['category_id','name'],
+            through: { attributes: [] }
+          }
+          ],
           limit: 10,
           offset: batch
         },
@@ -63,6 +74,55 @@ const getByTitle = async (title) => {
       }
     ]
     });
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
+const getWithFilters = async (form, genres, categories) => {
+  try {
+    let whereGeneralClause = {};
+    let whereGenresClause = {};
+    let whereCategoriesClause = {};
+
+    // check if status filter is empty or not to add the where clause in the query
+    if (form.status !== "") {
+      whereGeneralClause['status'] =  form.status;
+    }
+
+    if (Object.keys(genres).length > 0) {
+      whereGeneralClause['$genres.animes_genres.genreId$'] = genres;
+      whereGenresClause['$genres.animes_genres.genreId$'] = genres;
+    }
+
+    if (Object.keys(categories).length > 0) {
+      whereGeneralClause['$categories.animes_categories.categoryId$'] = categories;
+      whereCategoriesClause['$categories.animes_categories.categoryId$'] = categories;
+    }
+
+    console.log('where general clause : ', whereGeneralClause);
+    console.log('where genre clause : ', whereGenresClause);
+    console.log('where categorie clause : ', whereCategoriesClause);
+
+    return await models.anime.findAll({
+      where: whereGeneralClause,
+      include: [ {
+        model: models.genre,
+        where: whereGenresClause,
+        attributes: ['genre_id','name'],
+        through: {
+          attributes: [] } // to avoid to take the attributes of animes_genres table
+      },
+        {
+        model: models.category,
+        where: whereCategoriesClause,
+        attributes: ['category_id','name'],
+        through: { attributes: [] }
+      }
+      ]
+    });
+
   } catch (error) {
     console.log(error);
     return error;
@@ -154,8 +214,7 @@ const updateAnime = async (req) => {
   try {
     // first get & check the anime to update if exist
     let anime = await getByID(req.id);
-    // if you modify the title you're fuck !!!
-    // So we use the id -> primary key
+  
     if(anime !== null) {
       return await models.anime.update(req, {
         where: {
@@ -163,7 +222,7 @@ const updateAnime = async (req) => {
         }
       });
     } 
-    throw new Error('anime not found with id:', req.id); 
+    throw new Error(`anime not found with id: ${req.id}`);
   } catch (error) {
     console.log(error);
     return error;
@@ -182,21 +241,63 @@ const deleteAnime = async (idAnime) => {
         }
       });   
     }
-    throw new Error('anime not found with id:', idAnime); 
+    throw new Error(`anime not found with id: ${idAnime}`);
   } catch (error) {
     console.log(error);
     return error;
   }
 };
 
+
+const getNbCharacters = async (id) => {
+  try {
+    return await models.character.count({distinct:true, col: 'character_id'});
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
+const getAllCategories = async (req, res) => {
+  console.log('access dao : retrieve all categories');
+  // async/await with try/catch
+  try {
+    return await models.category.findAll({
+          attributes: ['category_id','name'],
+        },
+    );
+  } catch (err) {
+    console.log('error in db for getAllCategories() ::::', err.stack);
+    return err;
+  }
+};
+
+
+const getAllGenres = async (req, res) => {
+  console.log('access dao : retrieve all genres');
+  // async/await with try/catch
+  try {
+    return await models.genre.findAll({
+          attributes: ['genre_id','name'],
+        },
+    );
+  } catch (err) {
+    console.log('error in db for getAllGenres() ::::', err.stack);
+    return err;
+  }
+};
 module.exports = {
   getAllAnimes,
   getAnimesWith,
   getByTitle,
+  getWithFilters,
   getLikeByTitle,
   getLikeByTitleAll,
   getByID,
   createAnime,
   updateAnime,
-  deleteAnime
+  deleteAnime,
+  getNbCharacters,
+  getAllCategories,
+  getAllGenres,
 };

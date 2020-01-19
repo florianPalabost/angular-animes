@@ -66,4 +66,20 @@ export class AnimesService {
       return of(result as T);
     };
   }
+
+  retrieveNbCharacs(): Observable<any> {
+    return this.http.get(this.BASE_URL + 'characters/nbcharacters');
+  }
+
+  findAllGenres(): Observable<any> {
+    return this.http.get(this.BASE_URL + 'genres');
+  }
+
+  findAllCategories(): Observable<any> {
+    return this.http.get(this.BASE_URL + 'categories');
+  }
+
+  retrieveAnimesWithFilters(form: any): Observable<any> {
+    return this.http.post(this.BASE_URL + 'animes/filters', form);
+  }
 }

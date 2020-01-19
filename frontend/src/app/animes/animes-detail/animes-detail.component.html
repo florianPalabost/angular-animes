@@ -47,11 +47,12 @@
               <div class="col-lg-3 col-md-6 col-12">
                 <a [href]="'https://www.youtube.com/embed/' + this.anime.ytVideoID" class="magnific-youtube">
                   <img class="h-30 mx-auto card-img-top card-img-top-a " src="{{ anime.posterImage || 'https://media.kitsu.io/anime/poster_images/10007/original.jpg?1460247262' }}" alt="poster_{{ anime.title }}">
+                  <svg viewBox="0 0 24 24" class="n-m" style="position: absolute;margin: 5em;top: 7%;right: 0%;">
+                    <path d="M8,5.14V19.14L19,12.14L8,5.14Z"></path>
+                  </svg>
                 </a>
-<!--                <a href="https://www.youtube.com/watch?v=pzot1TWuutY" class="magnific-youtube">-->
-<!--                  <img src="http://www.oxygenna.com/wp-content/uploads/2014/11/blog-2.jpg" width="300" height="200" />-->
-<!--                </a>-->
-                <img *ngIf="!anime.ytVideoID && videoYT" class="h-30 mx-auto card-img-top card-img-top-a " src="{{ anime.posterImage || 'https://media.kitsu.io/anime/poster_images/10007/original.jpg?1460247262' }}" alt="poster_{{ anime.title }}">
+
+                <img *ngIf="!anime.ytVideoID && !videoYT" class="h-30 mx-auto card-img-top card-img-top-a " src="{{ anime.posterImage || 'https://media.kitsu.io/anime/poster_images/10007/original.jpg?1460247262' }}" alt="poster_{{ anime.title }}">
                 <a class="btn btn-warning" routerLink="edit">Edit</a>
                 <a class="btn btn-danger m-2" routerLink="">Delete</a>
               </div>
@@ -72,24 +73,21 @@
                       <p *ngIf="anime.episodeLength">Durée : {{ anime.episodeLength }} min</p>
                       <p *ngIf="anime.status">Statut : {{ anime.status }}</p>
                       <p *ngIf="anime.subtype">Type : {{ anime.subtype }}</p>
+                      <p *ngIf="anime.startDate">Début : {{ anime.startDate }}</p>
+                      <p *ngIf="anime.endDate">Fin : {{ anime.endDate }}</p>
 
                     </div>
                     <div class="col-lg-7 col-md-12 col-12" *ngIf="anime.synopsis" >
                       <h3>Synopsis</h3>
                       <p class="text-justify">{{ anime.synopsis}}</p>
+                      <div>
+                        <p *ngIf="anime.rating" class="h1 font-weight-bolder">{{anime.rating}}/100</p>
+                      </div>
                     </div>
+
                   </div>
 
 
-                </div>
-            </div>
-
-
-
-            <div *ngIf="anime.ytVideoID && videoYT" class="row">
-                <div class="vid-container">
-                    <div class="vid-dummy"></div>
-                    <iframe type="text/html" class="yt_video vid-element" [src]="videoYT" frameborder="0" allowfullscreen></iframe>
                 </div>
             </div>
 

@@ -20,8 +20,9 @@ import { AnimesSearchComponent } from './animes/animes-search/animes-search.comp
 import {InfiniteScrollModule} from 'ngx-infinite-scroll';
 import {NgxSpinnerModule} from 'ngx-spinner';
 import {AnimesEditComponent} from './animes/animes-edit/animes-edit.component';
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { DashboardComponent } from './dashboard/dashboard.component';
+import {NgMultiSelectDropDownModule} from "ng-multiselect-dropdown";
 
 @NgModule({
   declarations: [
@@ -46,7 +47,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     RouterModule.forRoot(APP_ROUTES),
     InfiniteScrollModule,
     NgxSpinnerModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgMultiSelectDropDownModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

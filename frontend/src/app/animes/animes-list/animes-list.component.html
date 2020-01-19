@@ -1,5 +1,43 @@
 <div class="container">
-    <h1>Tous les animes</h1>
+      <form novalidate [formGroup]="formFilter" class="mt-5 mb-5">
+        <div class="row h-100">
+          <div class="col">
+            <select class="form-control" formControlName="status" >
+              <option value="" disabled>Choose status ...</option>
+              <option value="finished">Finished</option>
+              <option value="current">In progress</option>
+            </select>
+          </div>
+
+          <div class="col">
+            <ng-multiselect-dropdown
+              [placeholder]="'Genres'"
+              [data]="genres"
+              formControlName="genres"
+              [settings]="dropdownGenresSettings"
+            >
+            </ng-multiselect-dropdown>
+          </div>
+
+          <div class="col">
+            <ng-multiselect-dropdown
+              [placeholder]="'Catégories'"
+              [data]="categories"
+              formControlName="categories"
+              [settings]="dropdownCategoriesSettings"
+            >
+            </ng-multiselect-dropdown>
+          </div>
+
+
+          <div class="col">
+            <button class="btn btn-primary" (click)="searchAnimes(formFilter.value)">Filter</button>
+            <input type="reset" value="Reset" class="btn btn-info ml-2">
+          </div>
+        </div>
+
+      </form>
+
     <div #scrollingBlock class="card-group" *ngIf="animes.length > 0">
           <div class="my-child-item" *ngFor="let anime of animes" style="max-width: 25%;display: inline-grid;" >
               <div class="animated">
@@ -24,7 +62,8 @@
               </div>
           </div>
         <div infiniteScroll [infiniteScrollDistance]="10" [infiniteScrollThrottle]="1000" (scrolled)="onScroll()"></div>
-        <ngx-spinner bdColor="#333" size="medium" color="#000000" type="ball-atom">
+<!--       todo find a beter color transparent for spinner-->
+        <ngx-spinner bdColor="rgba('255','255', '255', 1)" size="medium" color="#000000" type="ball-atom">
           <p style="color: white" > Loading... </p>
         </ngx-spinner>
         <div class="alert alert-info" *ngIf="finished">End database</div>

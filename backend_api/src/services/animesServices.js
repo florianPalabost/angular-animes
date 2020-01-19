@@ -12,6 +12,10 @@ const retrieveAnimeByTitle = async (req, res) => {
   return await db.getByTitle(req);  
 };
 
+const retrieveAnimeByFilters = async (req, genres, categories) => {
+  return await db.getWithFilters(req, genres, categories);
+};
+
 
 const retrieveAnimesLike = async (req, res) => {         
   return await db.getLikeByTitle(req);  
@@ -37,6 +41,7 @@ module.exports = {
   retrieveAnimes,
   retrieveAnimesWith,
   retrieveAnimeByTitle,
+  retrieveAnimeByFilters,
   retrieveAnimesLike,
   retrieveAnimesLikeAll,
   addAnime,

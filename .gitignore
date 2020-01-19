@@ -50,3 +50,5 @@ src/app/app.component.css
 frontend/node_modules/
 
 frontend/.idea/
+
+backend_api/__mocks__/animes_request.js

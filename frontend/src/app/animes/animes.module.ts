@@ -10,7 +10,7 @@ import {TranslateModule} from '@ngx-translate/core';
 import {InfiniteScrollModule} from 'ngx-infinite-scroll';
 import {NgxSpinnerModule} from 'ngx-spinner';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
   declarations: [AnimesListComponent, AnimesSearchComponent, AnimesEditComponent, AnimesDetailComponent],
@@ -21,7 +21,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     InfiniteScrollModule,
     NgxSpinnerModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgMultiSelectDropDownModule
   ],
 })
 export class AnimesModule { }
