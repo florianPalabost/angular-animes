@@ -3,10 +3,10 @@ Animes CRUD built with Angular & NodeJS. Also test Chart.js with the genres & ca
 
 ## Tech Stack
 
-* [Docker compose], [Node.js], [Angular] [JavaScript][js], [Babel][babel] — core platform and dev tools
-* [Express][express], [cors][cors] etc. — common HTTP-server features
-* [PostgreSQL][pg], [Redis][redis] — SQL, document, key/value data store; data access and migrations
-* [Jest][jest] - unit and snapshot testing
+* [Docker-compose], [Node.js], [Angular] [JavaScript][js], [Babel] — core platform and dev tools
+* [Express][express], [cors] etc. — common HTTP-server features
+* [PostgreSQL][pg], [Redis] — SQL, document, key/value data store; data access and migrations
+* [Jest] - unit and snapshot testing
 
 
 ## Directory Layout
@@ -18,3 +18,16 @@ Animes CRUD built with Angular & NodeJS. Also test Chart.js with the genres & ca
 ├── docker-compose.yml          # Defines Docker services, networks and volumes
 ├── README.md                # Detail project
 ```
+
+## Install
+
+* Frontend 
+````
+npm install
+````
+
+* Backend 
+````
+docker-compose up --build -d
+npm install
+````
