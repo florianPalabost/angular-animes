@@ -3,7 +3,7 @@
 var express = require('express');
 var router = express.Router();
 
-var AnimesController = require('../src/controllers/animesController');
+const AnimesController = require('../src/controllers/animesController');
 
 /* GET animes listing. */
 router.get('/', AnimesController.findAllAnimes);

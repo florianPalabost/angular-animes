@@ -6,6 +6,7 @@ const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 dotenv.config();
 
+// TODO separate functions in differents files : DBanimes, DBgenres, ...
 const getAllAnimes = async (req, res) => {
   console.log('access dao : retrieve all animes');
   // async/await with try/catch
@@ -18,7 +19,7 @@ const getAllAnimes = async (req, res) => {
       }, {
         model: models.category,
         through: { attributes: [] }
-      }
+        }
       ]
 
     },

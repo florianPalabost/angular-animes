@@ -1,5 +1,0 @@
-const animes = {
-
-};
-
-export default

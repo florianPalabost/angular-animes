@@ -25,7 +25,7 @@ const findAnimes = async (req, res) => {
 
 const findAnimeByTitle = async (req, res) => {         
   try {
-    let anime = await AnimeService.retrieveAnimeByTitle(req.params.title); 
+    let anime = await AnimeService.retrieveAnimeByTitle(req.params.title);
     res.status(200).json(anime);
   } catch (error) {
     console.log(error);
@@ -95,8 +95,7 @@ const updateAnime = async (req, res) => {
   try {
     // req.body --> anime to update
     console.log('update controller : ', req.body);
-
- //   let isUpdated = await AnimeService.updateAnime(req.body);
+   let isUpdated = await AnimeService.updateAnime(req.body);
     res.status(200).json(isUpdated);
   } catch (error) {
     console.log(error);
