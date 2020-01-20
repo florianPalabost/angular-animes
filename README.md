@@ -19,15 +19,29 @@ Animes CRUD built with Angular & NodeJS. Also test Chart.js with the genres & ca
 ├── README.md                # Detail project
 ```
 
+## Requirements
+- docker-compose 
+- docker 
+- node v13 
+
 ## Install
 
-* Frontend 
 ````
-npm install
+docker-compose up
+
+# Create database
+docker exec -it postgres sh 
+su postgres
+psql
+createdb animes_api
+
+# exit postgres docker
+
+# (tmp solution) sequelize db:migrate
+docker exec -it <nodejs_container_name> sh
+cd /usr/src/app 
+sequelize db:migrate
+
 ````
 
-* Backend 
-````
-docker-compose up --build -d
-npm install
-````
+ 
