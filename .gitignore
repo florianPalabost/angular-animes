@@ -52,3 +52,9 @@ frontend/node_modules/
 frontend/.idea/
 
 backend_api/__mocks__/animes_request.js
+
+jwt/node_modules/
+
+jwt/config.js
+
+jwt/.idea/

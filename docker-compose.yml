@@ -40,6 +40,21 @@ services:
     networks:
       - postgres
 
+  jwt:
+    build: jwt
+    environment:
+      DATABASE_URL: postgres://postgres:admin@postgres:5432/jwt
+      NODE_ENV: development
+      PORT: 3003
+    ports:
+      - "3003:3003"
+    volumes:
+      - ./jwt:/usr/src/app
+    depends_on:
+      - postgres
+    networks:
+      - postgres     
+      
   pgadmin:
     container_name: pgadmin_container
     image: dpage/pgadmin4
