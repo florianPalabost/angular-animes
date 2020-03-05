@@ -42,6 +42,7 @@ services:
 
   jwt:
     build: jwt
+    command: nodemon npm start
     environment:
       DATABASE_URL: postgres://postgres:admin@postgres:5432/jwt
       NODE_ENV: development
