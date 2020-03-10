@@ -58,3 +58,5 @@ jwt/node_modules/
 jwt/config.js
 
 jwt/.idea/
+angular/.idea/
+angular/node_modules
