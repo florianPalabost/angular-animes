@@ -1,3 +1,5 @@
 build:
   docker:
-    angular: angular/Dockerfile
+    web: angular/Dockerfile
+run:
+  web: node server.js
