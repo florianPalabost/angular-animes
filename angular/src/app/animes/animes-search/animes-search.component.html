@@ -1,0 +1,31 @@
+<div class="form-inline mr-auto">
+  <input type="text" (input)="retrieveAnimesLike($event.target.value)"  
+  class="form-control rounded-0 bg-light ser-input" id="ser-input" style="border: none" placeholder="Type to search anime..." novalidate>
+  <fa-icon [icon]="faSearch" class="text ml-3" aria-hidden="true"></fa-icon>
+</div>
+
+<div *ngIf="showDropDown" (click)="hideDropDown($event)">
+    <ul *ngIf="animes.length > 0" class="list-group filter-select dropdown-menu dropdown-menu-right" id="listAnimes">
+        <li *ngFor="let anime of animes" class="list-group-item filter-select-item">
+          <a href="/animes/{{anime.title}}" style="width: 100%;">
+            <!-- does not work so I use href for the moment NEED TO FIX IT  -->
+            <!-- [routerLink]="['/animes/', anime.title]" -->
+            <div class="row">
+              <div class="col-4">
+                  <img *ngIf="anime.posterImage" src="{{anime.posterImage}}" alt="poster_{{anime.title}}" width="50" height="50">
+                  <img *ngIf="!anime.posterImage && anime.coverImage" src="{{anime.coverImage}}" alt="poster_{{anime.title}}" width="50" height="50">
+              </div>
+              <div class="col-2">
+                <span *ngIf="anime.subtype">[{{anime.subtype}}]</span>
+              </div>
+              <div class="col-6">
+                  <p class="anime-title-search">{{anime.title}}</p>
+              </div>
+            </div>
+          </a>
+        </li>
+        <li class="list-group-item filter-select-item">
+          <a *ngIf="valueSearch" [routerLink]="['/animes/search', valueSearch]">See all results</a>
+        </li>
+      </ul>
+</div>
