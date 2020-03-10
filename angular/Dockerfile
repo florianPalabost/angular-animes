@@ -7,5 +7,5 @@ RUN npm install --only=dev
 COPY . /usr/src/app
 RUN npm install -g @angular/cli
 RUN npm rebuild node-sass
-EXPOSE 4200
-CMD ["npm","start"]
+EXPOSE 8080
+CMD ["node","server.js"]

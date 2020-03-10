@@ -1,0 +1,5 @@
+build:
+  docker:
+    angular: Dockerfile
+run:
+  angular: bundle exec puma -C config/puma.rb
