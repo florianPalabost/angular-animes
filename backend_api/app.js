@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
-// const cors = require('cors');
+const cors = require('cors');
 const animes = require('./routes/animes');
 const characters = require('./routes/characters');
 const genres = require('./routes/genres');
@@ -39,7 +39,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-
+app.use(cors());
 // cors
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");

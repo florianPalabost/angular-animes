@@ -5,6 +5,8 @@ const router = express.Router();
 require('../config/passport')(passport);
 const User = require('../models').User;
 
+// todo REFACTOR for use controller service for users !
+
 // endpoint  POST user registration
 router.post('/signup', function(req, res) {
     console.log(req.body);
@@ -26,7 +28,6 @@ router.post('/signup', function(req, res) {
 });
 
 router.post('/signin', function(req, res) {
-    console.log('slt');
     User
         .findOne({
             $or: [
@@ -51,7 +52,12 @@ router.post('/signin', function(req, res) {
                     jwt.verify(token, 'nodeauthsecret', function(err, data){
                         console.log(err, data);
                     });
-                    res.json({success: true, token: 'JWT ' + token});
+                    res.json({success: true, user: {
+                        id: user.id,
+                        username: user.username,
+                        role: user.role,
+                        email: user.email
+                        }, token: 'JWT ' + token});
                 } else {
                     res.status(401).send({success: false, msg: 'Authentication failed. Wrong password.'});
                 }
