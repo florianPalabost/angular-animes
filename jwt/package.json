@@ -1,0 +1,43 @@
+{
+  "name": "jwt",
+  "version": "1.0.0",
+  "description": "jwt auth microservice for app",
+  "scripts": {
+    "start": "node ./bin/www",
+    "db": "sequelize db:migrate",
+    "db:undo": "sequelize db:migrate:undo "
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "Florian",
+  "license": "ISC",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "",
+  "dependencies": {
+    "bcrypt": "^4.0.1",
+    "bcrypt-nodejs": "0.0.3",
+    "bluebird": "^3.7.2",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
+    "cors": "^2.8.5",
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "http": "0.0.0",
+    "http-errors": "latest",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.15",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "pg": "^7.18.2",
+    "sequelize": "^5.21.5",
+    "sequelize-cli": "^5.5.1",
+    "sequelize-values": "^1.1.0"
+  },
+  "devDependencies": {
+    "morgan": "^1.9.1"
+  }
+}
