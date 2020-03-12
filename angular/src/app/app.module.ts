@@ -29,6 +29,7 @@ import { UserProfileComponent } from './users/user-profile/user-profile.componen
 import {JwtInterceptor} from './_helpers/jwt.interceptor';
 import {ErrorInterceptor} from './_helpers/error.interceptor';
 import {AnimesModule} from './animes/animes.module';
+import { AlertComponent } from './_components/alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import {AnimesModule} from './animes/animes.module';
     DashboardComponent,
     SigninComponent,
     SignupComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,

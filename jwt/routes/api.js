@@ -40,7 +40,6 @@ router.post('/signin', function(req, res) {
             ]
         })
         .then((user) => {
-            console.log('toto');
             if (!user) {
                 return res.status(401).send({
                     message: 'Authentication failed. User not found.',
