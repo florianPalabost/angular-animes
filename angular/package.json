@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "startOld": "ng serve --host 0.0.0.0",
-    "start": "node server.js",
+    "start": "ng serve --host 0.0.0.0",
+    "startHeroku": "node server.js",
     "postinstall": "ng build --prod",
     "build": "ng build",
     "test": "jest",
