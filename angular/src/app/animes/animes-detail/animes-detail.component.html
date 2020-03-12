@@ -57,9 +57,9 @@
                 <img *ngIf="!anime.ytVideoID && !videoYT" class="h-30 mx-auto card-img-top card-img-top-a "
                      src="{{ anime.posterImage || 'https://media.kitsu.io/anime/poster_images/10007/original.jpg?1460247262' }}"
                      alt="poster_{{ anime.title }}">
-                <a *ngIf="currentUser !== null && currentUser.role === 'admin'"
+                <a *ngIf="currentUser !== null && currentUser.user.role === 'admin'"
                    class="btn btn-warning" routerLink="edit">Edit</a>
-                <a *ngIf="currentUser !== null &&currentUser.role === 'admin'"
+                <a *ngIf="currentUser !== null &&currentUser.user.role === 'admin'"
                    class="btn btn-danger m-2" routerLink="">Delete</a>
               </div>
                 <div class="col-lg-9 col-md-6 col-12">

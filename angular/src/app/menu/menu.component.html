@@ -16,7 +16,7 @@
         <a class="nav-link" routerLink="animes">Animes</a>
       </li>
       <li class="nav-item">
-        <a *ngIf="currentUser" routerLink="dashboard" class="nav-link">Dashboard</a>
+        <a *ngIf="currentUser" routerLink="stats/dashboard" class="nav-link">Dashboard</a>
       </li>
       <li class="nav-item">
         <a *ngIf="!currentUser" class="nav-link" routerLink="user/login">Login</a>

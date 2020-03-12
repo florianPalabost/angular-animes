@@ -17,7 +17,8 @@ router.post('/signup', function(req, res) {
             .create({
                 username: req.body.username,
                 password: req.body.password,
-                email: req.body.email
+                email: req.body.email,
+                role: req.body.role
             })
             .then((user) => res.status(201).send(user))
             .catch((error) => {
