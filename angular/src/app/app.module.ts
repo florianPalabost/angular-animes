@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { ScrollingModule } from '@angular/cdk/scrolling';
@@ -8,18 +9,13 @@ import { APP_ROUTES } from './app.routes';
 
 import { AppComponent } from './app.component';
 import { MenuComponent } from './menu/menu.component';
-import {AppRoutingModule} from './app-routing.module';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { FooterComponent } from './footer/footer.component';
-import {AnimesListComponent} from './animes/animes-list/animes-list.component';
-import { AnimesDetailComponent } from './animes/animes-detail/animes-detail.component';
 import { HomeComponent } from './home/home.component';
 import { RouterModule } from '@angular/router';
-import { AnimesSearchComponent } from './animes/animes-search/animes-search.component';
 import {InfiniteScrollModule} from 'ngx-infinite-scroll';
 import {NgxSpinnerModule} from 'ngx-spinner';
-import {AnimesEditComponent} from './animes/animes-edit/animes-edit.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
@@ -29,6 +25,7 @@ import { UserProfileComponent } from './users/user-profile/user-profile.componen
 import {JwtInterceptor} from './_helpers/jwt.interceptor';
 import {ErrorInterceptor} from './_helpers/error.interceptor';
 import {AnimesModule} from './animes/animes.module';
+import { AlertComponent } from './_components/alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -36,19 +33,16 @@ import {AnimesModule} from './animes/animes.module';
     MenuComponent,
     SidebarComponent,
     FooterComponent,
-    // AnimesListComponent,
-    // AnimesDetailComponent,
-    // AnimesEditComponent,
-    // AnimesSearchComponent,
     HomeComponent,
     DashboardComponent,
     SigninComponent,
     SignupComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,
-    // AppRoutingModule,
+    BrowserAnimationsModule,
     AnimesModule,
     FontAwesomeModule,
     HttpClientModule,

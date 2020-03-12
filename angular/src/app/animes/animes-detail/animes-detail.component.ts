@@ -33,9 +33,10 @@ export class AnimesDetailComponent implements OnInit, OnDestroy  {
   constructor(private route: ActivatedRoute, private animesService: AnimesService, private sanitize: DomSanitizer) { }
 
   ngOnInit() {
-     this.retriveAnimeByName(this.route.snapshot.params['name']);
-      console.log('init');
-      this.currentUser = localStorage.getItem('currentUser') !== null ? localStorage.getItem('currentUser')['role'] : null ;
+    const locStorageObj = localStorage.getItem('currentUser') !== null ? JSON.parse(localStorage.getItem('currentUser')) : null;
+    this.retriveAnimeByName(this.route.snapshot.params['name']);
+    // console.log('user role ? ' + locStorageObj.user.role);
+    this.currentUser = locStorageObj !== null ? locStorageObj.user : null ;
   }
 
   ngOnDestroy(): void {

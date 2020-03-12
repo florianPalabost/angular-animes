@@ -40,4 +40,8 @@ export class UsersService {
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
   }
+
+  register(user: User) {
+    return this.http.post(`${this.BASE_URL}/signup`, user);
+  }
 }

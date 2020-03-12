@@ -3,6 +3,7 @@ import {UsersService} from '../../services/users.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {first} from 'rxjs/operators';
 import {ActivatedRoute, Router} from '@angular/router';
+import {AlertService} from '../../services/alert.service';
 
 @Component({
   selector: 'app-signin',
@@ -19,7 +20,12 @@ export class SigninComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
               private route: ActivatedRoute,
               private userService: UsersService,
-              private router: Router) { }
+              private router: Router,
+              private alertService: AlertService) {
+    if (this.userService.currentUserValue) {
+      this.router.navigate(['/']);
+    }
+  }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -35,6 +41,7 @@ export class SigninComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
+    this.alertService.clear();
 
     // form is invalid
     if (this.loginForm.invalid) {
@@ -47,9 +54,11 @@ export class SigninComponent implements OnInit {
       .subscribe(
         data => {
           this.router.navigate([this.returnUrl]);
+          this.alertService.success('Login successful', true);
         },
         error => {
           this.error = error;
+          this.alertService.error(error);
           this.loading = false;
         });
   }

@@ -7,7 +7,7 @@ import {AnimesEditComponent} from './animes-edit/animes-edit.component';
 
 export const ANIMES_ROUTES: Routes = [
     {
-      path: '',
+      path: 'animes',
       component: AnimesListComponent
     },
     {

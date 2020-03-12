@@ -7,9 +7,9 @@ import {AuthGuard} from './_helpers/auth.guard';
 
 // root of the routing, in each module another .route is defined
 export const APP_ROUTES = [
-  {path: '', component: HomeComponent},
+  {path: 'stats/dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
   {path: 'animes', children: ANIMES_ROUTES},
-  {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
   {path: 'user/login', component: SigninComponent},
   {path: 'user/register', component: SignupComponent},
+  {path: '', component: HomeComponent},
 ];
