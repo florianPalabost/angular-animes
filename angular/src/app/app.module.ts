@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { ScrollingModule } from '@angular/cdk/scrolling';
@@ -50,6 +51,7 @@ import { AlertComponent } from './_components/alert/alert.component';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     // AppRoutingModule,
     AnimesModule,
     FontAwesomeModule,
