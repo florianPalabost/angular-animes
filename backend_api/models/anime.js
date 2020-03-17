@@ -63,7 +63,6 @@ module.exports = (sequelize, DataTypes) => {
     Anime.hasMany(models.character, {foreignKey: 'animeId', targetKey: 'id'});
 
 
-
   };
   return Anime;
 };

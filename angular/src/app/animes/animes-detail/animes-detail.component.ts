@@ -1,19 +1,17 @@
 import {
   Component,
   OnInit,
-  OnDestroy,
-  ViewChild,
-  ElementRef,
-  AfterViewChecked,
-  AfterViewInit,
-  AfterContentInit
+  OnDestroy
 } from '@angular/core';
 import { AnimesService } from 'src/app/services/animes.service';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { Anime } from 'src/app/model/anime';
 import { Subscription } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import 'magnific-popup';
+import {User} from '../../model/user';
+import {UsersService} from '../../services/users.service';
+import {FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-animes-detail',
@@ -26,38 +24,42 @@ export class AnimesDetailComponent implements OnInit, OnDestroy  {
   public videoYT;
   public tmpURL;
   urlImg;
+  formStatus: FormGroup;
 
-  currentUser: any;
+  currentUser: User;
+  statusCompleted = false;
+  statusWatching = false;
+  statusWantToWatch = false;
+  statusDontWatch = false;
+
   // @ViewChild('video') videoElement: ElementRef;
 
-  constructor(private route: ActivatedRoute, private animesService: AnimesService, private sanitize: DomSanitizer) { }
+  constructor(private userService: UsersService,
+              private router: Router,
+              private route: ActivatedRoute,
+              private animesService: AnimesService,
+              private sanitize: DomSanitizer,
+              private  fb: FormBuilder) {
+    this.userService.currentUser.subscribe(x => this.currentUser = x);
+  }
 
   ngOnInit() {
-    const locStorageObj = localStorage.getItem('currentUser') !== null ? JSON.parse(localStorage.getItem('currentUser')) : null;
+    // const locStorageObj = localStorage.getItem('currentUser') !== null ? JSON.parse(localStorage.getItem('currentUser')) : null;
     this.retriveAnimeByName(this.route.snapshot.params['name']);
     // console.log('user role ? ' + locStorageObj.user.role);
-    this.currentUser = locStorageObj !== null ? locStorageObj.user : null ;
+    // this.currentUser = locStorageObj !== null ? locStorageObj.user : null ;
+    this.formStatus = this.fb.group({
+      status_watch: '',
+      userId: '',
+      animeId: ''
+    });
+
   }
 
   ngOnDestroy(): void {
     console.log('unsubscribe detail');
     this.subscription.unsubscribe();
   }
-
-  // ngAfterViewInit (): void {
-  //   (<any>$('.magnific-youtube')).magnificPopup({
-  //     items: {
-  //       src: 'https://www.youtube.com/emfbed/' + this.anime.ytVideoID,
-  //       type: 'iframe'
-  //     },
-  //     disableOn: 700,
-  //     type: 'iframe',
-  //     mainClass: 'mfp-fade',
-  //     removalDelay: 300,
-  //     preloader: false,
-  //     fixedContentPos: false
-  //   });
-  // }
 
 
   retriveAnimeByName = async (name) => {
@@ -68,6 +70,25 @@ export class AnimesDetailComponent implements OnInit, OnDestroy  {
       }
       if (this.anime.endDate) {
         this.anime.endDate = this.anime.endDate.split('-')[1] + '/' + this.anime.endDate.split('-')[0];
+      }
+
+      if (this.currentUser !== null) {
+        const infoUserAnime = {
+          animeId: this.anime.id,
+          userId: this.currentUser['user'].id
+        };
+       //  console.log('infos :::', infoUSerAnime);
+        this.animesService.retrieveAnimeUserStatus(infoUserAnime).subscribe((statusWatch) => {
+          console.log('alo:', statusWatch);
+          if (statusWatch.length > 0) {
+            this.statusCompleted = true;
+          }
+          this.statusCompleted = statusWatch.completed.length > 0;
+          this.statusWatching = statusWatch.watching.length > 0;
+          this.statusWantToWatch = statusWatch.want_to_watch.length > 0;
+          this.statusDontWatch = statusWatch.dont_want_to_watch.length > 0;
+        });
+
       }
 
       // To avoid XSS need tot use sanitize to create a "trust" ressource url !
@@ -103,4 +124,29 @@ export class AnimesDetailComponent implements OnInit, OnDestroy  {
 
   }
 
+  updateStatUser(formStatus) {
+    formStatus.userId = this.currentUser['user'].id;
+    formStatus.animeId = this.anime.id;
+    console.log(formStatus);
+    this.animesService.updateStatusAnimeUser(formStatus).subscribe((status) =>  {
+      // todo add badge status on dom
+      console.log('status update -> ', status);
+      switch (formStatus.status_watch) {
+        case 'completed':
+          this.statusCompleted = true;
+          break;
+        case 'watching':
+          this.statusWatching = true;
+          break;
+        case 'want-to-watch':
+          this.statusWantToWatch = true;
+          break;
+        case 'dont-watch':
+          this.statusDontWatch = true;
+          break;
+        default:
+          break;
+      }
+    });
+  }
 }

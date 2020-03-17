@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import { Anime } from '../model/anime';
 import {Observable, of, throwError} from 'rxjs';
 import {catchError, tap} from 'rxjs/operators';
+import {User} from '../model/user';
 
 const optionRequete = {
   headers: new HttpHeaders({
@@ -81,5 +82,20 @@ export class AnimesService {
 
   retrieveAnimesWithFilters(form: any): Observable<any> {
     return this.http.post(this.BASE_URL + 'animes/filters', form);
+  }
+
+
+  retrieveAnimesCompletedByUser(idUser: number): Observable<any> {
+    // const params = new HttpParams()
+    //   .set('userId', String(idUser));
+    return this.http.get(this.BASE_URL + 'animes/users/' + idUser);
+  }
+
+  updateStatusAnimeUser(formSelectedStatus: any): Observable<any> {
+    return this.http.post(this.BASE_URL + 'animes/watched-status', formSelectedStatus);
+  }
+
+  retrieveAnimeUserStatus(infoUserAnime: { animeId: number; userId: any }): Observable<any> {
+    return this.http.post(this.BASE_URL + 'animes/status-user', infoUserAnime);
   }
 }

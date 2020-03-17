@@ -27,6 +27,7 @@ services:
 
   nodejs:
     build: backend_api
+    command: nodemon npm start
     environment:
       DATABASE_URL: postgres://postgres:admin@postgres:5432/animes_api
       NODE_ENV: development

@@ -85,9 +85,35 @@
                       <p *ngIf="anime.endDate">Fin : {{ anime.endDate }}</p>
 
                     </div>
-                    <div class="col-lg-7 col-md-12 col-12" *ngIf="anime.synopsis" >
-                      <h3>Synopsis</h3>
-                      <p class="text-justify">{{ anime.synopsis}}</p>
+                    <div class="col-lg-7 col-md-12 col-12"  >
+                      <div *ngIf="currentUser">
+                        <h3>Your stats</h3>
+                        <form [formGroup]="formStatus">
+                          <label for="status_watch">
+                            <select formControlName="status_watch" id="status_watch">
+                              <option value="" disabled>Choose status ...</option>
+                              <option value="completed">Completed</option>
+                              <option value="watching">Watching</option>
+                              <option value="want-to-watch">Want to watch</option>
+                              <option value="dont-watch">Don't want to watch</option>
+                            </select>
+                          </label>
+                          <input formControlName="userId" type="hidden" [value]="currentUser['user'].id">
+                          <input formControlName="animeId" type="hidden" [value]="anime.id">
+                          <button (click)="updateStatUser(formStatus.value)" class="btn btn-block w-25 btn-outline-info">Update</button>
+                        </form>
+                        <span><p>Rewatch X times</p></span>
+                        <button class="btn btn-info disabled" *ngIf="statusCompleted" style="cursor: unset">Completed</button>
+                        <button class="btn btn-info disabled" *ngIf="statusWatching" style="cursor: unset">Watching</button>
+                        <button class="btn btn-info disabled" *ngIf="statusWantToWatch" style="cursor: unset">Want to watch</button>
+                        <button class="btn btn-info disabled" *ngIf="statusDontWatch" style="cursor: unset">Don't want to watch</button>
+                      </div>
+
+                      <div *ngIf="anime.synopsis">
+                        <h3>Synopsis</h3>
+                        <p class="text-justify">{{ anime.synopsis}}</p>
+                      </div>
+
                       <div>
                         <p *ngIf="anime.rating" class="h1 font-weight-bolder">{{anime.rating}}/100</p>
                       </div>

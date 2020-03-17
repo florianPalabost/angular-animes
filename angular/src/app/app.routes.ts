@@ -4,6 +4,7 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 import {SigninComponent} from './users/signin/signin.component';
 import {SignupComponent} from './users/signup/signup.component';
 import {AuthGuard} from './_helpers/auth.guard';
+import {UserProfileComponent} from './users/user-profile/user-profile.component';
 
 // root of the routing, in each module another .route is defined
 export const APP_ROUTES = [
@@ -11,5 +12,6 @@ export const APP_ROUTES = [
   {path: 'animes', children: ANIMES_ROUTES},
   {path: 'user/login', component: SigninComponent},
   {path: 'user/register', component: SignupComponent},
+  {path: 'user/profile', component: UserProfileComponent},
   {path: '', component: HomeComponent},
 ];

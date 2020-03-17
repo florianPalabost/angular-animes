@@ -100,7 +100,6 @@ export class AnimesListComponent implements OnInit, OnDestroy {
 
   onScroll = () => {
     let isFilter = false;
-    console.log('scrolled');
     console.log('form value : ', this.formFilter.value);
 
     // for not call other animes

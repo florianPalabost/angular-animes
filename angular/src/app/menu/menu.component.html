@@ -20,9 +20,22 @@
       </li>
       <li class="nav-item">
         <a *ngIf="!currentUser" class="nav-link" routerLink="user/login">Login</a>
-        <a *ngIf="currentUser" class="nav-link" style="cursor: pointer" (click)="logout()">Logout</a>
       </li>
       <app-animes-search></app-animes-search>
+
+      <div class="dropdown show ml-5" *ngIf="currentUser">
+        <!-- Toggle -->
+        <a href="#" class="avatar avatar-sm avatar-online dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <img src="//ssl.gstatic.com/accounts/ui/avatar_1x.png" alt="avatar_user" class="avatar-img rounded-circle">
+        </a>
+        <div class="dropdown-menu dropdown-menu-right">
+          <a routerLink="user/profile" class="dropdown-item">Profile</a>
+          <a href="./settings.html" class="dropdown-item">Settings</a>
+          <hr class="dropdown-divider">
+          <a (click)="logout()" class="dropdown-item" style="cursor: pointer" >Logout</a>
+        </div>
+      </div>
+
     </ul>
   </div>
 </nav>
