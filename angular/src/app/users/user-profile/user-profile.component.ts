@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {UsersService} from '../../services/users.service';
 import {AnimesService} from '../../services/animes.service';
-import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-user-profile',
@@ -9,24 +8,37 @@ import {Observable} from 'rxjs';
   styleUrls: ['./user-profile.component.scss']
 })
 export class UserProfileComponent implements OnInit {
-  animesCompleted: Observable<Object>;
-  animesWatching: Observable<Object>;
-  animesWantToWatch: Observable<Object>;
-  animesDontWatch: Observable<Object>;
+  animesStatus = {
+    'completed': [],
+    'watching': [],
+    'want_to_watch': [],
+    'dont_want_to_watch': [],
+    'rewatched': []
+  };
+  allTimeSpent = 0;
+  nbEpisodes = 0;
+  data: any;
 
   constructor(private usersService: UsersService, private animeService: AnimesService) { }
 
-  ngOnInit() {
-    // todo get animes user completed / watching / want to watch / dont want to watch
-    // console.log('user id : ', this.usersService.currentUserValue['user'].id);
+  async ngOnInit() {
+    this.data = await this.animeService.retrieveAnimesCompletedByUser(this.usersService.currentUserValue['user'].id);
+    if (this.data['completed'] && this.data['watching'] && this.data['want_to_watch'] && this.data['dont_want_to_watch']) {
+      this.animesStatus.completed = this.data['completed'].length > 0 ? this.data['completed'] : null;
+      this.animesStatus.watching = this.data['watching'].length > 0 ? this.data['watching'] : null;
+      this.animesStatus.want_to_watch = this.data['want_to_watch'].length > 0 ? this.data['want_to_watch'] : null;
+      this.animesStatus.dont_want_to_watch = this.data['dont_want_to_watch'].length > 0 ? this.data['dont_want_to_watch'] : null;
 
-    this.animeService.retrieveAnimesCompletedByUser(this.usersService.currentUserValue['user'].id).subscribe((data) => {
-      this.animesCompleted = data['completed'].length > 0 ? data['completed'] : null;
-      this.animesWatching = data['watching'].length > 0 ? data['watching'] : null;
-      this.animesWantToWatch = data['want_to_watch'].length > 0 ? data['want_to_watch'] : null;
-      this.animesDontWatch = data['dont_want_to_watch'].length > 0 ? data['dont_want_to_watch'] : null;
-      console.log('animes completed : ', data);
-    });
+      this.animesStatus.completed.forEach((item) => {
+        this.nbEpisodes += item['anime'].nbEpisode;
+        this.allTimeSpent += (item['anime'].nbEpisode * item['anime'].episodeLength);
+      });
+
+      // transform from min to hours
+      this.allTimeSpent = Math.round(this.allTimeSpent / 60);
+
+    }
+
   }
 
 }
