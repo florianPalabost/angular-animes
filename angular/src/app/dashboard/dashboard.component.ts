@@ -5,6 +5,8 @@ import {Subscription} from 'rxjs';
 import {NgxSpinnerService} from 'ngx-spinner';
 import * as _ from 'underscore';
 import {DashboardService} from '../services/dashboard.service';
+import {UsersService} from '../services/users.service';
+import {User} from '../model/user';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,49 +25,69 @@ export class DashboardComponent implements OnInit, OnDestroy {
   genreData = [];
   catData = [];
   finalTopGenres = [];
-  private subscription: Subscription;
-  private subscriptionC: Subscription;
   nbGenres: number;
   nbCats: number;
   // todo nbPerso back & front
-  nbPersos: number;
+  nbPersos;
+  private user: User;
 
   constructor(private animeService: AnimesService,
               private spinner: NgxSpinnerService,
-              private dashService: DashboardService
+              private dashService: DashboardService,
+              private userService: UsersService
   ) { }
 
-  ngOnInit() {
-    this.spinner.show();
-    this.retrieveNbCharacters();
-    this.findAllAnimes();
+  async ngOnInit() {
+    await this.spinner.show();
+    this.user = await this.userService.currentUserValue;
+
+    switch (this.user['user'].role) {
+      case 'admin':
+        this.nbPersos = await this.retrieveNbCharacters();
+        this.animes = await this.findAllAnimes();
+        break;
+      default:
+        this.nbPersos = 0;
+        let tmpAnimes = await this.findAnimesCompletedByUser(this.user['user'].id);
+        tmpAnimes = tmpAnimes['completed'];
+        this.animes = [];
+        for (let i = 0; i < Object.keys(tmpAnimes).length; i++) {
+          this.animes.push(tmpAnimes[i].anime);
+        }
+        break;
+    }
+    console.log('animes', this.animes);
+    await this.createCatAndGenresChart(this.animes);
+
   }
 
-  findAllAnimes = (): void  => {
-    this.subscription = this.animeService.retrieveAllAnimes().subscribe(data => {
+  findAllAnimes = async ()  => {
+    return await this.animeService.retrieveAllAnimes();
+  }
 
-     this.nbAnimes = Object.keys(data).length;
-     _.each(data, (anime) => {
+  createCatAndGenresChart = (animes: any) => {
+    this.nbAnimes = Object.keys(animes).length;
+    _.each(animes, (anime) => {
 
-       _.each(anime['categories'], (cat) => {
-         if (!this.categoriesLabel.includes(cat['name'])) {
-           this.categoriesLabel.push(cat['name']);
-           this.categoriesValues[cat['name']] = 1;
-            } else {
-           this.categoriesValues[cat['name']]++;
-            }
-        });
+      _.each(anime['categories'], (cat) => {
+        if (!this.categoriesLabel.includes(cat['name'])) {
+          this.categoriesLabel.push(cat['name']);
+          this.categoriesValues[cat['name']] = 1;
+        } else {
+          this.categoriesValues[cat['name']]++;
+        }
+      });
 
-       _.each(anime['genres'], (genre) => {
-         if (!this.genresLabel.includes(genre['name'])) {
-           this.genresLabel.push(genre['name']);
-           this.genresValue[genre['name']] = 1;
-         } else {
-           this.genresValue[genre['name']]++;
-         }
-       });
-     });
-     console.log('this', this.genresValue);
+      _.each(anime['genres'], (genre) => {
+        if (!this.genresLabel.includes(genre['name'])) {
+          this.genresLabel.push(genre['name']);
+          this.genresValue[genre['name']] = 1;
+        } else {
+          this.genresValue[genre['name']]++;
+        }
+      });
+    });
+    console.log('this', this.genresValue);
     this.genresLabel = this.genresLabel.sort();
     // nom des genres classé top
     let toto = this.genresValue;
@@ -75,113 +97,115 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.categoriesLabel = this.categoriesLabel.sort();
     this.nbGenres = Object.keys(this.genresValue).length;
     this.nbCats = Object.keys(this.categoriesValues).length;
-      const colors = [];
-      // tslint:disable-next-line:forin
-      for (const genre in this.genresValue) {
-        // console.log('val', this.genressValue[genre]);
-        this.genreData.push(this.genresValue[genre]);
-        // generate color random find in the web
-        colors.push('#' + Math.random().toString(16).substr(2, 6));
-      }
-      const tata = this.genreData.sort((a, b) => b - a );
+    const colors = [];
+    // tslint:disable-next-line:forin
+    for (const genre in this.genresValue) {
+      // console.log('val', this.genressValue[genre]);
+      this.genreData.push(this.genresValue[genre]);
+      // generate color random find in the web
+      colors.push('#' + Math.random().toString(16).substr(2, 6));
+    }
+    const tata = this.genreData.sort((a, b) => b - a );
 
-      _.each(toto, (g, i) => {
-        const genr = {
-          name: g,
-          value: tata[i]
-        };
-        this.finalTopGenres.push(genr);
-        // console.log( g, ' : ', tata[i] );
-      });
-      console.log(this.finalTopGenres);
-      const colorsCat = [];
-      // tslint:disable-next-line:forin
-      for (const cat in this.categoriesValues) {
-        // console.log('val', this.genresValue[genre]);
-        this.catData.push(this.categoriesValues[cat]);
-        colorsCat.push('#' + Math.random().toString(16).substr(2, 6));
-      }
-
-      const labels = this.finalTopGenres.map(x => x.name);
-
-      this.chart = new Chart('canvas', {
-        type: 'pie',
-        options: {
-          title: {
-            display: true,
-            text: 'Animes genres'
-          },
-          legend: {
-            display: false
-          },
-          scales: {
-            xAxes: [{
-              display: false
-            }],
-            yAxes: [{
-              display: false
-            }],
-          }
-        },
-        data: {
-          labels: labels,
-          datasets: [
-            {
-              data: this.genreData,
-              borderColor: 'white',
-              backgroundColor: colors,
-              fill: true
-            }
-          ]
-        },
-
-      });
-
-      console.log(this.categoriesLabel);
-      console.log(this.catData);
-      this.chart_cat = new Chart('canvas_cat', {
-        type: 'pie',
-        data: {
-          labels: this.categoriesLabel,
-          datasets: [
-            {
-              data: this.catData,
-              borderColor: 'white',
-              backgroundColor: colorsCat,
-              fill: true
-            }
-          ]
-        },
-        options: {
-          title: {
-            display: true,
-            text: 'Animes catégories'
-          },
-          legend: {
-            display: false
-          },
-          scales: {
-            xAxes: [{
-              display: false
-            }],
-            yAxes: [{
-              display: false
-            }],
-          }
-        }
-      });
-      this.spinner.hide();
+    _.each(toto, (g, i) => {
+      const genr = {
+        name: g,
+        value: tata[i]
+      };
+      this.finalTopGenres.push(genr);
+      // console.log( g, ' : ', tata[i] );
     });
+    console.log(this.finalTopGenres);
+    const colorsCat = [];
+    // tslint:disable-next-line:forin
+    for (const cat in this.categoriesValues) {
+      // console.log('val', this.genresValue[genre]);
+      this.catData.push(this.categoriesValues[cat]);
+      colorsCat.push('#' + Math.random().toString(16).substr(2, 6));
+    }
+
+    const labels = this.finalTopGenres.map(x => x.name);
+
+    this.chart = new Chart('canvas', {
+      type: 'pie',
+      options: {
+        title: {
+          display: true,
+          text: 'Animes genres'
+        },
+        legend: {
+          display: false
+        },
+        scales: {
+          xAxes: [{
+            display: false
+          }],
+          yAxes: [{
+            display: false
+          }],
+        }
+      },
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            data: this.genreData,
+            borderColor: 'white',
+            backgroundColor: colors,
+            fill: true
+          }
+        ]
+      },
+
+    });
+
+    console.log(this.categoriesLabel);
+    console.log(this.catData);
+    this.chart_cat = new Chart('canvas_cat', {
+      type: 'pie',
+      data: {
+        labels: this.categoriesLabel,
+        datasets: [
+          {
+            data: this.catData,
+            borderColor: 'white',
+            backgroundColor: colorsCat,
+            fill: true
+          }
+        ]
+      },
+      options: {
+        title: {
+          display: true,
+          text: 'Animes catégories'
+        },
+        legend: {
+          display: false
+        },
+        scales: {
+          xAxes: [{
+            display: false
+          }],
+          yAxes: [{
+            display: false
+          }],
+        }
+      }
+    });
+    this.spinner.hide();
   }
+
 
   ngOnDestroy(): void {
     console.log('unsubscribe dashboard');
-    this.subscription.unsubscribe();
+    // this.subscription.unsubscribe();
   }
 
-  retrieveNbCharacters() {
-    this.subscriptionC = this.animeService.retrieveNbCharacs().subscribe(nb => {
-      this.nbPersos = nb;
-    });
+  async retrieveNbCharacters() {
+    return await this.animeService.retrieveNbCharacs();
+  }
+
+  async findAnimesCompletedByUser(idUser: any) {
+    return await this.animeService.retrieveAnimesCompletedByUser(idUser);
   }
 }

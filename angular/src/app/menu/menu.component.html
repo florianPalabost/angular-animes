@@ -16,9 +16,6 @@
         <a class="nav-link" routerLink="animes">Animes</a>
       </li>
       <li class="nav-item">
-        <a *ngIf="currentUser" routerLink="stats/dashboard" class="nav-link">Dashboard</a>
-      </li>
-      <li class="nav-item">
         <a *ngIf="!currentUser" class="nav-link" routerLink="user/login">Login</a>
       </li>
       <app-animes-search></app-animes-search>
@@ -29,6 +26,7 @@
           <img src="//ssl.gstatic.com/accounts/ui/avatar_1x.png" alt="avatar_user" class="avatar-img rounded-circle">
         </a>
         <div class="dropdown-menu dropdown-menu-right">
+          <a routerLink="stats/dashboard" class="dropdown-item">Dashboard</a>
           <a routerLink="user/profile" class="dropdown-item">Profile</a>
           <a href="./settings.html" class="dropdown-item">Settings</a>
           <hr class="dropdown-divider">
