@@ -29,16 +29,21 @@ router.post('/signup', function(req, res) {
 });
 
 router.post('/signin', function(req, res) {
+    // console.log(req);
     User
         .findOne({
-            $or: [
-                {
-                    username: req.body.username
-                },
-                {
-                    email: req.body.email
-                }
-            ]
+            where: {
+                username: req.body.username
+                // $or: [
+                //     {
+                //         username: req.body.username
+                //     },
+                //     {
+                //         email: req.body.username
+                //     }
+                // ]
+            }
+
         })
         .then((user) => {
             if (!user) {
@@ -47,6 +52,7 @@ router.post('/signin', function(req, res) {
                 });
             }
             user.comparePassword(req.body.password, (err, isMatch) => {
+                console.log(isMatch);
                 if(isMatch && !err) {
                     const token = jwt.sign(JSON.parse(JSON.stringify(user)), 'nodeauthsecret', {expiresIn: 86400 * 30});
                     jwt.verify(token, 'nodeauthsecret', function(err, data){
