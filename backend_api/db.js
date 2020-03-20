@@ -80,6 +80,24 @@ const getByTitle = async (title) => {
   }
 };
 
+const getAnimesRecommendations = async (idAnime) => {
+  console.log('ID ANIME :::::::::::::', idAnime);
+  try {
+    return await models.animes_recommendation.findAll({
+      where: {
+        anime_id: idAnime
+      },
+      include: [ {
+        model: models.anime
+      },
+      ]
+    });
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
 const getWithUserId = async (userId, status) => {
   try {
     console.log('USER ID : ' + userId);
@@ -87,12 +105,24 @@ const getWithUserId = async (userId, status) => {
     switch (status) {
       case 'completed':
         return await models.animes_completed.findAll({
+          attributes: [],
           where: {
             user_id: userId
           },
-          include: [ {
+          include: [{
             model: models.anime,
-          }]
+            include: [
+              {
+                model: models.genre,
+                through: { attributes: [] } // to avoid to take the attributes of animes_genres table
+              }, {
+                model: models.category,
+                through: { attributes: [] }
+              }
+            ]
+          },
+
+          ],
         });
       case 'watching':
         return await models.animes_watching.findAll({
@@ -104,7 +134,7 @@ const getWithUserId = async (userId, status) => {
           }]
         });
       case 'want_to_watch':
-        return await models.animes_want_to_watch.findAll({
+        return await models.anime_want_to_watch.findAll({
           where: {
             user_id: userId
           },
@@ -327,16 +357,17 @@ const updateAnimeUserStats = async (req, res) => {
       user_id: req.userId,
       anime_id: req.animeId
     };
+
     switch (req.status_watch) {
       case "completed":
         return await models.animes_completed.create(newEntryUserAnime);
       case "watching":
         return await models.animes_watching.create(newEntryUserAnime);
       case "want-to-watch":
-        // return await models.animes_want_watch.create(newEntryUserAnime);
-        break;
+        return await models.anime_want_to_watch.create(newEntryUserAnime);
+      case "dont-watch":
+        return await models.animes_dont_want_to_watch.create(newEntryUserAnime);
       default:
-        // return await models.dont_want_watch.create(newEntryUserAnime);
           return null;
     }
   }
@@ -409,6 +440,7 @@ module.exports = {
   getAllAnimes,
   getAnimesWith,
   getByTitle,
+  getAnimesRecommendations,
   getWithFilters,
   getWithUserId,
   getLikeByTitle,

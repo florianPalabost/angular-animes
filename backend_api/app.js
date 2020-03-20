@@ -71,7 +71,7 @@ app.use('/api/'+ API_VERSION +'/categories', categories);
 
 let nbInsert = 0;
 // set the cron animes, a la fin le lancer une fois par semaine
-cron.schedule("* 10 * * *", function() {
+cron.schedule("* 10 18 * *", async () =>  {
 	console.log("[CRON : Import animes] Job started every 10 min");
 
 	// import anime
@@ -84,22 +84,20 @@ cron.schedule("* 10 * * *", function() {
 	let link;
 
 	// set all the link to scratch infos
-	while (start < nbLignes) {
+	 while (start < nbLignes) {
 		link = linkApi + start;
 		// console.log('call : ', link);
 		// call url to have the 20 animes to proceed
-		request(link, async (err, resp, body) => {
+		await request(link, async (err, resp, body) => {
 			// on recup un string donc il faut le parse en json pour mieux l'utiliser
 			body = JSON.parse(body);
 
 			if (body.meta.count !== "" && nbLignes < body.meta.count) {
 				nbLignes = body.meta.count;
 			}
-			// console.log('nbLIGNE:::::::::::::', nbLignes);
-			// console.log('body:::',typeof body);
-			for(var i = 0; i< Object.keys(body.data).length; i++) {
+
+			for(let i = 0; i< Object.keys(body.data).length; i++) {
 				// console.log('---------Process::', body.data[i].attributes.canonicalTitle);
-				// todo check if anime exist with anime title -> later
 
 				let anime = await models.anime.findOne({
 					where: {
@@ -109,7 +107,6 @@ cron.schedule("* 10 * * *", function() {
 
 				if (anime != null) {
 					// anime already exist
-					// console.log('anime already exist');
 
 					// Update the anime subtype : TV, ova, film, ...
 					if (body.data[i].attributes.subtype !== null && body.data[i].attributes.subtype !== "") {
@@ -126,9 +123,7 @@ cron.schedule("* 10 * * *", function() {
 						);
 
 					}
-					else {
-						// console.log('no subtype');
-					}
+
 				}
 				else {
 					console.log(':::::Create one anime::::::');
@@ -180,7 +175,7 @@ cron.schedule("* 10 * * *", function() {
 
 
 // characters
-cron.schedule("* 10 * * *", async () => {
+cron.schedule("* 10 18 * *", async () => {
 	console.log('::::::::::::::::::::::::::::::::::CHARACTERSs:::::::::::::::::::::::::::::::::::::::::::::::::::::::');
 	// let nbLignes = 1;
 	// data.meta.count -> contient le nb total d'animes to proceed faire un if dans le while pour le maj
@@ -208,7 +203,7 @@ cron.schedule("* 10 * * *", async () => {
 		// for(let i=0; i < 2; i++) {
 		if (animes[i].linkApi !== "" && animes[i].linkApi !== null && animes[i].linkApi !== undefined) {
 
-			await sleep(300);
+			await sleep(200);
 			request(animes[i].linkApi + '/characters', async (err, resp, body) => {
 				if(err)
 					console.log('err load /characters : ', err);
@@ -226,6 +221,8 @@ cron.schedule("* 10 * * *", async () => {
 										console.log('err load character : ', errC);
 									persoInfos = JSON.parse(persoInfos);
 									// console.log('request perso info');
+
+									// todo add condition on animeId on character where to find if character already exist for this anime
 									let perso = await models.character.findOne({
 										where: {
 											name: persoInfos.data.attributes.canonicalName
@@ -297,17 +294,25 @@ cron.schedule("* 10 * * *", async () => {
 
 						}
 					}
-					else
+					else {
 						console.log('pas de characters pour :',animes[i].linkApi + '/characters' );
+					}
 				}
-				else
+				else {
 					console.log('json empty for : ' + animes[i].linkApi + '/characters');
+				}
 			});
 		}
 
 	}
 
 });
+
+/**
+ *
+ * @param field
+ * @returns {boolean}
+ */
 const checkIfEmpty = (field) => {
 	if(field === undefined)
 		return true;
@@ -316,6 +321,11 @@ const checkIfEmpty = (field) => {
 	return false;
 };
 
+/**
+ * method for fix timeout request to api
+ * @param millis
+ * @returns {Promise<unknown>}
+ */
 function sleep(millis) {
 	return new Promise(resolve => setTimeout(resolve, millis));
 }

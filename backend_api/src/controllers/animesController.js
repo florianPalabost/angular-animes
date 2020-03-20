@@ -33,6 +33,17 @@ const findAnimeByTitle = async (req, res) => {
   }
 };
 
+const findAnimeRecommendations = async (req, res) => {
+  try {
+    console.log('ozefjkzeopfkp;;;;;',req.params.idAnime);
+    let animes = await AnimeService.retrieveAnimesRecommendations(req.params.idAnime);
+    res.status(200).json(animes);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+};
+
 const findAnimesWithUserId = async (req, res) => {
   try {
     let animesCompleted = await AnimeService.retrieveAnimesWithUserId(req.params.userId, 'completed');
@@ -178,6 +189,7 @@ const deleteAnime = async (req, res) => {
 module.exports = {
   findAllAnimes,
   findAnimes,
+  findAnimeRecommendations,
   findAnimeByTitle,
   findAnimesWithFilters,
   findAnimesWithUserId,

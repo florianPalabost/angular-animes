@@ -12,6 +12,10 @@ const retrieveAnimeByTitle = async (req, res) => {
   return await db.getByTitle(req);  
 };
 
+const retrieveAnimesRecommendations = async (req, res) => {
+  return await db.getAnimesRecommendations(req);
+};
+
 const retrieveAnimesWithUserId = async (req, status) => {
   return await db.getWithUserId(req, status);
 };
@@ -52,6 +56,7 @@ const deleteAnime = async (req, res) => {
 module.exports = {
   retrieveAnimes,
   retrieveAnimesWith,
+  retrieveAnimesRecommendations,
   retrieveAnimesWithUserId,
   retrieveAnimesUserStat,
   retrieveAnimeByTitle,

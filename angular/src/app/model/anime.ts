@@ -1,3 +1,5 @@
+import {SafeStyle} from "@angular/platform-browser";
+
 export class Anime {
   id: number;
   idApi: string;
@@ -10,6 +12,7 @@ export class Anime {
   status: string;
   posterImage: string;
   coverImage: string;
+  urlImg: SafeStyle;
   nbEpisode: number;
   episodeLength: number;
   ytVideoID: string;
