@@ -80,6 +80,127 @@ const getByTitle = async (title) => {
   }
 };
 
+const getAnimesRecommendations = async (idAnime) => {
+  console.log('ID ANIME :::::::::::::', idAnime);
+  try {
+    return await models.animes_recommendation.findAll({
+      where: {
+        anime_id: idAnime
+      },
+      include: [ {
+        model: models.anime
+      },
+      ]
+    });
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
+const getWithUserId = async (userId, status) => {
+  try {
+    console.log('USER ID : ' + userId);
+
+    switch (status) {
+      case 'completed':
+        return await models.animes_completed.findAll({
+          attributes: [],
+          where: {
+            user_id: userId
+          },
+          include: [{
+            model: models.anime,
+            include: [
+              {
+                model: models.genre,
+                through: { attributes: [] } // to avoid to take the attributes of animes_genres table
+              }, {
+                model: models.category,
+                through: { attributes: [] }
+              }
+            ]
+          },
+
+          ],
+        });
+      case 'watching':
+        return await models.animes_watching.findAll({
+          where: {
+            user_id: userId
+          },
+          include: [ {
+            model: models.anime,
+          }]
+        });
+      case 'want_to_watch':
+        return await models.anime_want_to_watch.findAll({
+          where: {
+            user_id: userId
+          },
+          include: [ {
+            model: models.anime,
+          }]
+        });
+      case 'dont_want_to_watch':
+        return await models.animes_dont_want_to_watch.findAll({
+          where: {
+            user_id: userId
+          },
+          include: [ {
+            model: models.anime,
+          }]
+        });
+    }
+
+  } catch (err) {
+    console.log('error in db for getWithUserId() ::::', err.stack);
+    return err;
+  }
+};
+
+const getAnimeUserStat = async (req, status) => {
+  try {
+    // console.log('DBBBBBBBBBBBBBBB:;;;', models);
+    // req.animeId = req.animeId.toString();
+    req.userId = req.userId.toString();
+    switch (status) {
+      case 'completed':
+        return await models.animes_completed.findAll({
+          where: {
+            user_id: req.userId,
+            anime_id: req.animeId
+          }
+        });
+      case 'watching':
+        return await models.animes_watching.findAll({
+          where: {
+            user_id: req.userId,
+            anime_id: req.animeId
+          }
+        });
+      case 'want_to_watch':
+        return await models.anime_want_to_watch.findAll({
+          where: {
+            user_id: req.userId,
+            anime_id: req.animeId
+          }
+        });
+      case 'dont_want_to_watch':
+        return await models.animes_dont_want_to_watch.findAll({
+          where: {
+            user_id: req.userId,
+            anime_id: req.animeId
+          }
+        });
+    }
+
+  } catch (err) {
+    console.log('error in db for getAnimeUserStat() ::::', err.stack);
+    return err;
+  }
+};
+
 const getWithFilters = async (form, genres, categories) => {
   try {
     let whereGeneralClause = {};
@@ -229,6 +350,35 @@ const updateAnime = async (req) => {
   }
 };
 
+const updateAnimeUserStats = async (req, res) => {
+  console.log('access dao : create new entry anime user stats DB::::', req);
+  try {
+    const newEntryUserAnime =  {
+      user_id: req.userId,
+      anime_id: req.animeId
+    };
+
+    switch (req.status_watch) {
+      case "completed":
+        return await models.animes_completed.create(newEntryUserAnime);
+      case "watching":
+        return await models.animes_watching.create(newEntryUserAnime);
+      case "want-to-watch":
+        return await models.anime_want_to_watch.create(newEntryUserAnime);
+      case "dont-watch":
+        return await models.animes_dont_want_to_watch.create(newEntryUserAnime);
+      default:
+          return null;
+    }
+  }
+  catch(error) {
+    // maybe an error about the creation of this item
+    // either the object is not well implement or either bug somewhere else
+    console.log(error);
+    return error;
+  }
+};
+
 const deleteAnime = async (idAnime) => {
   try {
     // check if anime exist
@@ -290,12 +440,16 @@ module.exports = {
   getAllAnimes,
   getAnimesWith,
   getByTitle,
+  getAnimesRecommendations,
   getWithFilters,
+  getWithUserId,
   getLikeByTitle,
   getLikeByTitleAll,
   getByID,
+  getAnimeUserStat,
   createAnime,
   updateAnime,
+  updateAnimeUserStats,
   deleteAnime,
   getNbCharacters,
   getAllCategories,

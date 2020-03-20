@@ -11,11 +11,17 @@ router.get('/:title', AnimesController.findAnimeByTitle);
 router.get('/pages/:batch', AnimesController.findAnimes);
 router.get('/like/:name', AnimesController.findAnimesLike);
 router.get('/likeall/:name', AnimesController.findAnimesLikeAll);
+router.get('/:idAnime/recommendations', AnimesController.findAnimeRecommendations);
+
 
 router.put('/:id', (req, res) => {AnimesController.updateAnime(req, res)});
 router.delete('/:id', AnimesController.deleteAnime);
 router.post('/', (req, res) => {AnimesController.addAnime(req, res)});
 router.post('/filters', (req, res) => {AnimesController.findAnimesWithFilters(req, res)});
+router.post('/watched-status', (req, res) => {AnimesController.updateAnimeUserStatus(req, res)});
+router.post('/status-user', (req, res) => {AnimesController.findAnimeUserStatus(req, res)});
+
+router.get('/users/:userId', AnimesController.findAnimesWithUserId);
 
 
 module.exports = router;

@@ -1,10 +1,29 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import Darkmode from 'darkmode-js';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent  implements OnInit{
   title = 'angular-animes';
+  ngOnInit(): void {
+    const options = {
+      bottom: '64px', // default: '32px'
+      right: 'unset', // default: '32px'
+      left: '32px', // default: 'unset'
+      time: '0.5s', // default: '0.3s'
+      mixColor: '#fff', // default: '#fff'
+      backgroundColor: '#fff',  // default: '#fff'
+      buttonColorDark: '#100f2c',  // default: '#100f2c'
+      buttonColorLight: '#fff', // default: '#fff'
+      saveInCookies: false, // default: true,
+      label: '🌓', // default: ''
+      autoMatchOsTheme: true // default: true
+    }
+
+    const darkmode = new Darkmode(options);
+    darkmode.showWidget();
+  }
 }

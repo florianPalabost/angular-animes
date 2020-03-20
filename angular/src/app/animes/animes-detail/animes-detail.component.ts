@@ -1,19 +1,17 @@
 import {
   Component,
   OnInit,
-  OnDestroy,
-  ViewChild,
-  ElementRef,
-  AfterViewChecked,
-  AfterViewInit,
-  AfterContentInit
+  OnDestroy
 } from '@angular/core';
 import { AnimesService } from 'src/app/services/animes.service';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { Anime } from 'src/app/model/anime';
 import { Subscription } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import 'magnific-popup';
+import {User} from '../../model/user';
+import {UsersService} from '../../services/users.service';
+import {FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-animes-detail',
@@ -22,57 +20,81 @@ import 'magnific-popup';
 })
 export class AnimesDetailComponent implements OnInit, OnDestroy  {
   public anime: Anime = new Anime;
+  public animesRecommendated: any;
   private subscription: Subscription;
+  private subscriptionAnime: Subscription;
   public videoYT;
   public tmpURL;
   urlImg;
+  formStatus: FormGroup;
 
-  currentUser: any;
-  // @ViewChild('video') videoElement: ElementRef;
+  currentUser: User;
+  statusCompleted = false;
+  statusWatching = false;
+  statusWantToWatch = false;
+  statusDontWatch = false;
 
-  constructor(private route: ActivatedRoute, private animesService: AnimesService, private sanitize: DomSanitizer) { }
+  constructor(private userService: UsersService,
+              private router: Router,
+              private route: ActivatedRoute,
+              private animesService: AnimesService,
+              private sanitize: DomSanitizer,
+              private  fb: FormBuilder) {
+    this.userService.currentUser.subscribe(x => this.currentUser = x);
+  }
 
-  ngOnInit() {
-    const locStorageObj = localStorage.getItem('currentUser') !== null ? JSON.parse(localStorage.getItem('currentUser')) : null;
-    this.retriveAnimeByName(this.route.snapshot.params['name']);
-    // console.log('user role ? ' + locStorageObj.user.role);
-    this.currentUser = locStorageObj !== null ? locStorageObj.user : null ;
+  async ngOnInit() {
+    this.formStatus = this.fb.group({
+      status_watch: '',
+      userId: '',
+      animeId: ''
+    });
+
+    this.anime = await this.retriveAnimeByName(this.route.snapshot.params['name']);
+    console.log('anime : ', this.anime);
+    await this.retrieveAnimeUserStatus();
+    this.animesRecommendated = await this.retrieveAnimeRecommendation(this.anime.id);
+
   }
 
   ngOnDestroy(): void {
-    console.log('unsubscribe detail');
-    this.subscription.unsubscribe();
+    // console.log('unsubscribe detail');
+    // this.subscription.unsubscribe();
   }
 
-  // ngAfterViewInit (): void {
-  //   (<any>$('.magnific-youtube')).magnificPopup({
-  //     items: {
-  //       src: 'https://www.youtube.com/emfbed/' + this.anime.ytVideoID,
-  //       type: 'iframe'
-  //     },
-  //     disableOn: 700,
-  //     type: 'iframe',
-  //     mainClass: 'mfp-fade',
-  //     removalDelay: 300,
-  //     preloader: false,
-  //     fixedContentPos: false
-  //   });
-  // }
+  retrieveAnimeUserStatus = async () => {
+    if (this.currentUser !== null && this.anime !== null) {
+          const infoUserAnime = {
+            animeId: this.anime.id,
+            userId: this.currentUser['user'].id
+          };
+          const statusWatch = await this.animesService.retrieveAnimeUserStatus(infoUserAnime);
+         if (statusWatch) {
+           this.statusCompleted = statusWatch['completed'].length > 0;
+           this.statusWatching = statusWatch['watching'].length > 0;
+           this.statusWantToWatch = statusWatch['want_to_watch'].length > 0;
+           this.statusDontWatch = statusWatch['dont_want_to_watch'].length > 0;
+         }
+    }
+  }
 
+  retrieveAnimeRecommendation = async (idAnime) => {
+    return  await this.animesService.findRecommendationAnime(idAnime);
+  }
 
-  retriveAnimeByName = async (name) => {
-    this.subscription = await this.animesService.findAnimeByName(name).subscribe(data => {
-      this.anime = data;
-      if (this.anime.startDate) {
-        this.anime.startDate = this.anime.startDate.split('-')[1] + '/' + this.anime.startDate.split('-')[0];
+  retriveAnimeByName = async (name): Promise<Anime> => {
+    const anime = await this.animesService.findAnimeByName(name);
+    if (anime !== null ) {
+      if (anime.startDate) {
+        anime.startDate = anime.startDate.split('-')[1] + '/' + anime.startDate.split('-')[0];
       }
-      if (this.anime.endDate) {
-        this.anime.endDate = this.anime.endDate.split('-')[1] + '/' + this.anime.endDate.split('-')[0];
+      if (anime.endDate) {
+        anime.endDate = anime.endDate.split('-')[1] + '/' + anime.endDate.split('-')[0];
       }
-
       // To avoid XSS need tot use sanitize to create a "trust" ressource url !
-      this.tmpURL = 'https://www.youtube.com/embed/' + this.anime.ytVideoID;
+      this.tmpURL = 'https://www.youtube.com/embed/' + anime.ytVideoID;
       this.videoYT = this.sanitize.bypassSecurityTrustResourceUrl(this.tmpURL);
+
       (<any>$('.magnific-youtube')).magnificPopup({
         type: 'iframe',
         iframe: {
@@ -85,22 +107,48 @@ export class AnimesDetailComponent implements OnInit, OnDestroy  {
             youtube: {
               index: 'youtube.com',
               id: 'v=',
-              src: 'https://www.youtube.com/embed/' + this.anime.ytVideoID
+              src: 'https://www.youtube.com/embed/' + anime.ytVideoID
             }
           }
         }
       });
 
-      if (this.anime.coverImage !== null) {
-        this.urlImg =  this.sanitize.bypassSecurityTrustStyle( `url(${this.anime.coverImage})`);
-      } else if (this.anime.posterImage !== null) {
-        this.urlImg =  this.sanitize.bypassSecurityTrustStyle( `url(${this.anime.posterImage})`);
+      if (anime.coverImage) {
+        anime.urlImg = await this.sanitize.bypassSecurityTrustStyle( `url(${anime.coverImage})`);
+      } else if (anime.posterImage ) {
+        anime.urlImg = await this.sanitize.bypassSecurityTrustStyle( `url(${anime.posterImage})`);
       } else {
-        this.urlImg =
+        anime.urlImg = await
           this.sanitize.bypassSecurityTrustStyle('url(\'https://media.kitsu.io/anime/poster_images/10007/original.jpg?1460247262\')');
       }
-    });
 
+    }
+
+    return anime;
   }
 
+  async updateStatUser(formStatus) {
+    formStatus.userId = this.currentUser['user'].id;
+    formStatus.animeId = this.anime.id;
+    console.log(formStatus);
+    const status = await this.animesService.updateStatusAnimeUser(formStatus);
+    console.log('status update -> ', status);
+    switch (formStatus.status_watch) {
+      case 'completed':
+        this.statusCompleted = true;
+        break;
+      case 'watching':
+        this.statusWatching = true;
+        break;
+      case 'want-to-watch':
+        this.statusWantToWatch = true;
+        break;
+      case 'dont-watch':
+        this.statusDontWatch = true;
+        break;
+      default:
+        break;
+    }
+
+  }
 }

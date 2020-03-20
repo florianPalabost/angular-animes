@@ -21,9 +21,10 @@ export class AnimesEditComponent implements OnInit {
               private sanitize: DomSanitizer,
               private formBuilder: FormBuilder) { }
 
-  ngOnInit() {
-    this.retriveAnimeByName(this.route.snapshot.params['name']);
+  async ngOnInit() {
+    this.anime = await this.retriveAnimeByName(this.route.snapshot.params['name']);
     this.createForm();
+    this.animeForm.setValue(this.anime);
   }
 
   createForm = () => {
@@ -51,12 +52,8 @@ export class AnimesEditComponent implements OnInit {
     });
   }
 
-  retriveAnimeByName = (name) => {
-    this.subscription = this.animesService.findAnimeByName(name).subscribe(data => {
-      this.anime = data;
-      this.animeForm.setValue(data);
-    });
-
+  retriveAnimeByName = async (name) => {
+    return await  this.animesService.findAnimeByName(name);
   }
 
   updateAnime = async (anime) => {

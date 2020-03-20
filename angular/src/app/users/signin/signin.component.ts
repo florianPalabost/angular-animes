@@ -22,6 +22,8 @@ export class SigninComponent implements OnInit {
               private userService: UsersService,
               private router: Router,
               private alertService: AlertService) {
+
+    // user already logged, we redirect him to the home page
     if (this.userService.currentUserValue) {
       this.router.navigate(['/']);
     }
@@ -33,7 +35,7 @@ export class SigninComponent implements OnInit {
       password: ['', Validators.required]
     });
     // when we are not connected to a page which need to be connected, redirect to /user/login and then redirect to returnUrl
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/user/profile';
   }
 
   // convenience getter for easy access to form fields

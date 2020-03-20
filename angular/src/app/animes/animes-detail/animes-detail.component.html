@@ -1,43 +1,15 @@
 <div class="col-md-12">
 
     <div class="row">
-        <div class="col-12" [style.background-image]="urlImg" style="background-size: cover;height: 30em;padding:0">
+        <div class="col-12" [style.background-image]="anime.urlImg" style="background-size: cover;height: 30em;padding:0">
         </div>
     </div>
-    <!-- {% if animes_watched %}
-        <button value="watched" id="btn-watched" class="btn btn-success btn-watched" disabled>
-            <i class="fas fa-check"></i> Watched
-        </button>
-        <button value="watching" id="btn-watching" class="btn btn-info btn-watched" disabled>Watching</button>
-        <button value="want-to-watch" id="btn-want-to-watch" class="btn btn-primary btn-watched" disabled>Want to watch</button>
-        <button value="dont-want-to-watch" id="btn-dont-watch" class="btn btn-danger btn-watched" disabled>Don't want to watch</button>
-    {% elseif animes_watching %}
-        <button value="watched" id="btn-watched" class="btn btn-success btn-watched">Watched</button>
-        <button value="watching" id="btn-watching" class="btn btn-info btn-watched" disabled><i class="fas fa-check"></i> Watching</button>
-        <button value="want-to-watch" id="btn-want-to-watch" class="btn btn-primary btn-watched" disabled>Want to watch</button>
-        <button value="dont-want-to-watch" id="btn-dont-watch" class="btn btn-danger btn-watched" disabled>Don't want to watch</button>
-    {% elseif want_to_watch %}
-        <button value="watched" id="btn-watched" class="btn btn-success btn-watched">Watched</button>
-        <button value="watching" id="btn-watching" class="btn btn-info btn-watched">Watching</button>
-        <button value="want-to-watch" id="btn-want-to-watch" class="btn btn-primary btn-watched" disabled> <i class="fas fa-check"></i> Want to watch</button>
-        <button value="dont-want-to-watch" id="btn-dont-watch" class="btn btn-danger btn-watched" disabled>Don't want to watch</button>
-    {% elseif dont_want_to_watch %}
-        <button value="watched" id="btn-watched" class="btn btn-success btn-watched" disabled>Watched</button>
-        <button value="watching" id="btn-watching" class="btn btn-info btn-watched" disabled>Watching</button>
-        <button value="want-to-watch" id="btn-want-to-watch" class="btn btn-primary btn-watched" disabled>Want to watch</button>
-        <button value="dont-want-to-watch" id="btn-dont-watch" class="btn btn-danger btn-watched" disabled><i class="fas fa-check"></i> Don't want to watch</button>
-    {% else %}
-        <button value="watched" id="btn-watched" class="btn btn-success btn-watched">Watched</button>
-        <button value="watching" id="btn-watching" class="btn btn-info btn-watched">Watching</button>
-        <button value="want-to-watch" id="btn-want-to-watch" class="btn btn-primary btn-watched">Want to watch</button>
-        <button value="dont-want-to-watch" id="btn-dont-watch" class="btn btn-danger btn-watched">Don't want to watch</button>
-    {% endif %} -->
 
     <nav>
         <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
             <a class="nav-item nav-link active" id="infos-tab" data-toggle="tab" href="#infos" role="tab" aria-controls="infos" aria-selected="true">Infos</a>
             <a *ngIf="anime.characters" class="nav-item nav-link" id="persos-tab" data-toggle="tab" href="#persos" role="tab" aria-controls="persos" aria-selected="false">Personnages</a>
-            <a *ngIf="anime.recommendations" class="nav-item nav-link" id="recommend-tab" data-toggle="tab" href="#recommend" role="tab" aria-controls="recommend" aria-selected="false">Recommendations</a>
+            <a *ngIf="animesRecommendated" class="nav-item nav-link" id="recommend-tab" data-toggle="tab" href="#recommend" role="tab" aria-controls="recommend" aria-selected="false">Recommendations</a>
         </div>
     </nav>
     <div class="tab-content" id="nav-tabContent">
@@ -49,7 +21,7 @@
                   <img class="h-30 mx-auto card-img-top card-img-top-a "
                        src="{{ anime.posterImage || 'https://media.kitsu.io/anime/poster_images/10007/original.jpg?1460247262' }}"
                        alt="poster_{{ anime.title }}">
-                  <svg viewBox="0 0 24 24" class="n-m" style="position: absolute;margin: 5em;top: 7%;right: 0%;">
+                  <svg viewBox="0 0 24 24" class="n-m play" style="position: absolute;">
                     <path d="M8,5.14V19.14L19,12.14L8,5.14Z"></path>
                   </svg>
                 </a>
@@ -85,9 +57,36 @@
                       <p *ngIf="anime.endDate">Fin : {{ anime.endDate }}</p>
 
                     </div>
-                    <div class="col-lg-7 col-md-12 col-12" *ngIf="anime.synopsis" >
-                      <h3>Synopsis</h3>
-                      <p class="text-justify">{{ anime.synopsis}}</p>
+                    <div class="col-lg-7 col-md-12 col-12"  >
+                      <div *ngIf="currentUser">
+                        <h3>Your stats</h3>
+                        <form [formGroup]="formStatus">
+                          <label for="status_watch">
+                            <select formControlName="status_watch" id="status_watch">
+                              <option value="" disabled>Choose status ...</option>
+                              <option value="completed" [disabled]="statusCompleted">Completed</option>
+                              <option value="watching" [disabled]="statusWatching">Watching</option>
+                              <option value="want-to-watch" [disabled]="statusWantToWatch">Want to watch</option>
+                              <option value="dont-watch" [disabled]="statusDontWatch">Don't want to watch</option>
+                            </select>
+                          </label>
+                          <input formControlName="userId" type="hidden" [value]="currentUser['user'].id">
+                          <input formControlName="animeId" type="hidden" [value]="anime.id">
+                          <button (click)="updateStatUser(formStatus.value)" class="btn btn-block w-25 btn-outline-info">Update</button>
+                        </form>
+                        <button class="btn btn-info disabled mt-3" *ngIf="statusCompleted" style="cursor: unset">Completed</button>
+                        <button class="btn btn-info disabled mt-3" *ngIf="statusWatching" style="cursor: unset">Watching</button>
+                        <button class="btn btn-info disabled mt-3" *ngIf="statusWantToWatch" style="cursor: unset">Want to watch</button>
+                        <button class="btn btn-info disabled mt-3" *ngIf="statusDontWatch" style="cursor: unset">Don't want to watch</button>
+                        <span><p>Rewatch X times</p></span>
+                        <button class="btn btn-block w-25 btn-outline-primary">Rewatch</button>
+                      </div>
+
+                      <div *ngIf="anime.synopsis">
+                        <h3>Synopsis</h3>
+                        <p class="text-justify">{{ anime.synopsis}}</p>
+                      </div>
+
                       <div>
                         <p *ngIf="anime.rating" class="h1 font-weight-bolder">{{anime.rating}}/100</p>
                       </div>
@@ -108,8 +107,7 @@
             </div>
             <!-- <div class="container"> -->
                 <div class="row justify-content-center" >
-                    <!-- {{  content.field_animes_main_characs }} -->
-                    <div style="display: flex;overflow-x: scroll;overflow-y: scroll;width: 60em;" >
+                    <div style="display: flex;overflow-x: scroll;" >
                             <ng-container *ngFor="let perso of anime.characters" >
                         <div class="card text-white box cardi" *ngIf="perso.role === 'main'">
                                 <div class="flow" >
@@ -122,7 +120,6 @@
                                 <div class="card-img-overlay overlay">
                                     <div class="text">
                                         <h5 class="card-title mt-auto">{{  perso.name }}</h5>
-                                        <!-- {#        <p class="card-text">Some example text.</p>#} -->
                                         <a href="#" class="btn btn-primary mt-auto">More</a>
                                     </div>
                                 </div>
@@ -137,7 +134,7 @@
             </div>
 
             <!-- <div class="container"> -->
-                <div style="display: flex;overflow-x: scroll;overflow-y: scroll;width: 60em;" >
+                <div style="display: flex;overflow-x: scroll;" >
                     <div class="card text-white box cardi" *ngFor="let perso of anime.characters">
                         <ng-container *ngIf="perso.role === 'supporting'">
                             <div class="flow" >
@@ -149,7 +146,6 @@
                             <div class="card-img-top card-img-top-a">
                                 <div class="text">
                                     <h5 class="card-title mt-auto">{{  perso.name }}</h5>
-                                    <!-- {#        <p class="card-text">Some example text.</p>#} -->
                                     <a href="#" class="btn btn-primary mt-auto">More</a>
                                 </div>
                             </div>
@@ -160,10 +156,30 @@
 
         </div>
         <!-- animes recommendations tab -->
-      <div *ngIf="anime.recommendations" class="tab-pane fade" id="recommend" role="tabpanel" aria-labelledby="recommend-tab">
+      <div *ngIf="animesRecommendated" class="tab-pane fade" id="recommend" role="tabpanel" aria-labelledby="recommend-tab">
           <h3>Recommendations</h3>
-          <div class="card-deck">
-              <!-- {{ content.field_animes_sibling | render}} -->
+          <div class="card-group">
+            <div class="my-child-item" *ngFor="let a of animesRecommendated" style="max-width: 25%;display: inline-grid;" >
+              <div class="animated">
+                <div class="card text-white box cardi">
+                  <div class="flow">
+                    <a [routerLink]="['/animes/', a['anime'].title]">
+                      <img style="max-width: 100%" class="card-img-top card-img-top-a "
+                           src="{{ a['anime'].posterImage || 'https://media.kitsu.io/anime/poster_images/10007/original.jpg?1460247262' }}"
+                           alt="poster_{{ a['anime'].title }}">
+                    </a>
+                  </div>
+
+                  <div class="card-img-overlay overlay">
+                    <div class="text">
+                      <h5 class="card-title mt-auto">{{ a['anime'].title }}</h5>
+                      <a [routerLink]="['/animes/', a['anime'].title]" class="btn btn-primary mt-auto" target="_blank">More</a>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
       </div>
     </div>

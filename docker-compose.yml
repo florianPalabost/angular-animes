@@ -27,6 +27,7 @@ services:
 
   nodejs:
     build: backend_api
+    command: nodemon npm start
     environment:
       DATABASE_URL: postgres://postgres:admin@postgres:5432/animes_api
       NODE_ENV: development
@@ -52,6 +53,7 @@ services:
       - "3003:3003"
     volumes:
       - ./jwt:/usr/src/app
+      - /usr/src/app/node_modules
     depends_on:
       - postgres
     networks:
@@ -71,19 +73,19 @@ services:
   #     - postgres
   #   restart: unless-stopped
 
-  # jikan-rest:
-  #   build:
-  #     context: jikan
-  #     dockerfile: Dockerfile
-  #   depends_on:
-  #     - jikan-redis
-  #   ports:
-  #     - "9001:80"
-  #   restart: always
-
-  # jikan-redis:
-  #   image: redis:5.0.3
-  #   restart: always
+#  jikan-rest:
+#    build:
+#      context: jikan
+#      dockerfile: Dockerfile
+#    depends_on:
+#      - jikan-redis
+#    ports:
+#      - "9001:80"
+#    restart: always
+#
+#  jikan-redis:
+#    image: redis:5.0.3
+#    restart: always
   
 networks:
   postgres:

@@ -12,8 +12,20 @@ const retrieveAnimeByTitle = async (req, res) => {
   return await db.getByTitle(req);  
 };
 
+const retrieveAnimesRecommendations = async (req, res) => {
+  return await db.getAnimesRecommendations(req);
+};
+
+const retrieveAnimesWithUserId = async (req, status) => {
+  return await db.getWithUserId(req, status);
+};
+
 const retrieveAnimeByFilters = async (req, genres, categories) => {
   return await db.getWithFilters(req, genres, categories);
+};
+
+const retrieveAnimesUserStat = async (req, status) => {
+  return await db.getAnimeUserStat(req, status);
 };
 
 
@@ -33,6 +45,10 @@ const updateAnime = async (req, res) => {
   return await db.updateAnime(req);
 };
 
+const updateAnimeUserStat = async (req, res) => {
+  return await db.updateAnimeUserStats(req);
+};
+
 const deleteAnime = async (req, res) => {                
   return await db.deleteAnime(req);
 };
@@ -40,11 +56,15 @@ const deleteAnime = async (req, res) => {
 module.exports = {
   retrieveAnimes,
   retrieveAnimesWith,
+  retrieveAnimesRecommendations,
+  retrieveAnimesWithUserId,
+  retrieveAnimesUserStat,
   retrieveAnimeByTitle,
   retrieveAnimeByFilters,
   retrieveAnimesLike,
   retrieveAnimesLikeAll,
   addAnime,
   updateAnime,
+  updateAnimeUserStat,
   deleteAnime
 };

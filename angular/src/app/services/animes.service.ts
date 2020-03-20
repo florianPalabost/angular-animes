@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Anime } from '../model/anime';
-import {Observable, of, throwError} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {catchError, tap} from 'rxjs/operators';
 
 const optionRequete = {
@@ -20,15 +20,16 @@ export class AnimesService {
   BASE_URL = 'http://localhost:3002/api/v1/';
 
   constructor(private http: HttpClient) { }
-  // tslint:disable-next-line:no-trailing-whitespace
 
-  retrieveAllAnimes = (): Observable<any> => {
-    return this.http.get<Anime[]>(this.BASE_URL + 'animes');
+  retrieveAllAnimes = () => {
+    return this.http.get<Anime[]>(this.BASE_URL + 'animes').toPromise();
   }
 
-  findAnimeByName = (name: string): Observable<any> => {
+  findAnimeByName = async (name: string) => {
     // throw new Error('Method not implemented.');
-    return this.http.get<Anime>(this.BASE_URL + 'animes/' + name);
+    // return this.http.get<Anime>(this.BASE_URL + 'animes/' + name);
+    return await this.http.get<Anime>(this.BASE_URL + 'animes/' + name).toPromise();
+
   }
 
   findAnimesLike = (name: string): Observable<any> => {
@@ -67,19 +68,35 @@ export class AnimesService {
     };
   }
 
-  retrieveNbCharacs(): Observable<any> {
-    return this.http.get(this.BASE_URL + 'characters/nbcharacters');
+  async retrieveNbCharacs() {
+    return await this.http.get(this.BASE_URL + 'characters/nbcharacters').toPromise();
   }
 
-  findAllGenres(): Observable<any> {
-    return this.http.get(this.BASE_URL + 'genres');
+  async findAllGenres() {
+    return await this.http.get(this.BASE_URL + 'genres').toPromise();
   }
 
-  findAllCategories(): Observable<any> {
-    return this.http.get(this.BASE_URL + 'categories');
+  async findAllCategories() {
+    return await this.http.get(this.BASE_URL + 'categories').toPromise();
   }
 
-  retrieveAnimesWithFilters(form: any): Observable<any> {
-    return this.http.post(this.BASE_URL + 'animes/filters', form);
+  async retrieveAnimesWithFilters(form: any) {
+    return await this.http.post(this.BASE_URL + 'animes/filters', form).toPromise();
+  }
+
+  async retrieveAnimesCompletedByUser(idUser: number) {
+    return await this.http.get(this.BASE_URL + 'animes/users/' + idUser).toPromise();
+  }
+
+  async updateStatusAnimeUser(formSelectedStatus: any) {
+    return await this.http.post(this.BASE_URL + 'animes/watched-status', formSelectedStatus).toPromise();
+  }
+
+  async retrieveAnimeUserStatus(infoUserAnime: { animeId: number; userId: any }) {
+    return await this.http.post(this.BASE_URL + 'animes/status-user', infoUserAnime).toPromise();
+  }
+
+  async findRecommendationAnime(idAnime: any) {
+    return await this.http.get(this.BASE_URL + 'animes/' + idAnime + '/recommendations').toPromise();
   }
 }

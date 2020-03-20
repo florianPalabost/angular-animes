@@ -1,1 +1,162 @@
-<p>user-profile works!</p>
+<div class="container">
+
+  <div class="row mt-5">
+    <div class="col-12 col-lg-6 col-xl">
+      <div class="card">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col">
+              <h6 class="text-uppercase text-muted mb-2">
+                Animes completed
+              </h6>
+              <span class="h2 mb-0">{{animesStatus.completed?.length || '0' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-lg-6 col-xl">
+      <div class="card">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col">
+              <h6 class="text-uppercase text-muted mb-2">
+                Animes watching
+              </h6>
+              <span class="h2 mb-0">{{animesStatus.watching?.length || '0' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-lg-6 col-xl">
+      <div class="card">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col">
+              <h6 class="text-uppercase text-muted mb-2">
+                Animes want to watch
+              </h6>
+              <span class="h2 mb-0">{{animesStatus.want_to_watch?.length || '0' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-lg-6 col-xl">
+      <div class="card">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col">
+              <h6 class="text-uppercase text-muted mb-2">
+                Animes dont want to watch
+              </h6>
+              <span class="h2 mb-0">{{animesStatus.dont_want_to_watch?.length || '0' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-lg-6 col-xl">
+      <div class="card">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col">
+              <h6 class="text-uppercase text-muted mb-2">
+                Animes rewatched
+              </h6>
+              <span class="h2 mb-0">{{animesStatus.rewatched?.length || '0' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row mt-2">
+    <div class="col-12 col-lg-6 col-xl">
+      <div class="card">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col">
+              <h6 class="text-uppercase text-muted mb-2">
+                Episodes seen
+              </h6>
+              <span class="h2 mb-0">{{nbEpisodes}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-6 col-xl">
+      <div class="card">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col">
+              <h6 class="text-uppercase text-muted mb-2">
+                Hours spent
+              </h6>
+              <span class="h2 mb-0">{{allTimeSpent}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-12 order-lg-2 mt-5 mx-auto text-center">
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a href="" data-target="#completed" data-toggle="tab" class="nav-link active">Completed</a>
+      </li>
+      <li class="nav-item">
+        <a href="" data-target="#watching" data-toggle="tab" class="nav-link">Watching</a>
+      </li>
+      <li class="nav-item">
+        <a href="" data-target="#want_to_watch" data-toggle="tab" class="nav-link">Want to watch</a>
+      </li>
+      <li class="nav-item">
+        <a href="" data-target="#dont_want_to_watch" data-toggle="tab" class="nav-link">Dont want to watch</a>
+      </li>
+      <li class="nav-item">
+        <a href="" data-target="#rewatched" data-toggle="tab" class="nav-link">Rewatched</a>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div [ngClass]="{active: first}" class="tab-pane" [id]="status.key" *ngFor="let status of animesStatus | keyvalue; let first=first;">
+        <h3>Animes {{status.key}}</h3>
+        <div class="card-group" *ngIf="status.value != null">
+          <div class="my-child-item" *ngFor="let a of status.value" style="max-width: 25%;display: inline-grid;" >
+            <div class="animated">
+              <div class="card text-white box cardi">
+                <div class="flow">
+                  <a [routerLink]="['/animes/', a.anime.title]" target="_blank">
+                    <img style="max-width: 100%" class="card-img-top card-img-top-a "
+                         src="{{ a.anime.posterImage || 'https://media.kitsu.io/anime/poster_images/10007/original.jpg?1460247262' }}"
+                         alt="poster_{{ a.anime.title }}">
+                  </a>
+                </div>
+
+                <div class="card-img-overlay overlay">
+                  <div class="text">
+                    <h5 class="card-title mt-auto">{{ a.anime.title }}</h5>
+                    <a target="_blank" [routerLink]="['/animes/', a.anime.title]" class="btn btn-primary mt-auto">More</a>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-12" *ngIf="!(status.value != null)">
+          <p class="alert alert-danger">Aucun anime {{status.key}} enregistré</p>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>

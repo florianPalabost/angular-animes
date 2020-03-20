@@ -1,9 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AnimesService } from 'src/app/services/animes.service';
-import {BehaviorSubject, Subscription} from 'rxjs';
+import {Subscription} from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import {NgxSpinnerService} from 'ngx-spinner';
-import {last, tap} from 'rxjs/operators';
 import * as _ from 'underscore';
 import {FormBuilder, FormGroup} from '@angular/forms';
 
@@ -13,10 +12,8 @@ import {FormBuilder, FormGroup} from '@angular/forms';
   styleUrls: ['./animes-list.component.scss']
 })
 export class AnimesListComponent implements OnInit, OnDestroy {
-  // tslint:disable-next-line:no-trailing-whitespace
   private subscription: Subscription;
   animes: any = [];
-  // animes = new BehaviorSubject([]);
   finished = false;
   batch = 0;
   lastKey = '';
@@ -33,17 +30,23 @@ export class AnimesListComponent implements OnInit, OnDestroy {
               private fb: FormBuilder
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     if (this.route.snapshot.params['q']) {
       this.animesService.findAnimesLikeAll(this.route.snapshot.params['q']).subscribe(data => {
         console.log('data get from search : ', data);
         this.animes = data;
       });
     } else {
-      // todo get all genres
-      this.animesService.findAllGenres().subscribe(genres => {
-        this.genres = genres;
-        // debugger;
+
+      this.formFilter = this.fb.group({
+        status: '',
+        genres: [],
+        subtypes: [],
+        categories: []
+      });
+
+      this.genres = await this.animesService.findAllGenres();
+
         this.dropdownGenresSettings = {
           singleSelection: false,
           idField: 'genre_id',
@@ -54,32 +57,22 @@ export class AnimesListComponent implements OnInit, OnDestroy {
           allowSearchFilter: true,
           // limitSelection: 2
         };
-      });
 
       // get all categories
-      this.animesService.findAllCategories().subscribe(categories => {
-        this.categories = categories;
+      this.categories = await this.animesService.findAllCategories();
+      this.dropdownCategoriesSettings = {
+        singleSelection: false,
+        idField: 'category_id',
+        textField: 'name',
+        selectAllText: 'Select All',
+        unSelectAllText: 'UnSelect All',
+        itemsShowLimit: 2,
+        allowSearchFilter: true,
+        // limitSelection: 2
+      };
 
-        this.dropdownCategoriesSettings = {
-          singleSelection: false,
-          idField: 'category_id',
-          textField: 'name',
-          selectAllText: 'Select All',
-          unSelectAllText: 'UnSelect All',
-          itemsShowLimit: 2,
-          allowSearchFilter: true,
-          // limitSelection: 2
-        };
-      });
-      // todo subtypes static
 
-      this.formFilter = this.fb.group({
-        status: '',
-        genres: [],
-        subtypes: [],
-        categories: []
-      });
-      this.spinner.show();
+      await this.spinner.show();
       this.findAllAnimes();
     }
   }
@@ -95,12 +88,11 @@ export class AnimesListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     console.log('unsubscribe list animes');
-    this.subscription.unsubscribe();
+    // this.subscription.unsubscribe();
   }
 
   onScroll = () => {
     let isFilter = false;
-    console.log('scrolled');
     console.log('form value : ', this.formFilter.value);
 
     // for not call other animes
@@ -116,14 +108,12 @@ export class AnimesListComponent implements OnInit, OnDestroy {
     }
   }
 
-  searchAnimes = (form) => {
+  searchAnimes = async (form) => {
     console.log('data from form :', form);
-    this.spinner.show();
+    await this.spinner.show();
     // todo get all animes following filter with back call
-    this.subscription = this.animesService.retrieveAnimesWithFilters(form).subscribe(data => {
-      this.animes = data;
-      this.spinner.hide();
-    });
+    this.animes = await this.animesService.retrieveAnimesWithFilters(form);
+    await this.spinner.hide();
 
     // parcourt des animes to filter them following the different filters
     _.each(this.animes, (anime) => {

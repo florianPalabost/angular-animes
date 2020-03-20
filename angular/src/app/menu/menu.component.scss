@@ -120,3 +120,41 @@ body {
     margin-right: 0;
   }
 }
+
+.avatar {
+  position: relative;
+  display: inline-block;
+  width: 3rem;
+  height: 3rem;
+  font-size: 1rem;
+}
+
+.avatar-sm {
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: .83333rem;
+}
+
+.dropdown-toggle {
+  white-space: nowrap;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+}
+
+.avatar-online::before {
+  background-color: #00d97e;
+  z-index: 3;
+}
+
+.avatar-offline::before, .avatar-online::before {
+  content: '';
+  position: absolute;
+  bottom: 5%;
+  right: 5%;
+  width: 20%;
+  height: 20%;
+  border-radius: 50%;
+}
