@@ -26,11 +26,13 @@
           <img src="//ssl.gstatic.com/accounts/ui/avatar_1x.png" alt="avatar_user" class="avatar-img rounded-circle">
         </a>
         <div class="dropdown-menu dropdown-menu-right">
+          <h3 class="dropdown-header text-center">{{currentUser['user'].username}}</h3>
+          <hr class="dropdown-divider">
           <a routerLink="stats/dashboard" class="dropdown-item">Dashboard</a>
           <a routerLink="user/profile" class="dropdown-item">Profile</a>
           <a href="./settings.html" class="dropdown-item">Settings</a>
           <hr class="dropdown-divider">
-          <a (click)="logout()" class="dropdown-item" style="cursor: pointer" >Logout</a>
+          <a (click)="logout()" class="dropdown-item text-center text-danger" style="cursor: pointer" >Logout</a>
         </div>
       </div>
 

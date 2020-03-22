@@ -29,7 +29,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   nbCats: number;
   // todo nbPerso back & front
   nbPersos;
-  private user: User;
+  user: User;
+  allAnimes;
+  nbEpisodes = 0;
+  allTimeSpent = 0;
 
   constructor(private animeService: AnimesService,
               private spinner: NgxSpinnerService,
@@ -45,17 +48,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
       case 'admin':
         this.nbPersos = await this.retrieveNbCharacters();
         this.animes = await this.findAllAnimes();
+
         break;
       default:
         this.nbPersos = 0;
-        let tmpAnimes = await this.findAnimesCompletedByUser(this.user['user'].id);
-        tmpAnimes = tmpAnimes['completed'];
+        this.allAnimes = await this.findAnimesCompletedByUser(this.user['user'].id);
         this.animes = [];
-        for (let i = 0; i < Object.keys(tmpAnimes).length; i++) {
-          this.animes.push(tmpAnimes[i].anime);
+        for (let i = 0; i < Object.keys(this.allAnimes['completed']).length; i++) {
+          this.animes.push(this.allAnimes['completed'][i].anime);
+          this.nbEpisodes += this.allAnimes['completed'][i].anime.nbEpisode;
+          this.allTimeSpent += (this.allAnimes['completed'][i].anime.nbEpisode * this.allAnimes['completed'][i].anime.episodeLength);
         }
+        this.allTimeSpent = Math.round(this.allTimeSpent / 60);
         break;
     }
+
     console.log('animes', this.animes);
     await this.createCatAndGenresChart(this.animes);
 

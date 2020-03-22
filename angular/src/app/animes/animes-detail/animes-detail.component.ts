@@ -6,7 +6,6 @@ import {
 import { AnimesService } from 'src/app/services/animes.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import { Anime } from 'src/app/model/anime';
-import { Subscription } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import 'magnific-popup';
 import {User} from '../../model/user';
@@ -21,18 +20,16 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 export class AnimesDetailComponent implements OnInit, OnDestroy  {
   public anime: Anime = new Anime;
   public animesRecommendated: any;
-  private subscription: Subscription;
-  private subscriptionAnime: Subscription;
   public videoYT;
   public tmpURL;
   urlImg;
   formStatus: FormGroup;
-
   currentUser: User;
   statusCompleted = false;
   statusWatching = false;
   statusWantToWatch = false;
   statusDontWatch = false;
+  rewatchedTimes;
 
   constructor(private userService: UsersService,
               private router: Router,
@@ -51,10 +48,10 @@ export class AnimesDetailComponent implements OnInit, OnDestroy  {
     });
 
     this.anime = await this.retriveAnimeByName(this.route.snapshot.params['name']);
-    console.log('anime : ', this.anime);
     await this.retrieveAnimeUserStatus();
     this.animesRecommendated = await this.retrieveAnimeRecommendation(this.anime.id);
-
+    this.rewatchedTimes = await this.animesService.retrieveNbWatchAnimeByUser(this.anime.id, this.currentUser['user'].id) || 0;
+    console.log('rewatch TIMES init : ', this.rewatchedTimes);
   }
 
   ngOnDestroy(): void {
@@ -150,5 +147,13 @@ export class AnimesDetailComponent implements OnInit, OnDestroy  {
         break;
     }
 
+  }
+
+  async rewatch() {
+    const isUpdated = await this.animesService.updateRewatchAnime(this.anime.id, this.currentUser['user'].id);
+    console.log('isUpdated :', isUpdated);
+    if (isUpdated) {
+      this.rewatchedTimes++;
+    }
   }
 }

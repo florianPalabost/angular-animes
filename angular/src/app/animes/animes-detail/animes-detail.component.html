@@ -7,9 +7,9 @@
 
     <nav>
         <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-            <a class="nav-item nav-link active" id="infos-tab" data-toggle="tab" href="#infos" role="tab" aria-controls="infos" aria-selected="true">Infos</a>
-            <a *ngIf="anime.characters" class="nav-item nav-link" id="persos-tab" data-toggle="tab" href="#persos" role="tab" aria-controls="persos" aria-selected="false">Personnages</a>
-            <a *ngIf="animesRecommendated" class="nav-item nav-link" id="recommend-tab" data-toggle="tab" href="#recommend" role="tab" aria-controls="recommend" aria-selected="false">Recommendations</a>
+            <a class="nav-item nav-link active black" id="infos-tab" data-toggle="tab" href="#infos" role="tab" aria-controls="infos" aria-selected="true">Infos</a>
+            <a *ngIf="anime.characters" class="nav-item nav-link black" id="persos-tab" data-toggle="tab" href="#persos" role="tab" aria-controls="persos" aria-selected="false">Personnages</a>
+            <a *ngIf="animesRecommendated" class="nav-item nav-link black" id="recommend-tab" data-toggle="tab" href="#recommend" role="tab" aria-controls="recommend" aria-selected="false">Recommendations</a>
         </div>
     </nav>
     <div class="tab-content" id="nav-tabContent">
@@ -78,8 +78,8 @@
                         <button class="btn btn-info disabled mt-3" *ngIf="statusWatching" style="cursor: unset">Watching</button>
                         <button class="btn btn-info disabled mt-3" *ngIf="statusWantToWatch" style="cursor: unset">Want to watch</button>
                         <button class="btn btn-info disabled mt-3" *ngIf="statusDontWatch" style="cursor: unset">Don't want to watch</button>
-                        <span><p>Rewatch X times</p></span>
-                        <button class="btn btn-block w-25 btn-outline-primary">Rewatch</button>
+                        <span *ngIf="rewatchedTimes > 0 && currentUser"><p>Rewatch {{rewatchedTimes}} time(s)</p></span>
+                        <button *ngIf="currentUser" class="btn btn-block w-25 btn-outline-primary" (click)="rewatch()">Rewatch</button>
                       </div>
 
                       <div *ngIf="anime.synopsis">

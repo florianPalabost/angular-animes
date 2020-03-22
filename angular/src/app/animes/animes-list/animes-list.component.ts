@@ -33,11 +33,10 @@ export class AnimesListComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     if (this.route.snapshot.params['q']) {
       this.animesService.findAnimesLikeAll(this.route.snapshot.params['q']).subscribe(data => {
-        console.log('data get from search : ', data);
+        // console.log('data get from search : ', data);
         this.animes = data;
       });
     } else {
-
       this.formFilter = this.fb.group({
         status: '',
         genres: [],
@@ -93,12 +92,10 @@ export class AnimesListComponent implements OnInit, OnDestroy {
 
   onScroll = () => {
     let isFilter = false;
-    console.log('form value : ', this.formFilter.value);
 
     // for not call other animes
     _.each(this.formFilter.value, (prop) => {
       if (prop) {
-        console.log(prop);
         isFilter = true;
       }
     });

@@ -1,7 +1,7 @@
 <h1>Panel {{user['user'].role}}</h1>
 <h2>Welcome {{user['user'].username}}</h2>
-<div class="row">
-  <div class="col-xl-3 col-lg-6">
+<div class="row mx-auto">
+  <div class="col-xl-3 col-lg-6" *ngIf="user['user'].role === 'admin'">
     <div class="card card-stats mb-4 mb-xl-0">
       <div class="card-body">
         <div class="row">
@@ -74,7 +74,115 @@
   </div>
 </div>
 
-<div class="row">
+<div class="row mt-5" *ngIf="user['user'].role === 'user'">
+  <div class="col-12 col-lg-6 col-xl">
+    <div class="card">
+      <div class="card-body">
+        <div class="row align-items-center">
+          <div class="col">
+            <h6 class="text-uppercase text-muted mb-2">
+              Animes completed
+            </h6>
+            <span class="h2 mb-0">{{allAnimes['completed']?.length || '0' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-lg-6 col-xl">
+    <div class="card">
+      <div class="card-body">
+        <div class="row align-items-center">
+          <div class="col">
+            <h6 class="text-uppercase text-muted mb-2">
+              Animes watching
+            </h6>
+            <span class="h2 mb-0">{{allAnimes.watching?.length || '0' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-lg-6 col-xl">
+    <div class="card">
+      <div class="card-body">
+        <div class="row align-items-center">
+          <div class="col">
+            <h6 class="text-uppercase text-muted mb-2">
+              Animes want to watch
+            </h6>
+            <span class="h2 mb-0">{{allAnimes.want_to_watch?.length || '0' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-lg-6 col-xl">
+    <div class="card">
+      <div class="card-body">
+        <div class="row align-items-center">
+          <div class="col">
+            <h6 class="text-uppercase text-muted mb-2">
+              Animes dont want to watch
+            </h6>
+            <span class="h2 mb-0">{{allAnimes.dont_want_to_watch?.length || '0' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-lg-6 col-xl">
+    <div class="card">
+      <div class="card-body">
+        <div class="row align-items-center">
+          <div class="col">
+            <h6 class="text-uppercase text-muted mb-2">
+              Animes rewatched
+            </h6>
+            <span class="h2 mb-0">{{allAnimes.rewatched?.length || '0' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="row mt-2">
+  <div class="col-12 col-lg-6 col-xl" *ngIf="nbEpisodes > 0">
+    <div class="card">
+      <div class="card-body">
+        <div class="row align-items-center">
+          <div class="col">
+            <h6 class="text-uppercase text-muted mb-2">
+              Episodes seen
+            </h6>
+            <span class="h2 mb-0">{{nbEpisodes}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-lg-6 col-xl" *ngIf="allTimeSpent > 0">
+    <div class="card">
+      <div class="card-body">
+        <div class="row align-items-center">
+          <div class="col">
+            <h6 class="text-uppercase text-muted mb-2">
+              Hours spent
+            </h6>
+            <span class="h2 mb-0">{{allTimeSpent}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="row mt-5">
   <div class="col-6" style="max-height: 20em; overflow-y: scroll ">
     <table class="table table-striped">
       <thead>

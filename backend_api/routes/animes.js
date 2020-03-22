@@ -13,6 +13,9 @@ router.get('/like/:name', AnimesController.findAnimesLike);
 router.get('/likeall/:name', AnimesController.findAnimesLikeAll);
 router.get('/:idAnime/recommendations', AnimesController.findAnimeRecommendations);
 
+router.post('/get-rewatch', (req, res) => {AnimesController.findAnimeRewatchedTimes(req, res)});
+router.post('/update-rewatch', (req, res) => {AnimesController.createOrUpdateAnimeRewatched(req, res)});
+
 
 router.put('/:id', (req, res) => {AnimesController.updateAnime(req, res)});
 router.delete('/:id', AnimesController.deleteAnime);
