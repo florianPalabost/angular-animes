@@ -86,7 +86,6 @@ cron.schedule("* 10 18 * *", async () =>  {
 	// set all the link to scratch infos
 	 while (start < nbLignes) {
 		link = linkApi + start;
-		// console.log('call : ', link);
 		// call url to have the 20 animes to proceed
 		await request(link, async (err, resp, body) => {
 			// on recup un string donc il faut le parse en json pour mieux l'utiliser
@@ -169,7 +168,6 @@ cron.schedule("* 10 18 * *", async () =>  {
 		start += length;
 	}
 
-
 	console.log(`Nombre d'insert : ${nbInsert}`);
 });
 
@@ -177,33 +175,14 @@ cron.schedule("* 10 18 * *", async () =>  {
 // characters
 cron.schedule("* 10 18 * *", async () => {
 	console.log('::::::::::::::::::::::::::::::::::CHARACTERSs:::::::::::::::::::::::::::::::::::::::::::::::::::::::');
-	// let nbLignes = 1;
-	// data.meta.count -> contient le nb total d'animes to proceed faire un if dans le while pour le maj
-	// let nbLignes = 14748;
-	//
-	// let start = 0;
-	// let length = 20;
-	// const linkApi = 'https://kitsu.io/api/edge/anime?page%5Blimit%5D=20&page%5Boffset%5D=';
-	// let link;
-
-	// first get all the animes to update all the characters
 	let animes = await models.anime.findAll();
-	// let anime= await models.anime.findOne({
-	//   where: {
-	//     title: 'Brave Beats'
-	//   }
-	// });
-	// let animes = [];
-	// animes.push(anime);
-	console.log('animes length : ', animes.length);
 
 	// list of all animes
 	for(let i=0; i < animes.length; i++) {
 		console.log(':::::::::ANIME '+i+' / '+animes.length + ' ::::::::::::::::::');
-		// for(let i=0; i < 2; i++) {
 		if (animes[i].linkApi !== "" && animes[i].linkApi !== null && animes[i].linkApi !== undefined) {
 
-			await sleep(200);
+			await sleep(100);
 			request(animes[i].linkApi + '/characters', async (err, resp, body) => {
 				if(err)
 					console.log('err load /characters : ', err);
@@ -220,7 +199,6 @@ cron.schedule("* 10 18 * *", async () => {
 									if(errC)
 										console.log('err load character : ', errC);
 									persoInfos = JSON.parse(persoInfos);
-									// console.log('request perso info');
 
 									// todo add condition on animeId on character where to find if character already exist for this anime
 									let perso = await models.character.findOne({
@@ -249,15 +227,12 @@ cron.schedule("* 10 18 * *", async () => {
 
 										if(animes[i].id) {
 											persoOtherAnime.animeId = animes[i].id;
-											// console.log(`anime id : ${animes[i].id}`);
-											// console.log('perso : ', persoOtherAnime.animeId);
 											await models.character.create(persoOtherAnime);
 											console.log('perso added to another anime');
 										}
 										else {
 											throw new Error(`no anime id with perso ${persoOtherAnime.name}`);
 										}
-
 
 									}
 									else {
@@ -287,10 +262,6 @@ cron.schedule("* 10 18 * *", async () => {
 									}
 								});
 							}
-							else {
-								// console.log('no info character');
-							}
-
 
 						}
 					}

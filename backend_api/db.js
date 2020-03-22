@@ -32,7 +32,7 @@ const getAllAnimes = async (req, res) => {
 
 const getAnimesWith = async (batch) => {
   try {
-    console.log('batch : ' + batch);
+    // console.log('batch : ' + batch);
     return await models.anime.findAll({
           attributes: ['id', 'title', 'status', 'posterImage', 'coverImage', 'subtype'],
           include: [ {
@@ -144,6 +144,15 @@ const getWithUserId = async (userId, status) => {
         });
       case 'dont_want_to_watch':
         return await models.animes_dont_want_to_watch.findAll({
+          where: {
+            user_id: userId
+          },
+          include: [ {
+            model: models.anime,
+          }]
+        });
+      case 'rewatched':
+        return await models.animes_rewatched.findAll({
           where: {
             user_id: userId
           },
@@ -304,6 +313,21 @@ const getByID = async (id) => {
   }
 };
 
+const getAnimesRewatchTimes = async (req) => {
+  try {
+    req.idUser = req.idUser.toString();
+    return await models.animes_rewatched.findOne({
+      where: {
+        anime_id: parseInt(req.idAnime),
+        user_id: req.idUser
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
 const createAnime = async (req, res) => {
   console.log('access dao : create new anime');
   try {
@@ -331,6 +355,23 @@ const createAnime = async (req, res) => {
   }  
 };
 
+const createAnimeRewatch = async (req, res) => {
+  console.log('access dao : create new anime rewatched');
+  try {
+    const newAnimeRewatched = {
+      user_id: req.idUser,
+      anime_id: req.idAnime
+    };
+    return await models.animes_rewatched.create(newAnimeRewatched);
+  }
+  catch(error) {
+    // maybe an error about the creation of this item
+    // either the object is not well implement or either bug somewhere else
+    console.log(error);
+    return error;
+  }
+};
+
 const updateAnime = async (req) => {
   try {
     // first get & check the anime to update if exist
@@ -344,6 +385,21 @@ const updateAnime = async (req) => {
       });
     } 
     throw new Error(`anime not found with id: ${req.id}`);
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
+const updateAnimeRewatch = async (req) => {
+  try {
+      return await models.animes_rewatched.increment('times_rewatched', {
+        by: 1,
+        where: {
+          user_id: req.idUser,
+          anime_id: req.idAnime
+        }
+      });
   } catch (error) {
     console.log(error);
     return error;
@@ -442,14 +498,17 @@ module.exports = {
   getByTitle,
   getAnimesRecommendations,
   getWithFilters,
+  getAnimesRewatchTimes,
   getWithUserId,
   getLikeByTitle,
   getLikeByTitleAll,
   getByID,
   getAnimeUserStat,
   createAnime,
+  createAnimeRewatch,
   updateAnime,
   updateAnimeUserStats,
+  updateAnimeRewatch,
   deleteAnime,
   getNbCharacters,
   getAllCategories,

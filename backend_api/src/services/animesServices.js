@@ -24,6 +24,10 @@ const retrieveAnimeByFilters = async (req, genres, categories) => {
   return await db.getWithFilters(req, genres, categories);
 };
 
+const retrieveAnimeRewatchTimes = async (req, genres, categories) => {
+  return await db.getAnimesRewatchTimes(req);
+};
+
 const retrieveAnimesUserStat = async (req, status) => {
   return await db.getAnimeUserStat(req, status);
 };
@@ -39,6 +43,19 @@ const retrieveAnimesLikeAll = async (req, res) => {
 
 const addAnime = async (req, res) => {                
   return await db.createAnime(req);
+};
+
+const addOrUpdateAnimeRewatched = async (req, res) => {
+  const animeRewatch = await db.getAnimesRewatchTimes(req);
+  if(animeRewatch) {
+    // already exist so we need to incremente watch time
+    return await db.updateAnimeRewatch(req);
+  }
+  else {
+    // not exist -> we create a new anime-rewatch with value 1;
+    return await db.createAnimeRewatch(req);
+  }
+
 };
 
 const updateAnime = async (req, res) => {                
@@ -61,9 +78,11 @@ module.exports = {
   retrieveAnimesUserStat,
   retrieveAnimeByTitle,
   retrieveAnimeByFilters,
+  retrieveAnimeRewatchTimes,
   retrieveAnimesLike,
   retrieveAnimesLikeAll,
   addAnime,
+  addOrUpdateAnimeRewatched,
   updateAnime,
   updateAnimeUserStat,
   deleteAnime

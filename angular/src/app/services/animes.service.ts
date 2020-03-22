@@ -99,4 +99,12 @@ export class AnimesService {
   async findRecommendationAnime(idAnime: any) {
     return await this.http.get(this.BASE_URL + 'animes/' + idAnime + '/recommendations').toPromise();
   }
+
+  async retrieveNbWatchAnimeByUser(idAnime: number, idUser: any) {
+    return await this.http.post(this.BASE_URL + 'animes/get-rewatch', {idAnime, idUser}).toPromise();
+  }
+
+  async updateRewatchAnime(idAnime: number, idUser: any) {
+    return await this.http.post(this.BASE_URL + 'animes/update-rewatch', {idAnime, idUser}).toPromise();
+  }
 }

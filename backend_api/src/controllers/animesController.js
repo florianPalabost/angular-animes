@@ -50,13 +50,15 @@ const findAnimesWithUserId = async (req, res) => {
     let animesWatching = await AnimeService.retrieveAnimesWithUserId(req.params.userId, 'watching');
     let animesWantToWatch = await AnimeService.retrieveAnimesWithUserId(req.params.userId, 'want_to_watch');
     let animesDontWantToWatch = await AnimeService.retrieveAnimesWithUserId(req.params.userId, 'dont_want_to_watch');
+    let animesRewatched = await AnimeService.retrieveAnimesWithUserId(req.params.userId, 'rewatched');
     const stats = {
       completed: animesCompleted.length > 0 ? animesCompleted : 0,
       watching: animesWatching.length > 0 ? animesWatching : 0,
       want_to_watch: animesWantToWatch.length > 0 ? animesWantToWatch : 0,
-      dont_want_to_watch: animesDontWantToWatch.length > 0 ? animesDontWantToWatch : 0
+      dont_want_to_watch: animesDontWantToWatch.length > 0 ? animesDontWantToWatch : 0,
+      rewatched: animesRewatched.length > 0 ? animesRewatched : 0
     };
-    console.log('toto stats:', stats);
+
     res.status(200).json(stats);
   } catch (error) {
     console.log(error);
@@ -90,23 +92,34 @@ const findAnimesWithFilters = async (req, res) => {
   }
 };
 
+const findAnimeRewatchedTimes = async (req, res) => {
+  try {
+    let rewatchTimes = await AnimeService.retrieveAnimeRewatchTimes(req.body);
+    if(rewatchTimes) {
+      res.status(200).json(rewatchTimes.times_rewatched);
+    }
+    else {
+      res.status(200).json(0);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+};
+
 const findAnimeUserStatus = async (req, res) => {
   try {
-    console.log('find Anime user status with:::', req.body);
-
     const statusCompleted = await AnimeService.retrieveAnimesUserStat(req.body, 'completed');
     const statusWatching = await AnimeService.retrieveAnimesUserStat(req.body, 'watching');
     const statusWantToWatch = await AnimeService.retrieveAnimesUserStat(req.body, 'want_to_watch');
     const statusDontWatch = await AnimeService.retrieveAnimesUserStat(req.body, 'dont_want_to_watch');
 
-    // console.log('STATUS COMPLETED::::::::::::::::', statusCompleted);
     const theStatus = {
       completed: statusCompleted.length > 0 ? statusCompleted : 0,
       watching: statusWatching.length > 0 ? statusWatching : 0,
       want_to_watch: statusWantToWatch.length > 0 ? statusWantToWatch : 0,
       dont_want_to_watch: statusDontWatch.length > 0 ? statusDontWatch : 0
     };
-    console.log('STATUS :::::::::::', theStatus);
     res.status(200).json(theStatus);
   } catch (error) {
     console.log(error);
@@ -114,21 +127,16 @@ const findAnimeUserStatus = async (req, res) => {
   }
 };
 
-
 const updateAnimeUserStatus = async (req, res) => {
   try {
     console.log('Update Anime user status controller:::', req.body);
     let isUpdated = await AnimeService.updateAnimeUserStat(req.body);
     res.status(200).json(isUpdated);
-    // let animes = await AnimeService.retrieveAnimeByFilters(req.body, genres, categories);
-    //
-    // res.status(200).json(animes);
   } catch (error) {
     console.log(error);
     res.status(400).send(error);
   }
 };
-
 
 
 const findAnimesLike = async (req, res) => {         
@@ -158,10 +166,22 @@ const addAnime = async (req, res) => {
     res.status(201).json(anime);
   } catch (err) {
     console.log(err);
-    res.status(400).send(error);
+    res.status(400).send(err);
   }
   
 };
+
+const createOrUpdateAnimeRewatched = async (req, res) => {
+  try {
+    let anime = await AnimeService.addOrUpdateAnimeRewatched(req.body);
+    res.status(201).json(anime);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
+
+};
+
 
 const updateAnime = async (req, res) => {
   try {
@@ -196,7 +216,9 @@ module.exports = {
   findAnimesLike,
   findAnimesLikeAll,
   findAnimeUserStatus,
+  findAnimeRewatchedTimes,
   addAnime,
+  createOrUpdateAnimeRewatched,
   updateAnime,
   updateAnimeUserStatus,
   deleteAnime

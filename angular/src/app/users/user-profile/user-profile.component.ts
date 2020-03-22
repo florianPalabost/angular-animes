@@ -18,16 +18,19 @@ export class UserProfileComponent implements OnInit {
   allTimeSpent = 0;
   nbEpisodes = 0;
   data: any;
+  user: any;
 
   constructor(private usersService: UsersService, private animeService: AnimesService) { }
 
   async ngOnInit() {
+    this.user = this.usersService.currentUserValue['user'];
     this.data = await this.animeService.retrieveAnimesCompletedByUser(this.usersService.currentUserValue['user'].id);
     if (this.data['completed'] && this.data['watching'] && this.data['want_to_watch'] && this.data['dont_want_to_watch']) {
       this.animesStatus.completed = this.data['completed'].length > 0 ? this.data['completed'] : null;
       this.animesStatus.watching = this.data['watching'].length > 0 ? this.data['watching'] : null;
       this.animesStatus.want_to_watch = this.data['want_to_watch'].length > 0 ? this.data['want_to_watch'] : null;
       this.animesStatus.dont_want_to_watch = this.data['dont_want_to_watch'].length > 0 ? this.data['dont_want_to_watch'] : null;
+      this.animesStatus.rewatched = this.data['rewatched'].length > 0 ? this.data['rewatched'] : null;
 
       this.animesStatus.completed.forEach((item) => {
         this.nbEpisodes += item['anime'].nbEpisode;
