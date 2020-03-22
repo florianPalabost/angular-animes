@@ -1,8 +1,8 @@
-const CategoriesService = require('../services/categoriesServices');
+const GenericService = require('../services/genericService');
 
 const findAllCategories = async (req, res) => {
   try {
-    let categories = await CategoriesService.retrieveCategories();
+    const categories = await GenericService.retrieveDb('getAllCategories');
     res.status(200).json(categories);
   } catch (error) {
     console.log(error);

@@ -1,8 +1,8 @@
-const CharactersService = require('../services/charactersServices');
+const GenericService = require('../services/genericService');
 
 const getNbCharacters = async (req, res) => {
   try {
-    let nbCharacters = await CharactersService.getNbCharacters();
+    const nbCharacters = await GenericService.retrieveDb('getNbCharacters');
     res.status(200).json(nbCharacters);
   } catch (error) {
     console.log(error);
