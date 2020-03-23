@@ -219,8 +219,10 @@ const getAnimeUserStat = async (req, status) => {
   }
 };
 
-const getWithFilters = async (form, genres, categories) => {
+const getWithFilters = async (form, genresAndcategories) => {
   try {
+    const genres = genresAndcategories[0];
+    const categories = genresAndcategories[1];
     let whereGeneralClause = {};
     let whereGenresClause = {};
     let whereCategoriesClause = {};

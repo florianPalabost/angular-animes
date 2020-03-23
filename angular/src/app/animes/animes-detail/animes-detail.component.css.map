@@ -1,1 +1,1 @@
-{"version":3,"sourceRoot":"","sources":[],"names":[],"mappings":"","file":"animes-detail.component.css"}
+{"version":3,"sourceRoot":"","sources":["animes-detail.component.scss"],"names":[],"mappings":"AACA;EACE;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;;;AAGF;EACE;IACE;IACA;;;AAIJ;EACE;IACE;IACA;;;AAKJ;EACE;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;AACA;;;AAGF;EACE;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;;AAGF;EAEE;AAA2B;EAC3B;;;AAGF;EACE;EACA;AAA2B;EAC3B","file":"animes-detail.component.css"}

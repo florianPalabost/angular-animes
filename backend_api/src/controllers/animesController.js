@@ -81,7 +81,7 @@ const findAnimesWithFilters = async (req, res) => {
     // console.log('les categories :::::::::::', categories);
 
     // const animes = await AnimeService.retrieveAnimeByFilters(req.body, genres, categories);
-    const animes = await GenericService.retrieveDb('getWithFilters', genres, categories);
+    const animes = await GenericService.retrieveDb('getWithFilters', req.body, [genres, categories]);
     // console.log('ANIMES FILTERS LENGTH:::::::::::', Object.keys(animes).length);
     res.status(200).json(animes);
   } catch (error) {
