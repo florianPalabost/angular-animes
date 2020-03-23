@@ -80,8 +80,20 @@ const getByTitle = async (title) => {
   }
 };
 
+const getCharacterByTitle = async (name) => {
+  try {
+    return await models.character.findOne({
+      where: {
+        name
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
 const getAnimesRecommendations = async (idAnime) => {
-  console.log('ID ANIME :::::::::::::', idAnime);
   try {
     return await models.animes_recommendation.findAll({
       where: {
@@ -100,7 +112,6 @@ const getAnimesRecommendations = async (idAnime) => {
 
 const getWithUserId = async (userId, status) => {
   try {
-    console.log('USER ID : ' + userId);
 
     switch (status) {
       case 'completed':
@@ -170,8 +181,6 @@ const getWithUserId = async (userId, status) => {
 
 const getAnimeUserStat = async (req, status) => {
   try {
-    // console.log('DBBBBBBBBBBBBBBB:;;;', models);
-    // req.animeId = req.animeId.toString();
     req.userId = req.userId.toString();
     switch (status) {
       case 'completed':
@@ -511,6 +520,7 @@ module.exports = {
   updateAnimeRewatch,
   deleteAnime,
   getNbCharacters,
+  getCharacterByTitle,
   getAllCategories,
   getAllGenres,
 };

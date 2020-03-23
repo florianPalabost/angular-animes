@@ -1,0 +1,13 @@
+<div class="container">
+  <div class="row mt-5 mx-auto">
+    <div class="col-12 col-md-4 col-lg-4">
+      <img [src]="character.img" alt="img_character" class="img">
+    </div>
+    <div class="col-12 col-md-8 col-lg-8">
+      <h1>{{character.name}}</h1>
+      <p [innerHTML]="character.other_name"></p>
+      <p>Role : {{character.role}}</p>
+      <div class="text-justify" [innerHTML]="character.description">Description : </div>
+    </div>
+  </div>
+</div>

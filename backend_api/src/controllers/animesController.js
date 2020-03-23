@@ -1,10 +1,10 @@
 const _ = require('underscore');
 const AnimeService = require('../services/animesServices');
+const GenericService = require('../services/genericService');
 
 const findAllAnimes = async (req, res) => {         
   try {
-    let animes = await AnimeService.retrieveAnimes(); 
-    // console.log('JSON get Animes:::::', JSON.stringify(animes));
+    const animes = await GenericService.retrieveDb('getAllAnimes');
     res.status(200).json(animes);
   } catch (error) {
     console.log(error);
@@ -14,8 +14,7 @@ const findAllAnimes = async (req, res) => {
 
 const findAnimes = async (req, res) => {
   try {
-    let animes = await AnimeService.retrieveAnimesWith(req.params.batch);
-    // console.log('JSON get Animes:::::', JSON.stringify(animes));
+    const animes = await GenericService.retrieveDb('getAnimesWith', req.params.batch);
     res.status(200).json(animes);
   } catch (error) {
     console.log(error);
@@ -25,7 +24,7 @@ const findAnimes = async (req, res) => {
 
 const findAnimeByTitle = async (req, res) => {
   try {
-    let anime = await AnimeService.retrieveAnimeByTitle(req.params.title);
+    const anime = await GenericService.retrieveDb('getByTitle', req.params.title);
     res.status(200).json(anime);
   } catch (error) {
     console.log(error);
@@ -35,8 +34,7 @@ const findAnimeByTitle = async (req, res) => {
 
 const findAnimeRecommendations = async (req, res) => {
   try {
-    console.log('ozefjkzeopfkp;;;;;',req.params.idAnime);
-    let animes = await AnimeService.retrieveAnimesRecommendations(req.params.idAnime);
+    const animes = await GenericService.retrieveDb('getAnimesRecommendations', req.params.idAnime);
     res.status(200).json(animes);
   } catch (error) {
     console.log(error);
@@ -46,11 +44,11 @@ const findAnimeRecommendations = async (req, res) => {
 
 const findAnimesWithUserId = async (req, res) => {
   try {
-    let animesCompleted = await AnimeService.retrieveAnimesWithUserId(req.params.userId, 'completed');
-    let animesWatching = await AnimeService.retrieveAnimesWithUserId(req.params.userId, 'watching');
-    let animesWantToWatch = await AnimeService.retrieveAnimesWithUserId(req.params.userId, 'want_to_watch');
-    let animesDontWantToWatch = await AnimeService.retrieveAnimesWithUserId(req.params.userId, 'dont_want_to_watch');
-    let animesRewatched = await AnimeService.retrieveAnimesWithUserId(req.params.userId, 'rewatched');
+    const animesCompleted = await GenericService.retrieveDb('getWithUserId', req.params.userId, 'completed');
+    const animesWatching = await GenericService.retrieveDb('getWithUserId', req.params.userId, 'watching');
+    const animesWantToWatch = await GenericService.retrieveDb('getWithUserId', req.params.userId, 'want_to_watch');
+    const animesDontWantToWatch = await GenericService.retrieveDb('getWithUserId', req.params.userId, 'dont_want_to_watch');
+    const animesRewatched = await GenericService.retrieveDb('getWithUserId', req.params.userId, 'rewatched');
     const stats = {
       completed: animesCompleted.length > 0 ? animesCompleted : 0,
       watching: animesWatching.length > 0 ? animesWatching : 0,
@@ -68,23 +66,23 @@ const findAnimesWithUserId = async (req, res) => {
 
 const findAnimesWithFilters = async (req, res) => {
   try {
-    console.log('filters:::', req.body);
-
+    // console.log('filters:::', req.body);
     // array with just the name of genres & categories for filter
     let genres = [];
     _.each(req.body.genres, (genre) => {
       genres.push(genre.genre_id);
     });
 
-    console.log('les genres :::::::::::', genres);
+    // console.log('les genres :::::::::::', genres);
     let categories = [];
     _.each(req.body.categories, (category) => {
       categories.push(category.category_id);
     });
-    console.log('les categories :::::::::::', categories);
+    // console.log('les categories :::::::::::', categories);
 
-    let animes = await AnimeService.retrieveAnimeByFilters(req.body, genres, categories);
-    console.log('ANIMES FILTERS LENGTH:::::::::::', Object.keys(animes).length);
+    // const animes = await AnimeService.retrieveAnimeByFilters(req.body, genres, categories);
+    const animes = await GenericService.retrieveDb('getWithFilters', genres, categories);
+    // console.log('ANIMES FILTERS LENGTH:::::::::::', Object.keys(animes).length);
     res.status(200).json(animes);
   } catch (error) {
     console.log(error);
@@ -94,7 +92,7 @@ const findAnimesWithFilters = async (req, res) => {
 
 const findAnimeRewatchedTimes = async (req, res) => {
   try {
-    let rewatchTimes = await AnimeService.retrieveAnimeRewatchTimes(req.body);
+    const rewatchTimes = await GenericService.retrieveDb('getAnimesRewatchTimes', req.body);
     if(rewatchTimes) {
       res.status(200).json(rewatchTimes.times_rewatched);
     }
@@ -109,10 +107,10 @@ const findAnimeRewatchedTimes = async (req, res) => {
 
 const findAnimeUserStatus = async (req, res) => {
   try {
-    const statusCompleted = await AnimeService.retrieveAnimesUserStat(req.body, 'completed');
-    const statusWatching = await AnimeService.retrieveAnimesUserStat(req.body, 'watching');
-    const statusWantToWatch = await AnimeService.retrieveAnimesUserStat(req.body, 'want_to_watch');
-    const statusDontWatch = await AnimeService.retrieveAnimesUserStat(req.body, 'dont_want_to_watch');
+    const statusCompleted = await GenericService.retrieveDb('getAnimeUserStat', req.body, 'completed');
+    const statusWatching = await GenericService.retrieveDb('getAnimeUserStat', req.body, 'watching');
+    const statusWantToWatch = await GenericService.retrieveDb('getAnimeUserStat', req.body, 'want_to_watch');
+    const statusDontWatch = await GenericService.retrieveDb('getAnimeUserStat', req.body, 'dont_want_to_watch');
 
     const theStatus = {
       completed: statusCompleted.length > 0 ? statusCompleted : 0,
@@ -130,7 +128,8 @@ const findAnimeUserStatus = async (req, res) => {
 const updateAnimeUserStatus = async (req, res) => {
   try {
     console.log('Update Anime user status controller:::', req.body);
-    let isUpdated = await AnimeService.updateAnimeUserStat(req.body);
+    // const isUpdated = await AnimeService.updateAnimeUserStat(req.body);
+    const isUpdated = await GenericService.retrieveDb('updateAnimeUserStats', req.body);
     res.status(200).json(isUpdated);
   } catch (error) {
     console.log(error);
@@ -141,7 +140,7 @@ const updateAnimeUserStatus = async (req, res) => {
 
 const findAnimesLike = async (req, res) => {         
   try {
-    let animes = await AnimeService.retrieveAnimesLike(req.params.name); 
+    const animes = await GenericService.retrieveDb('getLikeByTitle', req.params.name);
     res.status(200).json(animes);
   } catch (error) {
     console.log(error);
@@ -151,7 +150,7 @@ const findAnimesLike = async (req, res) => {
 
 const findAnimesLikeAll = async (req, res) => {         
   try {
-    let animes = await AnimeService.retrieveAnimesLikeAll(req.params.name); 
+    const animes = await GenericService.retrieveDb('getLikeByTitleAll', req.params.name);
     res.status(200).json(animes);
   } catch (error) {
     console.log(error);
@@ -159,21 +158,19 @@ const findAnimesLikeAll = async (req, res) => {
   }
 };
 
-
 const addAnime = async (req, res) => {            
   try {
-    let anime = await AnimeService.addAnime(req.body);
+    const anime = await GenericService.retrieveDb('createAnime', req.body);
     res.status(201).json(anime);
   } catch (err) {
     console.log(err);
     res.status(400).send(err);
   }
-  
 };
 
 const createOrUpdateAnimeRewatched = async (req, res) => {
   try {
-    let anime = await AnimeService.addOrUpdateAnimeRewatched(req.body);
+    const anime = await AnimeService.addOrUpdateAnimeRewatched(req.body);
     res.status(201).json(anime);
   } catch (err) {
     console.log(err);
@@ -186,8 +183,7 @@ const createOrUpdateAnimeRewatched = async (req, res) => {
 const updateAnime = async (req, res) => {
   try {
     // req.body --> anime to update
-    console.log('update controller : ', req.body);
-   let isUpdated = await AnimeService.updateAnime(req.body);
+    const isUpdated = await GenericService.retrieveDb('updateAnime', req.body);
     res.status(200).json(isUpdated);
   } catch (error) {
     console.log(error);
@@ -198,7 +194,7 @@ const updateAnime = async (req, res) => {
 const deleteAnime = async (req, res) => {
   try {
     // req.params.id --> anime id to delete
-    let isDeleted = await AnimeService.deleteAnime(req.params.id);
+    const isDeleted = await GenericService.retrieveDb('deleteAnime', req.params.id);
     res.status(200).json(isDeleted);
   } catch (error) {
     console.log(error);

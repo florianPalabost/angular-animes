@@ -120,7 +120,7 @@
                                 <div class="card-img-overlay overlay">
                                     <div class="text">
                                         <h5 class="card-title mt-auto">{{  perso.name }}</h5>
-                                        <a href="#" class="btn btn-primary mt-auto">More</a>
+                                        <a routerLink="./characters/{{perso.name}}" class="btn btn-primary mt-auto" target="_blank">More</a>
                                     </div>
                                 </div>
                         </div>
@@ -146,7 +146,7 @@
                             <div class="card-img-top card-img-top-a">
                                 <div class="text">
                                     <h5 class="card-title mt-auto">{{  perso.name }}</h5>
-                                    <a href="#" class="btn btn-primary mt-auto">More</a>
+                                    <a routerLink="./characters/{{perso.name}}" class="btn btn-primary mt-auto" target="_blank">More</a>
                                 </div>
                             </div>
                         </ng-container>
@@ -158,29 +158,32 @@
         <!-- animes recommendations tab -->
       <div *ngIf="animesRecommendated" class="tab-pane fade" id="recommend" role="tabpanel" aria-labelledby="recommend-tab">
           <h3>Recommendations</h3>
-          <div class="card-group">
-            <div class="my-child-item" *ngFor="let a of animesRecommendated" style="max-width: 25%;display: inline-grid;" >
-              <div class="animated">
-                <div class="card text-white box cardi">
-                  <div class="flow">
-                    <a [routerLink]="['/animes/', a['anime'].title]">
-                      <img style="max-width: 100%" class="card-img-top card-img-top-a "
-                           src="{{ a['anime'].posterImage || 'https://media.kitsu.io/anime/poster_images/10007/original.jpg?1460247262' }}"
-                           alt="poster_{{ a['anime'].title }}">
-                    </a>
+        <div class="flex-container columns">
+          <div class="flex-item" *ngFor="let a of animesRecommendated" style="" >
+            <div class="animated">
+              <div class="card text-white box cardi">
+                <div class="flow">
+                  <a [routerLink]="['/animes/', a['anime'].title]">
+                    <img style="max-width: 100%" class="card-img-top card-img-top-a "
+                         src="{{ a['anime'].posterImage || 'https://media.kitsu.io/anime/poster_images/10007/original.jpg?1460247262' }}"
+                         alt="poster_{{ a['anime'].title }}">
+                  </a>
+                </div>
+
+                <div class="card-img-overlay overlay">
+                  <div class="text">
+                    <h5 class="card-title mt-auto">{{ a['anime'].title }}</h5>
+                    <a [routerLink]="['/animes/', a['anime'].title]" class="btn btn-primary mt-auto" target="_blank">More</a>
                   </div>
 
-                  <div class="card-img-overlay overlay">
-                    <div class="text">
-                      <h5 class="card-title mt-auto">{{ a['anime'].title }}</h5>
-                      <a [routerLink]="['/animes/', a['anime'].title]" class="btn btn-primary mt-auto" target="_blank">More</a>
-                    </div>
-
-                  </div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+<!--          <div class="card-group">-->
+<!--           -->
+<!--          </div>-->
       </div>
     </div>
 

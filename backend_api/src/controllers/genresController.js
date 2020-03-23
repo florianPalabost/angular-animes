@@ -1,9 +1,8 @@
-const GenresService = require('../services/genresServices');
+const GenericService = require('../services/genericService');
 
 const findAllGenres = async (req, res) => {
   try {
-    let genres = await GenresService.retrieveGenres();
-    // console.log('JSON get Animes:::::', JSON.stringify(animes));
+    const genres = await GenericService.retrieveDb('getAllGenres');
     res.status(200).json(genres);
   } catch (error) {
     console.log(error);

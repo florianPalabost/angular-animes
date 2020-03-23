@@ -51,7 +51,6 @@ export class AnimesDetailComponent implements OnInit, OnDestroy  {
     await this.retrieveAnimeUserStatus();
     this.animesRecommendated = await this.retrieveAnimeRecommendation(this.anime.id);
     this.rewatchedTimes = await this.animesService.retrieveNbWatchAnimeByUser(this.anime.id, this.currentUser['user'].id) || 0;
-    console.log('rewatch TIMES init : ', this.rewatchedTimes);
   }
 
   ngOnDestroy(): void {
@@ -127,9 +126,7 @@ export class AnimesDetailComponent implements OnInit, OnDestroy  {
   async updateStatUser(formStatus) {
     formStatus.userId = this.currentUser['user'].id;
     formStatus.animeId = this.anime.id;
-    console.log(formStatus);
     const status = await this.animesService.updateStatusAnimeUser(formStatus);
-    console.log('status update -> ', status);
     switch (formStatus.status_watch) {
       case 'completed':
         this.statusCompleted = true;
