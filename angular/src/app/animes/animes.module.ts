@@ -12,9 +12,10 @@ import {NgxSpinnerModule} from 'ngx-spinner';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
+import { CharactersComponent } from './characters/characters.component';
 
 @NgModule({
-  declarations: [AnimesListComponent, AnimesSearchComponent, AnimesEditComponent, AnimesDetailComponent],
+  declarations: [AnimesListComponent, AnimesSearchComponent, AnimesEditComponent, AnimesDetailComponent, CharactersComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(ANIMES_ROUTES),

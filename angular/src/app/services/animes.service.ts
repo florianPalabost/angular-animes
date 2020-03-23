@@ -107,4 +107,8 @@ export class AnimesService {
   async updateRewatchAnime(idAnime: number, idUser: any) {
     return await this.http.post(this.BASE_URL + 'animes/update-rewatch', {idAnime, idUser}).toPromise();
   }
+
+  async retrieveCharacter(name: any) {
+    return await this.http.get(this.BASE_URL + 'characters/' + name).toPromise();
+  }
 }

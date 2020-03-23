@@ -13,3 +13,17 @@
 .black {
   color: black;
 }
+
+@media screen and (min-width: 700px) {
+  .flex-container {
+    display: grid;
+    grid-template-columns: repeat(5,20%);
+  }
+}
+
+@media screen and (max-width: 699px) {
+  .flex-container {
+    display: grid;
+    grid-template-columns: 100%;
+  }
+}

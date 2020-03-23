@@ -80,6 +80,19 @@ const getByTitle = async (title) => {
   }
 };
 
+const getCharacterByTitle = async (name) => {
+  try {
+    return await models.character.findOne({
+      where: {
+        name
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
 const getAnimesRecommendations = async (idAnime) => {
   try {
     return await models.animes_recommendation.findAll({
@@ -507,6 +520,7 @@ module.exports = {
   updateAnimeRewatch,
   deleteAnime,
   getNbCharacters,
+  getCharacterByTitle,
   getAllCategories,
   getAllGenres,
 };

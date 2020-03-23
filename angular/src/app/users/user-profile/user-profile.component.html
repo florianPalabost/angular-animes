@@ -1,5 +1,5 @@
-<div class="container">
-  <div class="row mt-5">
+<div class="user-profile">
+  <div class="row mt-5 mx-auto">
     <div class="col-12">
       <h1>Infos Personelles</h1>
     </div>
@@ -30,8 +30,8 @@
     <div class="tab-content">
       <div [ngClass]="{active: first}" class="tab-pane" [id]="status.key" *ngFor="let status of animesStatus | keyvalue; let first=first;">
         <h3>Animes {{status.key}}</h3>
-        <div class="card-group" *ngIf="status.value != null">
-          <div class="my-child-item" *ngFor="let a of status.value" style="max-width: 25%;display: inline-grid;" >
+        <div class="flex-container columns" *ngIf="status.value != null">
+          <div class="flex-item" *ngFor="let a of status.value">
             <div class="animated">
               <div class="card text-white box cardi">
                 <div class="flow">

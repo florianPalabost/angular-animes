@@ -10,6 +10,17 @@ const getNbCharacters = async (req, res) => {
   }
 };
 
+const findCharacter = async (req, res) => {
+  try {
+    const character = await GenericService.retrieveDb('getCharacterByTitle', req.params.name);
+    res.status(200).json(character);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+};
+
 module.exports = {
   getNbCharacters,
+  findCharacter
 };
