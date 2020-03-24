@@ -32,7 +32,6 @@ const getAllAnimes = async (req, res) => {
 
 const getAnimesWith = async (batch) => {
   try {
-    // console.log('batch : ' + batch);
     return await models.anime.findAll({
           attributes: ['id', 'title', 'status', 'posterImage', 'coverImage', 'subtype'],
           include: [ {
@@ -272,7 +271,6 @@ const getWithFilters = async (form, genresAndcategories) => {
 
 const getLikeByTitle = async (title) => {
   try {
-    console.log('db title : ', title);
     return await models.anime.findAll({
       where: {
         title: {
@@ -290,7 +288,6 @@ const getLikeByTitle = async (title) => {
 
 const getLikeByTitleAll = async (title) => {
   try {
-    console.log('db title : ', title);
     return await models.anime.findAll({
       where: {
         title: {

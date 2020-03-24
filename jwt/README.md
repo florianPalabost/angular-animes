@@ -15,3 +15,7 @@ docker exec -it <jwt_docker_name> sh
 # the bellow command will execute sequelize db:migrate 
 npm run db
 ````
+
+### import users 
+dans config.json: development -> host: 127.0.0.1
+pour le reste du temps : host: postgres 
