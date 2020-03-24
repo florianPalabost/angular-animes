@@ -2,6 +2,8 @@ FROM php:7.3.2-apache-stretch
 
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
+COPY . .
+
 RUN apt-get update && apt-get install -y \
     openssl \
     git \
@@ -10,7 +12,6 @@ RUN apt-get update && apt-get install -y \
  && composer --version \
  && a2enmod rewrite \
  && service apache2 restart \
- && git clone https://github.com/jikan-me/jikan-rest.git . \
  && composer install --prefer-dist --no-progress --no-suggest --classmap-authoritative  --no-interaction
 
 ADD .env /run-jikan.sh ./
