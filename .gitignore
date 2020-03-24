@@ -61,3 +61,8 @@ jwt/.idea/
 angular/.idea/
 angular/node_modules
 jwt/config/config.json
+
+jikan/.github
+jikan/*
+!jikan/composer.json
+!jikan/Dockerfile
