@@ -5,6 +5,19 @@ const router = express.Router();
 require('../config/passport')(passport);
 const User = require('../models').User;
 
+
+router.get('/users', async (req, res) =>  {
+    const users = await User.findAll();
+    if(users.length > 0) {
+        res.json(users);
+    }
+    else {
+        return res.status(401).send({
+            message: 'no users record ! ',
+        });
+    }
+
+});
 // todo REFACTOR for use controller service for users !
 
 // endpoint  POST user registration
