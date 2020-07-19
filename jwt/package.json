@@ -28,7 +28,7 @@
     "http": "0.0.0",
     "http-errors": "latest",
     "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "pg": "^7.18.2",
